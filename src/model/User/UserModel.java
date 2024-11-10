@@ -7,12 +7,11 @@ public class UserModel {
     protected String phoneNumber;
     protected String hostelId; // ID of the hostel the user is associated with
 
-    public UserModel(String userId, String name, String email, String phoneNumber) {
+    public UserModel(String userId, String name, String email, String phoneNumber, String hostelId) {
         this.userId = userId;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        
     }
 
     public String getUserId() {

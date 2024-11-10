@@ -1,5 +1,5 @@
 package model.User;
-
+import model.PaymentGateway.Wallet;
 
 public class AdministratorModel extends UserModel {
 

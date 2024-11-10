@@ -1,17 +1,52 @@
+# Hostel Mangement System
+
 ## Getting Started
 
 Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
 
 ## Folder Structure
 
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+```text
+HostelManagementSystem/
+│
+├── src/
+│   ├── controller/
+│   │   ├── Administrator/
+│   │   │   └── Admin_controller.java
+│   │   ├── MaintenanceStaff/
+│   │   │   └── MaintenanceStaff_controller.java
+│   │   ├── Student/
+│   │   │   └── Student_controller.java
+│   │   └── other_controllers... (if any)
+│   │
+│   ├── model/
+│   │   ├── Complaint_model.java
+│   │   ├── MaintenanceRequest_model.java
+│   │   ├── Notification/
+│   │   │   └── Notification.java
+│   │   ├── PaymentGateway/
+│   │   │   └── PaymentGateway_model.java
+│   │   ├── Room_model.java
+│   │   ├── User/
+│   │   │   ├── Administrator_model.java
+│   │   │   ├── MaintenanceStaff_model.java
+│   │   │   ├── Student_model.java
+│   │   │   └── user_model.java
+│   │   └── other_models... (if any)
+│   │
+│   ├── view/
+│   │   ├── Administrator/
+│   │   │   └── Admin_view.java
+│   │   ├── MaintenanceStaff/
+│   │   │   └── MaintenanceStaff_view.java
+│   │   ├── Student/
+│   │   │   └── Student_home.java
+│   │   └── other_views... (if any)
+│
+├── other_directories... (resources, assets, etc.)
+├── README.md
+└── .gitignore
+```
 
 ## Dependency Management
 
