@@ -1,0 +1,97 @@
+/* General styles */
+.root {
+  -fx-font-family: "Roboto", "Arial", sans-serif;
+  -fx-background-color: #E3F2FD;
+}
+
+/* Buttons */
+.button {
+  -fx-background-color: #1E88E5;
+  -fx-text-fill: white;
+  -fx-font-size: 14px;
+  -fx-padding: 10 20;
+  -fx-background-radius: 100;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 3, 0, 0, 2);
+}
+
+.button:hover {
+  -fx-background-color: #1565C0;
+}
+
+.button:pressed {
+  -fx-background-color: #0D47A1;
+}
+
+/* Text fields */
+.text-field {
+  -fx-background-color: #FFFFFF;
+  -fx-border-color: #90CAF9;
+  -fx-border-width: 0;
+  -fx-padding: 5 10;
+  -fx-background-radius: 100;
+  -fx-border-radius: 100;
+  -fx-font-size: 14px;
+  -fx-text-fill: #0D47A1;
+}
+
+.text-field:focused {
+  -fx-border-color: #1E88E5;
+  -fx-border-width: 1;
+}
+
+/* Labels */
+.label {
+  -fx-font-size: 16px;
+  -fx-text-fill: #0D47A1;
+}
+
+/* Toolbars */
+.toolbar {
+  -fx-background-color: #1E88E5;
+  -fx-padding: 10;
+}
+
+.toolbar .label {
+  -fx-text-fill: white;
+  -fx-font-weight: bold;
+}
+
+/* Checkboxes */
+.check-box {
+  -fx-font-size: 14px;
+  -fx-text-fill: #0D47A1;
+}
+
+/* Combobox */
+.combo-box {
+  -fx-background-color: #FFFFFF;
+  -fx-border-color: #90CAF9;
+  -fx-border-width: 2;
+  -fx-background-radius: 5;
+  -fx-border-radius: 5;
+  -fx-padding: 5;
+}
+
+.combo-box:focused {
+  -fx-border-color: #1E88E5;
+}
+
+/* ListView */
+.list-view {
+  -fx-background-color: #E3F2FD;
+  -fx-border-color: #90CAF9;
+}
+
+.list-view .list-cell {
+  -fx-font-size: 14px;
+  -fx-text-fill: #0D47A1;
+}
+
+/* Scrollbars */
+.scroll-bar {
+  -fx-background-color: #BBDEFB;
+}
+
+.scroll-bar .thumb {
+  -fx-background-color: #1E88E5;
+}
