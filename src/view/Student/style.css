@@ -1,227 +1,242 @@
 /* General styles */
 .root {
     -fx-font-family: "Roboto", "Arial", sans-serif;
-    -fx-background-color: #e3f2fd;
-  }
-  
-  /* Sidebar Styling */
-  .sidebar {
-    -fx-background-color: #1e88e5;
-    -fx-padding: 10;
-  }
-  
-  /* Tab Buttons Styling */
-  .sidebar .button {
+    -fx-background-color: #e3f0fb; /* Light blue background */
+    -fx-text-fill: #0d47a1; /* Dark blue text */
+}
+
+/* Sidebar Styling */
+.sidebar {
+    -fx-background-color: #1976d2; /* Material Blue 600 */
+    -fx-padding: 20 10 20 10; /* Increased padding for better spacing */
+    -fx-pref-width: 220px; /* Set a preferred width for the sidebar */
+}
+
+/* Tab Buttons Styling */
+.sidebar .button {
     -fx-font-size: 14px;
-    -fx-background-color: #1e88e5;
+    -fx-background-color: transparent;
     -fx-text-fill: white;
     -fx-border-color: transparent;
-    -fx-border-radius: 5px;
-    -fx-padding: 10;
+    -fx-border-radius: 20px;
+    -fx-padding: 12;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 0, 0, 0, 0);
-  }
-  
-  .sidebar .button:hover {
-    -fx-background-color: #1565c0; /* Changed to a darker shade of blue */
-  }
-  
-  /* Toggle Button Styling */
-  .sidebar .button:first-child {
+    -fx-alignment: center-left; /* Align button text to the left */
+}
+
+.sidebar .button:hover {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1976d2; /* Material Blue 600 */
+}
+
+.sidebar .button:pressed {
+    -fx-background-color: #1565c0; /* Material Blue 700 */
+}
+
+.sidebar .button:selected {
+    -fx-background-color: white;
+    -fx-text-fill: #1976d2; /* Material Blue 600 */
+}
+
+/* First button (e.g., a toggle button) styling */
+.sidebar .button:first-child {
     -fx-font-size: 18px;
     -fx-text-fill: white;
-    -fx-border-color: transparent;
     -fx-border-radius: 50%;
     -fx-alignment: center;
-  }
-  
-  .sidebar .button:first-child:hover {
-    -fx-background-color: #1565c0;
-  }
-  
-  /* Center Content Styling */
-  .text {
+    -fx-background-color: transparent;
+}
+
+.sidebar .button:first-child:hover {
+    -fx-background-color: #1565c0; /* Material Blue 700 */
+}
+
+/* Sidebar Header */
+.sidebar .header {
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 0;
+    -fx-alignment: center; /* Centered header text */
+}
+
+/* Center Content Styling */
+.text {
     -fx-font-size: 18px;
-    -fx-fill: #0d47a1;
-  }
-  
-  /* Buttons */
-  .button {
-    -fx-background-color: #1e88e5;
+    -fx-text-fill: #0d47a1; /* Dark blue text */
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: #2196f3; /* Material Blue 500 */
     -fx-text-fill: white;
     -fx-font-size: 14px;
-    -fx-padding: 10 20;
-    -fx-background-radius: 100;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 3, 0, 0, 2);
-  }
-  
-  .button:hover {
-    -fx-background-color: #1565c0;
-  }
-  
-  .button:pressed {
-    -fx-background-color: #0d47a1;
-  }
-  
-  /* Text fields */
-  .text-field {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #ffffff;
-    -fx-border-width: 0;
-    -fx-padding: 5 10;
+    -fx-padding: 12 24;
     -fx-background-radius: 20;
     -fx-border-radius: 20;
+}
+
+.button:hover {
+    -fx-background-color: #1e88e5; /* Material Blue 600 */
+}
+
+.button:pressed {
+    -fx-background-color: #1e88e5; /* Material Blue 600 */
+}
+
+/* Text fields */
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #2196f3; /* Material Blue 500 */
+    -fx-border-width: 0;
+    -fx-padding: 8 12;
+    -fx-background-radius: 20;
     -fx-font-size: 14px;
-    -fx-text-fill: #0d47a1;
-  }
-  
-  .text-field:focused {
-    -fx-border-color: #1e88e5;
-    -fx-border-width: 1;
-  }
-  
-  /* Labels */
-  .label {
+    -fx-text-fill: #0d47a1; /* Dark blue text */
+}
+
+.text-field:focused {
+    -fx-border-color: #1976d2; /* Material Blue 600 */
+}
+
+/* Labels */
+.label {
     -fx-font-size: 16px;
-    -fx-text-fill: #0d47a1;
-  }
-  
-  /* Toolbars */
-  .toolbar {
-    -fx-background-color: #1e88e5;
-    -fx-padding: 10;
-  }
-  
-  .toolbar .label {
+    -fx-text-fill: #0d47a1; /* Dark blue */
+}
+
+/* Toolbars */
+.toolbar {
+    -fx-background-color: #1976d2; /* Material Blue 600 */
+    -fx-padding: 12;
+}
+
+.toolbar .label {
     -fx-text-fill: white;
     -fx-font-weight: bold;
-  }
-  
-  /* Checkboxes */
-  .check-box {
+}
+
+/* Checkboxes */
+.check-box {
     -fx-font-size: 14px;
-    -fx-text-fill: #0d47a1;
-  }
-  
-  /* Combobox */
-  .combo-box {
+    -fx-text-fill: #0d47a1; /* Dark blue */
+}
+
+/* Combobox */
+.combo-box {
     -fx-background-color: #ffffff;
-    -fx-border-color: #90caf9;
-    -fx-border-width: 2;
-    -fx-background-radius: 5;
-    -fx-border-radius: 5;
-    -fx-padding: 5;
-  }
-  
-  .combo-box:focused {
-    -fx-border-color: #1e88e5;
-  }
-  
-  /* ListView */
-  .list-view {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #90caf9;
-  }
-  
-  .list-view .list-cell {
-    -fx-font-size: 14px;
-    -fx-text-fill: #0d47a1;
-  }
-  
-  /* Scrollbars */
-  .scroll-bar {
-    -fx-background-color: #bbdefb;
-  }
-  
-  .scroll-bar .thumb {
-    -fx-background-color: #1e88e5;
-  }
-  
-  /* Default card style */
-  .hostel-card {
-    -fx-background-color: #bbdefb;
-    -fx-text-fill: #0d47a1;
+    -fx-border-color: #2196f3; /* Material Blue 500 */
     -fx-border-width: 0;
+    -fx-background-radius: 20;
+    -fx-padding: 8;
+}
+
+.combo-box:focused {
+    -fx-border-color: #1976d2; /* Material Blue 600 */
+}
+
+/* ListView */
+.list-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e0e0e0;
+}
+
+.list-view .list-cell {
+    -fx-font-size: 14px;
+    -fx-text-fill: #0d47a1; /* Dark blue */
+}
+
+/* Scrollbars */
+.scroll-bar {
+    -fx-background-color: #e0e0e0;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #2196f3; /* Material Blue 500 */
+}
+
+/* Default card style */
+.hostel-card {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #0d47a1; /* Dark blue */
+    -fx-border-width: 0;
+    -fx-border-color: #e0e0e0;
     -fx-border-radius: 20;
     -fx-background-radius: 20;
-    -fx-font-weight: bold;
-  }
-  
-  /* Name label style */
-  .hostel-card-name {
+    -fx-font-weight: normal;
+    -fx-padding: 16;
+}
+
+.hostel-card-name {
     -fx-font-size: 16px;
-    -fx-text-fill: #0d47a1;
-  }
-  
-  /* ID label style */
-  .hostel-card-id {
+    -fx-text-fill: #1976d2; /* Material Blue 600 */
+}
+
+.hostel-card-id {
     -fx-font-size: 14px;
-    -fx-text-fill: #757575;
-  }
-  
-  /* Rooms label style */
-  .hostel-card-rooms {
-    -fx-font-size: 14px;
-    -fx-text-fill: #388e3c;
-  }
-  
-  /* Students label style */
-  .hostel-card-students {
-    -fx-font-size: 14px;
-    -fx-text-fill: #d32f2f;
-  }
-  
-  /* Hover effect */
-  .hostel-card-hover {
-    -fx-background-color: #1e88e5;
+    -fx-text-fill: #b0bec5; /* Light grey */
+}
+
+.hostel-card-rooms {
+    -fx-font-size: 8px;
+    -fx-text-fill: #388e3c; /* Green */
+}
+
+.hostel-card-students {
+    -fx-font-size: 8px;
+    -fx-text-fill: #d32f2f; /* Red */
+}
+
+/* Hover effect */
+.hostel-card-hover {
+    /* -fx-background-color: #69a9ea; */
     -fx-text-fill: white;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 2);
-  }
-  
-  /* Toggle Button Styling */
-  .toggle-button {
-    -fx-background-color: #1e88e5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 2); /* Subtle shadow effect */
+    -fx-cursor: hand; /* Pointer cursor for interactive feel */
+}
+
+/* Toggle Button Styling */
+.toggle-button {
+    -fx-background-color: #2196f3; /* Material Blue 500 */
     -fx-text-fill: white;
     -fx-font-size: 16px;
-    -fx-padding: 10;
+    -fx-padding: 12;
     -fx-background-radius: 30px;
     -fx-border-radius: 30px;
     -fx-border-color: transparent;
     -fx-cursor: hand;
-  }
-  
-  .toggle-button:hover {
-    -fx-background-color: #1565c0;
-  }
-  
-  .toggle-button:pressed {
-    -fx-background-color: #0d47a1;
-  }
-  
-  /* Multi-line TextArea */
-  .text-area {
+}
+
+.toggle-button:hover {
+    -fx-background-color: #1e88e5; /* Material Blue 600 */
+}
+
+.toggle-button:pressed {
+    -fx-background-color: #1e88e5; /* Material Blue 600 */
+}
+
+/* Multi-line TextArea */
+.text-area {
     -fx-background-color: #ffffff;
-    -fx-border-color: #ffffff;
+    -fx-border-color: #e0e0e0;
     -fx-border-width: 0;
-    -fx-padding: 10;
-    -fx-background-radius: 20;
+    -fx-padding: 12;
+    -fx-background-radius: 20px;
     -fx-font-size: 14px;
-    -fx-text-fill: #0d47a1;
-  }
-  
-  .text-area:focused {
-    -fx-border-color: #1e88e5;
-    -fx-border-width: 0;
-  }
-  
-  .text-area::placeholder {
-    -fx-text-fill: #90caf9;
-  }
-  
-  /* Labels for TextArea */
-  .text-area-label {
+    -fx-text-fill: #0d47a1; /* Dark blue */
+}
+
+.text-area:focused {
+    -fx-border-color: #1976d2; /* Material Blue 600 */
+}
+
+.text-area::placeholder {
+    -fx-text-fill: #b0bec5; /* Light grey */
+}
+
+/* Labels for TextArea */
+.text-area-label {
     -fx-font-size: 16px;
-    -fx-text-fill: #0d47a1;
+    -fx-text-fill: #0d47a1; /* Dark blue */
     -fx-font-weight: bold;
-  }
-  
+}

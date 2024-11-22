@@ -97,4 +97,8 @@ public class StudentController {
     public void onMaintenanceRequestSubmitted(String complaint, String details) {
         System.out.println("Maintenance Request Submitted: " + complaint + " - " + details);
     }
+
+    public void editProfile(String name, String email, String phone, String password, String password2) {
+        System.out.println("Profile Edited: " + name + " - " + email + " - " + phone + " - " + password + " - " + password2);
+    }
 }

@@ -28,14 +28,21 @@ public class StudentPage extends Application {
         sidebar.getStyleClass().add("sidebar");
 
         Button toggleButton = new Button("☰");
-        Button homeTab = createButtonWithIcon("apps.png", "Home");
-        Button settingsTab = createButtonWithIcon("apps.png", "Settings");
-        Button otherTab = createButtonWithIcon("apps.png", "Other");
-        Button maintenanceTab = createButtonWithIcon("apps.png", "Maintenance");
+        Button homeTab = createButtonWithIcon("apps.png", " Home");
+        Button browseTab = createButtonWithIcon("apps.png", " Browse");
+        Button maintenanceTab = createButtonWithIcon("apps.png", " Maintenance");
+        Button settingsTab = createButtonWithIcon("apps.png", " Settings");
 
-        toggleButton.setPrefWidth(50);
+        homeTab.setPrefWidth(200);
+        browseTab.setPrefWidth(200);
+        maintenanceTab.setPrefWidth(200);
+        settingsTab.setPrefWidth(200);
 
-        sidebar.getChildren().addAll(toggleButton, homeTab, settingsTab, otherTab, maintenanceTab);
+        // Align the text to the left
+        updateButtonIconsWithText(homeTab, browseTab, maintenanceTab, settingsTab);
+
+
+        sidebar.getChildren().addAll(toggleButton, homeTab, browseTab, maintenanceTab,settingsTab);
         sidebar.setMaxWidth(200);
 
         // Content Area
@@ -49,6 +56,77 @@ public class StudentPage extends Application {
 
         // Sidebar Navigation Events
         homeTab.setOnAction(e -> {
+            homeTab.setStyle("-fx-background-color: white; -fx-text-fill: #2196F3;");
+            for (Button button : new Button[]{browseTab, maintenanceTab, settingsTab}) {
+                button.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
+            }
+            
+        });
+
+        settingsTab.setOnAction(e -> {
+
+            settingsTab.setStyle("-fx-background-color: white; -fx-text-fill: #2196F3;");
+            for (Button button : new Button[]{homeTab, browseTab, maintenanceTab}) {
+                button.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
+            }
+        
+            // Create fields for settings page
+            Label nameLabel = new Label("Change Name:");
+            TextField nameField = new TextField();
+            nameField.setPromptText("Enter your new name");
+            nameField.setMaxWidth(300);
+            nameField.setMinHeight(40);
+        
+            Label emailLabel = new Label("Change Email:");
+            TextField emailField = new TextField();
+            emailField.setPromptText("Enter your new email");
+            emailField.setMaxWidth(300);
+            emailField.setMinHeight(40);
+        
+            Label phoneLabel = new Label("Change Phone Number:");
+            TextField phoneField = new TextField();
+            phoneField.setPromptText("Enter your new phone number");
+            phoneField.setMaxWidth(300);
+            phoneField.setMinHeight(40);
+        
+            Label passwordLabel = new Label("Reset Password:");
+            PasswordField passwordField = new PasswordField();
+            passwordField.setPromptText("Enter your new password");
+            passwordField.setMaxWidth(300);
+            passwordField.setMinHeight(40);
+        
+            Label passwordLabel2 = new Label("Confirm Password:");
+            PasswordField passwordField2 = new PasswordField();
+            passwordField2.setPromptText("Confirm your new password");
+            passwordField2.setMaxWidth(300);
+            passwordField2.setMinHeight(40);
+        
+            Button saveButton = new Button("Save Details");
+            saveButton.setOnAction(ev -> controller.editProfile(nameField.getText(), emailField.getText(), phoneField.getText(), passwordField.getText(), passwordField2.getText()));
+        
+            // Layout adjustments
+            VBox formLayout = new VBox(10, nameLabel, nameField, emailLabel, emailField, phoneLabel, phoneField, passwordLabel, passwordField, passwordLabel2, passwordField2);
+            formLayout.setSpacing(15);
+            formLayout.setAlignment(Pos.CENTER);
+        
+            // Make the save button more visually prominent and align it
+            HBox buttonLayout = new HBox(saveButton);
+            buttonLayout.setAlignment(Pos.CENTER);
+            buttonLayout.setSpacing(10);
+        
+            VBox content = new VBox(20, formLayout, buttonLayout);
+            content.setAlignment(Pos.CENTER);
+        
+            contentPane.setCenter(content);
+        });
+
+        browseTab.setOnAction(e -> {
+
+            browseTab.setStyle("-fx-background-color: white; -fx-text-fill: #2196F3;");
+            for (Button button : new Button[]{homeTab, maintenanceTab, settingsTab}) {
+                button.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
+            }
+
             VBox homeLayout = new VBox(10);
             homeLayout.setPadding(new Insets(10));
 
@@ -91,17 +169,13 @@ public class StudentPage extends Application {
             });
         });
 
-        settingsTab.setOnAction(e -> {
-            contentText.setText("This is the Settings Page.");
-            contentPane.setCenter(new VBox(contentText));
-        });
-
-        otherTab.setOnAction(e -> {
-            contentText.setText("This is the Other Page.");
-            contentPane.setCenter(new VBox(contentText));
-        });
-
         maintenanceTab.setOnAction(e -> {
+
+            maintenanceTab.setStyle("-fx-background-color: white; -fx-text-fill: #2196F3;");
+            for (Button button : new Button[]{homeTab, browseTab, settingsTab}) {
+                button.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
+            }
+
             VBox maintenanceLayout = new VBox(10);
             maintenanceLayout.setPadding(new Insets(20));
         
@@ -154,25 +228,24 @@ public class StudentPage extends Application {
 
             contentPane.setCenter(maintenanceLayout);
         });
-        
-        
+         
         // Toggle Sidebar Expand/Collapse
         toggleButton.setOnAction(e -> {
             if (isSidebarExpanded) {
                 sidebar.setPrefWidth(50);
-                for (Button button : new Button[]{homeTab, settingsTab, otherTab, maintenanceTab}) {
+                for (Button button : new Button[]{homeTab, browseTab, maintenanceTab,settingsTab}) {
                     button.setMinWidth(50);
                     button.setMaxWidth(50);
                 }
-                updateButtonIconsOnly(homeTab, settingsTab, otherTab, maintenanceTab);
+                updateButtonIconsOnly(homeTab, browseTab, maintenanceTab,settingsTab);
                 toggleButton.setText("☰");
             } else {
                 sidebar.setPrefWidth(200);
-                for (Button button : new Button[]{homeTab, settingsTab, otherTab, maintenanceTab}) {
+                for (Button button : new Button[]{homeTab, browseTab, maintenanceTab, settingsTab}) {
                     button.setMinWidth(200);
                     button.setMaxWidth(Double.MAX_VALUE);
                 }
-                updateButtonIconsWithText(homeTab, settingsTab, otherTab, maintenanceTab);
+                updateButtonIconsWithText(homeTab, browseTab, maintenanceTab, settingsTab);
                 toggleButton.setText("✖");
             }
             isSidebarExpanded = !isSidebarExpanded;
@@ -211,10 +284,10 @@ public class StudentPage extends Application {
 
     private void updateButtonIconsWithText(Button... buttons) {
         String[][] buttonData = {
-            {"apps.png", "Home"},
-            {"apps.png", "Settings"},
-            {"apps.png", "Other"},
-            {"apps.png", "Maintenance"}
+            {"apps.png", " Home"},
+            {"apps.png", " Browse"},
+            {"apps.png", " Maintenance"},
+            {"apps.png", " Settings"}
         };
 
         for (int i = 0; i < buttons.length; i++) {
