@@ -19,6 +19,9 @@ public class signInController {
     private Button signinButton;
 
     @FXML
+    private Button signupButton;
+
+    @FXML
     private TextField userNameField;
 
     @FXML
@@ -26,6 +29,12 @@ public class signInController {
         System.out.println("Sign In Button Clicked");
         System.out.println("Username: " + userNameField.getText());
         System.out.println("Password: " + passwordField.getText());
+
+    }
+
+    @FXML
+    void handleSignUp(ActionEvent event) {
+        System.out.println("Sign Up Button Clicked");
 
     }
 
