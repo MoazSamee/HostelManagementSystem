@@ -5,12 +5,10 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -33,8 +31,11 @@ public class StudentPage extends Application {
         Button homeTab = createButtonWithIcon("apps.png", "Home");
         Button settingsTab = createButtonWithIcon("apps.png", "Settings");
         Button otherTab = createButtonWithIcon("apps.png", "Other");
+        Button maintenanceTab = createButtonWithIcon("apps.png", "Maintenance");
 
-        sidebar.getChildren().addAll(toggleButton, homeTab, settingsTab, otherTab);
+        toggleButton.setPrefWidth(50);
+
+        sidebar.getChildren().addAll(toggleButton, homeTab, settingsTab, otherTab, maintenanceTab);
         sidebar.setMaxWidth(200);
 
         // Content Area
@@ -75,7 +76,6 @@ public class StudentPage extends Application {
             // make it colorless
             scrollPane.setStyle("-fx-background-color: #E3F2FD;");
             gridPane.setStyle("-fx-background-color: #E3F2FD;");
-            
 
             // Link gridPane to controller for dynamic updates
             controller.setGridPane(gridPane);
@@ -86,15 +86,9 @@ public class StudentPage extends Application {
             // Add initial content
             controller.populateInitialGridContent();
 
-            // On the window resize, recalculate the number of columns
-            // This one is fast but not working properly
             primaryStage.widthProperty().addListener((obs, oldWidth, newWidth) -> {
                 controller.populateInitialGridContent();
             });
-            //// this one is working better but it is slower
-            // gridPane.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-            //     controller.populateInitialGridContent();
-            // });
         });
 
         settingsTab.setOnAction(e -> {
@@ -107,23 +101,78 @@ public class StudentPage extends Application {
             contentPane.setCenter(new VBox(contentText));
         });
 
+        maintenanceTab.setOnAction(e -> {
+            VBox maintenanceLayout = new VBox(10);
+            maintenanceLayout.setPadding(new Insets(20));
+        
+            TextArea complainField = new TextArea();
+            complainField.setPromptText("Enter your complaint...");
+            complainField.setPrefWidth(400);
+            complainField.setPrefHeight(300);
+        
+            TextArea maintenanceField = new TextArea();
+            maintenanceField.setPromptText("Maintenance Request Details...");
+            maintenanceField.setPrefWidth(400);
+            maintenanceField.setPrefHeight(300);
+        
+            Button submitButton = new Button("Submit Request");
+            submitButton.setOnAction(ev -> {
+                String complain = complainField.getText();
+                String details = maintenanceField.getText();
+                controller.onMaintenanceRequestSubmitted(complain, details);
+            });
+        
+            ToggleButton toggleButton_complain = new ToggleButton("Switch to Maintenance");
+            toggleButton_complain.setOnAction(toggleEvent -> {
+                if (toggleButton_complain.isSelected()) {
+                    complainField.setVisible(false);
+                    complainField.setManaged(false);
+                    maintenanceField.setVisible(true);
+                    maintenanceField.setManaged(true);
+                    toggleButton_complain.setText("Switch to Complain");
+                } else {
+                    complainField.setVisible(true);
+                    complainField.setManaged(true);
+                    maintenanceField.setVisible(false);
+                    maintenanceField.setManaged(false);
+                    toggleButton_complain.setText("Switch to Maintenance");
+                }
+            });
+        
+            maintenanceField.setVisible(false);
+            maintenanceField.setManaged(false);
+        
+            // Add elements to the layout
+            maintenanceLayout.getChildren().addAll(
+                new Text("Complain Maintenance Request"),
+                toggleButton_complain,
+                complainField,
+                maintenanceField,
+                submitButton
+            );
+            maintenanceLayout.setAlignment(Pos.TOP_RIGHT);
+
+            contentPane.setCenter(maintenanceLayout);
+        });
+        
+        
         // Toggle Sidebar Expand/Collapse
         toggleButton.setOnAction(e -> {
             if (isSidebarExpanded) {
                 sidebar.setPrefWidth(50);
-                for (Button button : new Button[]{homeTab, settingsTab, otherTab}) {
+                for (Button button : new Button[]{homeTab, settingsTab, otherTab, maintenanceTab}) {
                     button.setMinWidth(50);
                     button.setMaxWidth(50);
                 }
-                updateButtonIconsOnly(homeTab, settingsTab, otherTab);
+                updateButtonIconsOnly(homeTab, settingsTab, otherTab, maintenanceTab);
                 toggleButton.setText("☰");
             } else {
                 sidebar.setPrefWidth(200);
-                for (Button button : new Button[]{homeTab, settingsTab, otherTab}) {
+                for (Button button : new Button[]{homeTab, settingsTab, otherTab, maintenanceTab}) {
                     button.setMinWidth(200);
                     button.setMaxWidth(Double.MAX_VALUE);
                 }
-                updateButtonIconsWithText(homeTab, settingsTab, otherTab);
+                updateButtonIconsWithText(homeTab, settingsTab, otherTab, maintenanceTab);
                 toggleButton.setText("✖");
             }
             isSidebarExpanded = !isSidebarExpanded;
@@ -164,11 +213,13 @@ public class StudentPage extends Application {
         String[][] buttonData = {
             {"apps.png", "Home"},
             {"apps.png", "Settings"},
-            {"apps.png", "Other"}
+            {"apps.png", "Other"},
+            {"apps.png", "Maintenance"}
         };
 
         for (int i = 0; i < buttons.length; i++) {
             buttons[i].setText(buttonData[i][1]);
+            buttons[i].setAlignment(Pos.CENTER_LEFT);
         }
     }
 

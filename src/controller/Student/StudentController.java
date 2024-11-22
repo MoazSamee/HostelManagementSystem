@@ -93,4 +93,8 @@ public class StudentController {
     public void cardClicked(String hostelid) {
         System.out.println("Clicked on: " + hostelid);
     }
+
+    public void onMaintenanceRequestSubmitted(String complaint, String details) {
+        System.out.println("Maintenance Request Submitted: " + complaint + " - " + details);
+    }
 }

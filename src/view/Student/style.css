@@ -1,53 +1,53 @@
 /* General styles */
 .root {
     -fx-font-family: "Roboto", "Arial", sans-serif;
-    -fx-background-color: #E3F2FD;
+    -fx-background-color: #e3f2fd;
   }
   
   /* Sidebar Styling */
   .sidebar {
-      -fx-background-color: #1E88E5;
-      -fx-padding: 10;
+    -fx-background-color: #1e88e5;
+    -fx-padding: 10;
   }
   
   /* Tab Buttons Styling */
   .sidebar .button {
-      -fx-font-size: 14px;
-      -fx-background-color: #1565C0;
-      -fx-text-fill: white;
-      -fx-border-color: transparent;
-      -fx-border-radius: 5px;
-      -fx-padding: 10;
-      -fx-cursor: hand;
+    -fx-font-size: 14px;
+    -fx-background-color: #1e88e5;
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+    -fx-border-radius: 5px;
+    -fx-padding: 10;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 0, 0, 0, 0);
   }
   
   .sidebar .button:hover {
-      -fx-background-color: #0D47A1;
+    -fx-background-color: #1565c0; /* Changed to a darker shade of blue */
   }
   
   /* Toggle Button Styling */
   .sidebar .button:first-child {
-      -fx-font-size: 18px;
-      -fx-background-color: #1E88E5;
-      -fx-text-fill: white;
-      -fx-border-color: transparent;
-      -fx-border-radius: 50%;
-      -fx-alignment: center;
+    -fx-font-size: 18px;
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+    -fx-border-radius: 50%;
+    -fx-alignment: center;
   }
   
   .sidebar .button:first-child:hover {
-      -fx-background-color: #1565C0;
+    -fx-background-color: #1565c0;
   }
   
   /* Center Content Styling */
   .text {
-      -fx-font-size: 18px;
-      -fx-fill: #0D47A1;
+    -fx-font-size: 18px;
+    -fx-fill: #0d47a1;
   }
   
   /* Buttons */
   .button {
-    -fx-background-color: #1E88E5;
+    -fx-background-color: #1e88e5;
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-padding: 10 20;
@@ -56,39 +56,39 @@
   }
   
   .button:hover {
-    -fx-background-color: #1565C0;
+    -fx-background-color: #1565c0;
   }
   
   .button:pressed {
-    -fx-background-color: #0D47A1;
+    -fx-background-color: #0d47a1;
   }
   
   /* Text fields */
   .text-field {
-    -fx-background-color: #FFFFFF;
-    -fx-border-color: #90CAF9;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ffffff;
     -fx-border-width: 0;
     -fx-padding: 5 10;
-    -fx-background-radius: 100;
-    -fx-border-radius: 100;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
     -fx-font-size: 14px;
-    -fx-text-fill: #0D47A1;
+    -fx-text-fill: #0d47a1;
   }
   
   .text-field:focused {
-    -fx-border-color: #1E88E5;
+    -fx-border-color: #1e88e5;
     -fx-border-width: 1;
   }
   
   /* Labels */
   .label {
     -fx-font-size: 16px;
-    -fx-text-fill: #0D47A1;
+    -fx-text-fill: #0d47a1;
   }
   
   /* Toolbars */
   .toolbar {
-    -fx-background-color: #1E88E5;
+    -fx-background-color: #1e88e5;
     -fx-padding: 10;
   }
   
@@ -100,13 +100,13 @@
   /* Checkboxes */
   .check-box {
     -fx-font-size: 14px;
-    -fx-text-fill: #0D47A1;
+    -fx-text-fill: #0d47a1;
   }
   
   /* Combobox */
   .combo-box {
-    -fx-background-color: #FFFFFF;
-    -fx-border-color: #90CAF9;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #90caf9;
     -fx-border-width: 2;
     -fx-background-radius: 5;
     -fx-border-radius: 5;
@@ -114,67 +114,114 @@
   }
   
   .combo-box:focused {
-    -fx-border-color: #1E88E5;
+    -fx-border-color: #1e88e5;
   }
   
   /* ListView */
   .list-view {
-    -fx-background-color: #FFFFFF;
-    -fx-border-color: #90CAF9;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #90caf9;
   }
   
   .list-view .list-cell {
     -fx-font-size: 14px;
-    -fx-text-fill: #0D47A1;
+    -fx-text-fill: #0d47a1;
   }
   
   /* Scrollbars */
   .scroll-bar {
-    -fx-background-color: #BBDEFB;
+    -fx-background-color: #bbdefb;
   }
   
   .scroll-bar .thumb {
-    -fx-background-color: #1E88E5;
+    -fx-background-color: #1e88e5;
   }
   
-
- /* Default card style */
-.hostel-card {
-    -fx-background-color:#BBDEFB;
-    -fx-text-fill: #0D47A1;
+  /* Default card style */
+  .hostel-card {
+    -fx-background-color: #bbdefb;
+    -fx-text-fill: #0d47a1;
     -fx-border-width: 0;
     -fx-border-radius: 20;
     -fx-background-radius: 20;
     -fx-font-weight: bold;
-}
-
-/* Name label style */
-.hostel-card-name {
+  }
+  
+  /* Name label style */
+  .hostel-card-name {
     -fx-font-size: 16px;
-    -fx-text-fill: #0D47A1;
-}
-
-/* ID label style */
-.hostel-card-id {
+    -fx-text-fill: #0d47a1;
+  }
+  
+  /* ID label style */
+  .hostel-card-id {
     -fx-font-size: 14px;
     -fx-text-fill: #757575;
-}
-
-/* Rooms label style */
-.hostel-card-rooms {
+  }
+  
+  /* Rooms label style */
+  .hostel-card-rooms {
     -fx-font-size: 14px;
-    -fx-text-fill: #388E3C;
-}
-
-/* Students label style */
-.hostel-card-students {
+    -fx-text-fill: #388e3c;
+  }
+  
+  /* Students label style */
+  .hostel-card-students {
     -fx-font-size: 14px;
-    -fx-text-fill: #D32F2F;
-}
-
-/* Hover effect */
-.hostel-card-hover {
-    -fx-background-color:  #1E88E5;
+    -fx-text-fill: #d32f2f;
+  }
+  
+  /* Hover effect */
+  .hostel-card-hover {
+    -fx-background-color: #1e88e5;
     -fx-text-fill: white;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 2);
-}
+  }
+  
+  /* Toggle Button Styling */
+  .toggle-button {
+    -fx-background-color: #1e88e5;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 10;
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+  }
+  
+  .toggle-button:hover {
+    -fx-background-color: #1565c0;
+  }
+  
+  .toggle-button:pressed {
+    -fx-background-color: #0d47a1;
+  }
+  
+  /* Multi-line TextArea */
+  .text-area {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 0;
+    -fx-padding: 10;
+    -fx-background-radius: 20;
+    -fx-font-size: 14px;
+    -fx-text-fill: #0d47a1;
+  }
+  
+  .text-area:focused {
+    -fx-border-color: #1e88e5;
+    -fx-border-width: 0;
+  }
+  
+  .text-area::placeholder {
+    -fx-text-fill: #90caf9;
+  }
+  
+  /* Labels for TextArea */
+  .text-area-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #0d47a1;
+    -fx-font-weight: bold;
+  }
+  
