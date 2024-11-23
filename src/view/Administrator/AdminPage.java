@@ -457,6 +457,17 @@ public class AdminPage extends Application {
             refreshHostelsPage(hostelPage);
         });
 
+        hostelCard.getAddStaffButton().setOnAction(e -> {
+            controller.addStaffToHostel(hostelId);
+            refreshHostelsPage(hostelPage);
+
+        });
+
+        hostelCard.getRemoveStaffButton().setOnAction(e -> {
+            controller.removeStaffFromHostel(hostelId);
+            refreshHostelsPage(hostelPage);
+        });
+
         hostelPage.getChildren().add(hostelCard);
     }
 

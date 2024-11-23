@@ -10,6 +10,8 @@ public class HostelCardWide extends VBox {
     private static final int CARD_HEIGHT = 500;
     private static final int CARD_MIN_HEIGHT = 320;
     private Button deleteButton;
+    private Button addStaffButton;
+    private Button removeStaffButton;
 
     @SuppressWarnings("unused")
     public HostelCardWide(String hostelId, String hostelName, int numberPendingApplications, 
@@ -67,14 +69,29 @@ public class HostelCardWide extends VBox {
 
         listsContainer.getChildren().addAll(studentsScroll, staffScroll);
 
-        deleteButton = new Button("❌");
+        deleteButton = new Button("❌ Delete hostel");
         deleteButton.getStyleClass().add("disapprove-button");
         deleteButton.setOnAction(e -> {
             // Action for delete button
         });
 
+        addStaffButton = new Button("➕ Staff");
+        addStaffButton.getStyleClass().add("approve-button");
+        addStaffButton.setOnAction(e -> {
+            // Action for add staff button
+        });
 
-        getChildren().addAll(nameLabel, idLabel, pendingApplicationsLabel, listsContainer, deleteButton);
+        removeStaffButton = new Button("➖ Staff");
+        removeStaffButton.getStyleClass().add("disapprove-button");
+        removeStaffButton.setOnAction(e -> {
+            // Action for remove staff button
+        });
+
+        HBox buttonsContainer = new HBox(10);
+        buttonsContainer.getChildren().addAll(addStaffButton, removeStaffButton, deleteButton);
+
+
+        getChildren().addAll(nameLabel, idLabel, pendingApplicationsLabel, listsContainer, buttonsContainer);
         // alogn last item to right
 
         addHoverEffects();
@@ -88,5 +105,13 @@ public class HostelCardWide extends VBox {
 
     public ButtonBase getDeleteButton() {
         return deleteButton;
+    }
+
+    public ButtonBase getAddStaffButton() {
+        return addStaffButton;
+    }
+
+    public ButtonBase getRemoveStaffButton() {
+        return removeStaffButton;
     }
 }
