@@ -240,3 +240,166 @@
     -fx-text-fill: #0d47a1; /* Dark blue */
     -fx-font-weight: bold;
 }
+
+
+/* GridPane Styling */
+.grid-pane {
+    -fx-background-color: #e3f0fb;
+    -fx-border-color: #e3f0fb;
+    -fx-border-width: 0;
+    -fx-border-radius: 20;
+    -fx-padding: 16;
+    -fx-hgap: 10;
+    -fx-vgap: 8;
+    -fx-background-radius: 20px;
+}
+
+/* Header Row Styling */
+.grid-pane .header-cell {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1976d2;
+    -fx-alignment: center;
+    -fx-background-color: #e3f0fb; 
+    -fx-padding: 10;
+}
+
+/* Data Row Styling */
+.grid-pane .data-cell {
+    -fx-font-size: 14px;
+    -fx-text-fill: #0d47a1;
+    -fx-padding: 8;
+    -fx-alignment: center-left;
+}
+
+/* Alternating Row Colors */
+.grid-pane .data-row:nth-child(even) {
+    -fx-background-color: #ffffff;
+}
+
+.grid-pane .data-row:nth-child(odd) {
+    -fx-background-color: #ffffff;
+}
+
+/* Action Buttons within GridPane */
+.grid-pane .action-button {
+    -fx-background-color: #2196f3;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 6 12;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
+
+.grid-pane .action-button:hover {
+    -fx-background-color: #1e88e5;
+}
+
+.grid-pane .action-button:pressed {
+    -fx-background-color: #1565c0;
+}
+
+/* Aligning Buttons in the Last Column */
+.grid-pane .button-cell {
+    -fx-alignment: center-right;
+    -fx-padding: 8;
+}
+
+/* ScrollPane containing GridPane */
+.scroll-pane {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ffffff;
+    -fx-padding: 10;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-width: 0;
+}
+
+.scroll-pane .scroll-bar .thumb {
+    -fx-background-color: #2196f3;
+}
+
+
+.approve-button {
+    -fx-background-color: #388e3c; /* Green */
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 6 12;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
+
+.approve-button:hover {
+    -fx-background-color: #2e7d32; /* Dark green */
+}
+
+.approve-button:pressed {
+    -fx-background-color: #1b5e20; /* Darker green */
+}
+
+.disapprove-button {
+    -fx-background-color: #d32f2f; /* Red */
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 6 12;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
+
+.disapprove-button:hover {
+    -fx-background-color: #c62828; /* Dark red */
+}
+
+.disapprove-button:pressed {
+    -fx-background-color: #b71c1c; /* Darker red */
+}
+
+.list-page {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20;
+}
+
+.hostel-card-wide {
+    -fx-background-color: #e3f0fb;
+    -fx-text-fill: #0d47a1; /* Dark blue */
+    -fx-border-width: 0;
+    -fx-border-color: #ffffff;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-font-weight: normal;
+    -fx-padding: 16;
+    -fx-pref-width: 300;
+}
+
+.hostel-card-hover-wide {
+    -fx-text-fill: #ffffff;
+    -fx-background-color:#97b2c9;
+
+    -fx-cursor: hand;
+}
+
+.hostel-card-name {
+    -fx-font-size: 20px;
+    -fx-text-fill: #0d47a1;
+    -fx-font-weight: bold;
+}
+
+.hostel-card-id {
+    -fx-font-size: 14px;
+    -fx-text-fill: #0d47a1;
+}
+
+.hostel-card-pending-applications {
+    -fx-font-size: 12px;
+    -fx-text-fill: #0d47a1;
+}
+
+.hostel-card-list {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 0;
+    -fx-padding: 12;
+    -fx-background-radius: 20px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #0d47a1; /* Dark blue */
+}
