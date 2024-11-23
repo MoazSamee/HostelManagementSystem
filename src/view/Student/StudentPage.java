@@ -28,10 +28,12 @@ public class StudentPage extends Application {
         sidebar.getStyleClass().add("sidebar");
 
         Button toggleButton = new Button("☰");
-        Button homeTab = createButtonWithIcon("apps.png", " Home");
-        Button browseTab = createButtonWithIcon("apps.png", " Browse");
-        Button maintenanceTab = createButtonWithIcon("apps.png", " Maintenance");
-        Button settingsTab = createButtonWithIcon("apps.png", " Settings");
+        // ImageView icon = new ImageView(new Image(getClass().getResourceAsStream("/resources/home.png")));
+
+        Button homeTab = createButtonWithIcon("/resources/home.png", " Home");
+        Button browseTab = createButtonWithIcon("/resources/battery.png", " Browse");
+        Button maintenanceTab = createButtonWithIcon("/resources/bell.png", " Maintenance");
+        Button settingsTab = createButtonWithIcon("/resources/user.png", " Settings");
 
         homeTab.setPrefWidth(200);
         browseTab.setPrefWidth(200);
@@ -257,7 +259,7 @@ public class StudentPage extends Application {
 
         // Scene
         Scene scene = new Scene(mainLayout, 800, 600);
-        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         primaryStage.setTitle("Student Dashboard");
         primaryStage.setScene(scene);

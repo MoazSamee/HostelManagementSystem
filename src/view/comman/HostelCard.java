@@ -25,15 +25,15 @@ public class HostelCard extends VBox {
         nameLabel.getStyleClass().add("hostel-card-name");
 
         Label idLabel = new Label("ID: " + hostelId);
-        idLabel.setFont(Font.font("Arial", 14));
+        // idLabel.setFont(Font.font("Arial", 14));
         idLabel.getStyleClass().add("hostel-card-id");
 
         Label roomsLabel = new Label("Available Rooms: " + numberAvailableRooms);
-        roomsLabel.setFont(Font.font("Arial", 14));
+        // roomsLabel.setFont(Font.font("Arial", 14));
         roomsLabel.getStyleClass().add("hostel-card-rooms");
 
         Label studentsLabel = new Label("Students: " + numberOfStudents);
-        studentsLabel.setFont(Font.font("Arial", 14));
+        // studentsLabel.setFont(Font.font("Arial", 14));
         studentsLabel.getStyleClass().add("hostel-card-students");
 
         getChildren().addAll(nameLabel, idLabel, roomsLabel, studentsLabel);
