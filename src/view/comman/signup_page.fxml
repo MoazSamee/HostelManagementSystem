@@ -10,22 +10,24 @@
 
 <AnchorPane maxHeight="467.0" maxWidth="605.0" minHeight="400.0" minWidth="506.0" prefHeight="467.0" prefWidth="605.0" scaleShape="false" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.comman.signUpController">
    <children>
-      <TextField fx:id="userNameField" layoutX="96.0" layoutY="105.0" prefHeight="25.0" prefWidth="288.0" promptText="username" stylesheets="@style.css" AnchorPane.leftAnchor="96.0" AnchorPane.rightAnchor="122.0" AnchorPane.topAnchor="105.0" />
+      <TextField fx:id="userNameField" layoutX="96.0" layoutY="105.0" prefHeight="34.0" prefWidth="178.0" promptText="username" stylesheets="@style.css" AnchorPane.leftAnchor="96.0" AnchorPane.rightAnchor="331.0" AnchorPane.topAnchor="105.0" />
       <Button fx:id="signinButton" layoutX="221.0" layoutY="387.0" mnemonicParsing="false" onAction="#handleSignIn" prefHeight="41.0" prefWidth="119.0" stylesheets="@style.css" text="Sign In" AnchorPane.leftAnchor="221.0" AnchorPane.rightAnchor="265.0" AnchorPane.topAnchor="387.0">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </Button>
       <Label layoutX="39.0" layoutY="30.0" stylesheets="@style.css" text="Hostel Ease" />
-      <PasswordField fx:id="passwordField" layoutX="96.0" layoutY="191.0" prefHeight="25.0" prefWidth="387.0" promptText="password" stylesheets="@style.css" AnchorPane.leftAnchor="96.0" AnchorPane.rightAnchor="122.0" AnchorPane.topAnchor="191.0" />
+      <PasswordField fx:id="passwordField" layoutX="96.0" layoutY="234.0" prefHeight="34.0" prefWidth="178.0" promptText="password" stylesheets="@style.css" AnchorPane.leftAnchor="96.0" AnchorPane.rightAnchor="331.0" AnchorPane.topAnchor="234.0" />
       <Label layoutX="96.0" layoutY="349.0" stylesheets="@style.css" text="Already have and account? Sign In" />
       <Button fx:id="signupButton" layoutX="364.0" layoutY="387.0" mnemonicParsing="false" onAction="#handleSignUp" prefHeight="41.0" prefWidth="119.0" stylesheets="@style.css" text="Sign Up">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </Button>
-      <PasswordField fx:id="passwordField1" layoutX="96.0" layoutY="234.0" prefHeight="25.0" prefWidth="387.0" promptText="retype password" stylesheets="@style.css" />
-      <TextField fx:id="emailField" layoutX="96.0" layoutY="146.0" prefHeight="29.0" prefWidth="387.0" promptText="example@email.com" stylesheets="@style.css" />
+      <PasswordField fx:id="passwordField1" layoutX="286.0" layoutY="234.0" prefHeight="34.0" prefWidth="197.0" promptText="retype password" stylesheets="@style.css" />
+      <TextField fx:id="emailField" layoutX="95.0" layoutY="193.0" prefHeight="29.0" prefWidth="387.0" promptText="example@email.com" stylesheets="@style.css" />
       <ComboBox fx:id="hostelComboBox" layoutX="333.0" layoutY="280.0" onAction="#handleSelectHostel" prefWidth="150.0" stylesheets="@style.css" />
+      <TextField fx:id="NameField" layoutX="289.0" layoutY="105.0" prefHeight="34.0" prefWidth="197.0" promptText="Name" stylesheets="@style.css" />
+      <TextField fx:id="phoneField1" layoutX="96.0" layoutY="148.0" prefHeight="34.0" prefWidth="178.0" promptText="Phone" stylesheets="@style.css" />
    </children>
 </AnchorPane>

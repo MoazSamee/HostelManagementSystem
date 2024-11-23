@@ -1,6 +1,10 @@
 package model.User;
 
-public class UserModel {
+import java.util.List;
+
+import model.Hostel.Hostel;
+
+public abstract class UserModel {
     protected String userId;
     protected String name;
     protected String email;
@@ -44,6 +48,8 @@ public class UserModel {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public abstract List<Hostel> getHostel();
 
     
 }

@@ -1,0 +1,405 @@
+/* General styles */
+.root {
+    -fx-font-family: "Roboto", "Arial", sans-serif;
+    -fx-background-color: #e3f0fb; /* Light blue background */
+    -fx-text-fill: #0d47a1; /* Dark blue text */
+}
+
+/* Sidebar Styling */
+.sidebar {
+    -fx-background-color: #1976d2; /* Material Blue 600 */
+    -fx-padding: 20 10 20 10; /* Increased padding for better spacing */
+    -fx-pref-width: 220px; /* Set a preferred width for the sidebar */
+}
+
+/* Tab Buttons Styling */
+.sidebar .button {
+    -fx-font-size: 14px;
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+    -fx-border-radius: 20px;
+    -fx-padding: 12;
+    -fx-cursor: hand;
+    -fx-alignment: center-left; /* Align button text to the left */
+}
+
+.sidebar .button:hover {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1976d2; /* Material Blue 600 */
+}
+
+.sidebar .button:pressed {
+    -fx-background-color: #1565c0; /* Material Blue 700 */
+}
+
+.sidebar .button:selected {
+    -fx-background-color: white;
+    -fx-text-fill: #1976d2; /* Material Blue 600 */
+}
+
+/* First button (e.g., a toggle button) styling */
+.sidebar .button:first-child {
+    -fx-font-size: 18px;
+    -fx-text-fill: white;
+    -fx-border-radius: 50%;
+    -fx-alignment: center;
+    -fx-background-color: transparent;
+}
+
+.sidebar .button:first-child:hover {
+    -fx-background-color: #1565c0; /* Material Blue 700 */
+}
+
+/* Sidebar Header */
+.sidebar .header {
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 0;
+    -fx-alignment: center; /* Centered header text */
+}
+
+/* Center Content Styling */
+.text {
+    -fx-font-size: 18px;
+    -fx-text-fill: #0d47a1; /* Dark blue text */
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: #2196f3; /* Material Blue 500 */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 12 24;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
+
+.button:hover {
+    -fx-background-color: #1e88e5; /* Material Blue 600 */
+}
+
+.button:pressed {
+    -fx-background-color: #1e88e5; /* Material Blue 600 */
+}
+
+/* Text fields */
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #2196f3; /* Material Blue 500 */
+    -fx-border-width: 0;
+    -fx-padding: 8 12;
+    -fx-background-radius: 20;
+    -fx-font-size: 14px;
+    -fx-text-fill: #0d47a1; /* Dark blue text */
+}
+
+.text-field:focused {
+    -fx-border-color: #1976d2; /* Material Blue 600 */
+}
+
+/* Labels */
+.label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #0d47a1; /* Dark blue */
+}
+
+/* Toolbars */
+.toolbar {
+    -fx-background-color: #1976d2; /* Material Blue 600 */
+    -fx-padding: 12;
+}
+
+.toolbar .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* Checkboxes */
+.check-box {
+    -fx-font-size: 14px;
+    -fx-text-fill: #0d47a1; /* Dark blue */
+}
+
+/* Combobox */
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #2196f3; /* Material Blue 500 */
+    -fx-border-width: 0;
+    -fx-background-radius: 20;
+    -fx-padding: 8;
+}
+
+.combo-box:focused {
+    -fx-border-color: #1976d2; /* Material Blue 600 */
+}
+
+/* ListView */
+.list-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e0e0e0;
+}
+
+.list-view .list-cell {
+    -fx-font-size: 14px;
+    -fx-text-fill: #0d47a1; /* Dark blue */
+}
+
+/* Scrollbars */
+.scroll-bar {
+    -fx-background-color: #e0e0e0;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #2196f3; /* Material Blue 500 */
+}
+
+/* Default card style */
+.hostel-card {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #0d47a1; /* Dark blue */
+    -fx-border-width: 0;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-font-weight: normal;
+    -fx-padding: 16;
+}
+
+.hostel-card-name {
+    -fx-font-size: 16px;
+    -fx-text-fill: #1976d2; /* Material Blue 600 */
+}
+
+.hostel-card-id {
+    -fx-font-size: 14px;
+    -fx-text-fill: #b0bec5; /* Light grey */
+}
+
+.hostel-card-rooms {
+    -fx-font-size: 8px;
+    -fx-text-fill: #388e3c; /* Green */
+}
+
+.hostel-card-students {
+    -fx-font-size: 8px;
+    -fx-text-fill: #d32f2f; /* Red */
+}
+
+/* Hover effect */
+.hostel-card-hover {
+    /* -fx-background-color: #69a9ea; */
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 2); /* Subtle shadow effect */
+    -fx-cursor: hand; /* Pointer cursor for interactive feel */
+}
+
+/* Toggle Button Styling */
+.toggle-button {
+    -fx-background-color: #2196f3; /* Material Blue 500 */
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 12;
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+
+.toggle-button:hover {
+    -fx-background-color: #1e88e5; /* Material Blue 600 */
+}
+
+.toggle-button:pressed {
+    -fx-background-color: #1e88e5; /* Material Blue 600 */
+}
+
+/* Multi-line TextArea */
+.text-area {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0;
+    -fx-padding: 12;
+    -fx-background-radius: 20px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #0d47a1; /* Dark blue */
+}
+
+.text-area:focused {
+    -fx-border-color: #1976d2; /* Material Blue 600 */
+}
+
+.text-area::placeholder {
+    -fx-text-fill: #b0bec5; /* Light grey */
+}
+
+/* Labels for TextArea */
+.text-area-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #0d47a1; /* Dark blue */
+    -fx-font-weight: bold;
+}
+
+
+/* GridPane Styling */
+.grid-pane {
+    -fx-background-color: #e3f0fb;
+    -fx-border-color: #e3f0fb;
+    -fx-border-width: 0;
+    -fx-border-radius: 20;
+    -fx-padding: 16;
+    -fx-hgap: 10;
+    -fx-vgap: 8;
+    -fx-background-radius: 20px;
+}
+
+/* Header Row Styling */
+.grid-pane .header-cell {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1976d2;
+    -fx-alignment: center;
+    -fx-background-color: #e3f0fb; 
+    -fx-padding: 10;
+}
+
+/* Data Row Styling */
+.grid-pane .data-cell {
+    -fx-font-size: 14px;
+    -fx-text-fill: #0d47a1;
+    -fx-padding: 8;
+    -fx-alignment: center-left;
+}
+
+/* Alternating Row Colors */
+.grid-pane .data-row:nth-child(even) {
+    -fx-background-color: #ffffff;
+}
+
+.grid-pane .data-row:nth-child(odd) {
+    -fx-background-color: #ffffff;
+}
+
+/* Action Buttons within GridPane */
+.grid-pane .action-button {
+    -fx-background-color: #2196f3;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 6 12;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
+
+.grid-pane .action-button:hover {
+    -fx-background-color: #1e88e5;
+}
+
+.grid-pane .action-button:pressed {
+    -fx-background-color: #1565c0;
+}
+
+/* Aligning Buttons in the Last Column */
+.grid-pane .button-cell {
+    -fx-alignment: center-right;
+    -fx-padding: 8;
+}
+
+/* ScrollPane containing GridPane */
+.scroll-pane {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ffffff;
+    -fx-padding: 10;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-width: 0;
+}
+
+.scroll-pane .scroll-bar .thumb {
+    -fx-background-color: #2196f3;
+}
+
+
+.approve-button {
+    -fx-background-color: #388e3c; /* Green */
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 6 12;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
+
+.approve-button:hover {
+    -fx-background-color: #2e7d32; /* Dark green */
+}
+
+.approve-button:pressed {
+    -fx-background-color: #1b5e20; /* Darker green */
+}
+
+.disapprove-button {
+    -fx-background-color: #d32f2f; /* Red */
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 6 12;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
+
+.disapprove-button:hover {
+    -fx-background-color: #c62828; /* Dark red */
+}
+
+.disapprove-button:pressed {
+    -fx-background-color: #b71c1c; /* Darker red */
+}
+
+.list-page {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20;
+}
+
+.hostel-card-wide {
+    -fx-background-color: #e3f0fb;
+    -fx-text-fill: #0d47a1; /* Dark blue */
+    -fx-border-width: 0;
+    -fx-border-color: #ffffff;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-font-weight: normal;
+    -fx-padding: 16;
+    -fx-pref-width: 300;
+}
+
+.hostel-card-hover-wide {
+    -fx-text-fill: #ffffff;
+    -fx-background-color:#97b2c9;
+
+    -fx-cursor: hand;
+}
+
+.hostel-card-name {
+    -fx-font-size: 20px;
+    -fx-text-fill: #0d47a1;
+    -fx-font-weight: bold;
+}
+
+.hostel-card-id {
+    -fx-font-size: 14px;
+    -fx-text-fill: #0d47a1;
+}
+
+.hostel-card-pending-applications {
+    -fx-font-size: 12px;
+    -fx-text-fill: #0d47a1;
+}
+
+.hostel-card-list {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 0;
+    -fx-padding: 12;
+    -fx-background-radius: 20px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #0d47a1; /* Dark blue */
+}

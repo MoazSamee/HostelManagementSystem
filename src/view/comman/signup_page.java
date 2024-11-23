@@ -17,9 +17,16 @@ public class signup_page extends Application {
         primaryStage.setTitle("Hostel Ease");
         primaryStage.setResizable(false);
         primaryStage.show();
+
+        // set close operation
+        primaryStage.setOnCloseRequest(e -> {
+            System.out.println("Stage is closing");
+        });
     }
 
     public static void main(String[] args) {
         launch(args);
     }
+
+
 }

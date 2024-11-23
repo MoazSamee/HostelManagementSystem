@@ -11,10 +11,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.User.StudentModel;
+import model.User.UserModel;
 
 public class StudentPage extends Application {
 
     private boolean isSidebarExpanded = true;
+    StudentController controller;
 
     @SuppressWarnings("unused")
     @Override
@@ -54,7 +57,7 @@ public class StudentPage extends Application {
         Text contentText = new Text();
 
         // Controller
-        StudentController controller = new StudentController(contentText);
+        controller = new StudentController(contentText);
 
         // Sidebar Navigation Events
         homeTab.setOnAction(e -> {
@@ -300,5 +303,9 @@ public class StudentPage extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public void setStudent(StudentModel user) {
+        controller.setStudent(user);
     }
 }

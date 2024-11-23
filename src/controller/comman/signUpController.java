@@ -6,8 +6,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import model.Database.database;
 
 public class signUpController {
+
+    @FXML
+    private TextField NameField;
 
     @FXML
     private TextField emailField;
@@ -22,6 +26,9 @@ public class signUpController {
     private PasswordField passwordField1;
 
     @FXML
+    private TextField phoneField1;
+
+    @FXML
     private Button signinButton;
 
     @FXML
@@ -30,8 +37,9 @@ public class signUpController {
     @FXML
     private TextField userNameField;
 
+
     public void initialize() {
-        hostelComboBox.getItems().addAll("Option 1", "Option 2", "Option 3");
+        hostelComboBox.getItems().addAll("student", "maintenance_staff", "administrator");
     }
 
     @FXML
@@ -42,14 +50,15 @@ public class signUpController {
 
     @FXML
     void handleSignUp(ActionEvent event) {
-        System.out.println("Sign Up");
-        System.out.println("Email: " + emailField.getText());
-        System.out.println("Hostel: " + hostelComboBox.getValue());
-        System.out.println("Password: " + passwordField.getText());
-        System.out.println("Confirm Password: " + passwordField1.getText());
-        System.out.println("Username: " + userNameField.getText());
+        // System.out.println("Sign Up");
+        // System.out.println("Email: " + emailField.getText());
+        // System.out.println("Hostel: " + hostelComboBox.getValue());
+        // System.out.println("Password: " + passwordField.getText());
+        // System.out.println("Confirm Password: " + passwordField1.getText());
+        // System.out.println("Username: " + userNameField.getText());
 
-
+        // // TODO: Add Checks for empty fields and password match
+        database.SignUp(userNameField.getText(), NameField.getText(), emailField.getText(), phoneField1.getText(), passwordField.getText(), hostelComboBox.getValue());
     }
 
     @FXML
