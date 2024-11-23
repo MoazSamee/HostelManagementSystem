@@ -1,6 +1,10 @@
+import model.User.StudentModel;
+
 public class App {
     public static void main(String[] args) throws Exception {
         System.out.println("Hello, World!");
+        StudentModel student = new StudentModel("1", "John Doe", "", "", "1", 1, "", "", "");
+        student.onMaintenanceRequestSubmitted("Complaint", "Details");
     }
 }
 

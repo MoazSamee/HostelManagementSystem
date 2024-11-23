@@ -5,9 +5,8 @@ public class UserModel {
     protected String name;
     protected String email;
     protected String phoneNumber;
-    protected String hostelId; // ID of the hostel the user is associated with
-
-    public UserModel(String userId, String name, String email, String phoneNumber, String hostelId) {
+    
+    public UserModel(String userId, String name, String email, String phoneNumber) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -46,11 +45,5 @@ public class UserModel {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getHostelId() {
-        return hostelId;
-    }
-
-    public void setHostelId(String hostelId) {
-        this.hostelId = hostelId;
-    }
+    
 }

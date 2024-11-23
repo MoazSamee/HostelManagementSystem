@@ -2,15 +2,15 @@ package model.Hostel;
 
 public class MaintenanceRequestModel {
     private String requestId; // Unique identifier for the maintenance request
-    private String roomId; // ID of the room where maintenance is needed
+    private int  roomNo; // ID of the room where maintenance is needed
     private String hostelId; // ID of the hostel
     private String description; // Description of the maintenance issue
     private String status; // Status of the request (e.g., "Pending", "In Progress", "Completed")
 
     // Constructor
-    public MaintenanceRequestModel(String requestId, String roomId, String hostelId, String description) {
+    public MaintenanceRequestModel(String requestId, int roomNo, String hostelId, String description) {
         this.requestId = requestId;
-        this.roomId = roomId;
+        this.roomNo = roomNo;
         this.hostelId = hostelId;
         this.description = description;
         this.status = "Pending"; // Default status set to "Pending"
@@ -25,12 +25,16 @@ public class MaintenanceRequestModel {
         this.requestId = requestId;
     }
 
-    public String getRoomId() {
-        return roomId;
+    public int getRoomNo() {
+        return roomNo;
     }
 
-    public void setRoomId(String roomId) {
-        this.roomId = roomId;
+    public String getRoomNoString() {
+        return String.valueOf(roomNo);
+    }
+
+    public void setRoomId(int roomNo) {
+        this.roomNo = roomNo;
     }
 
     public String getHostelId() {

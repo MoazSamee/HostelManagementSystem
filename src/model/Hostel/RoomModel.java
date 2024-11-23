@@ -4,11 +4,14 @@ public class RoomModel {
     private String roomId; // Unique identifier for the room
     private int maxBeds; // Maximum number of beds in the room
     private int freeSpace; // Available beds in the room
+    private int roomNo;
+    private Package roomPackage; // Package associated with the room
 
-    public RoomModel(String roomId, int maxBeds) {
+    public RoomModel(String roomId, int maxBeds,int roomNo) {
         this.roomId = roomId;
         this.maxBeds = maxBeds;
         this.freeSpace = maxBeds; // Initially, free space is equal to max beds
+        this.roomNo = roomNo;
     }
 
     // Getter and Setter for roomId
@@ -64,5 +67,13 @@ public class RoomModel {
             return true;
         }
         return false; // All beds are already free
+    }
+    // Getter and Setter for roomNo
+    public int getRoomNo() {
+        return roomNo;
+    }
+    
+    public void setRoomNo(int roomNo) {
+        this.roomNo = roomNo;
     }
 }

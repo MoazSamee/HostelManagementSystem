@@ -5,9 +5,11 @@ import java.util.List;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import model.User.StudentModel;
 import view.comman.HostelCard;
 
 public class StudentController {
+    StudentModel student;
 
     private final Text contentText;
     private GridPane gridPane;
@@ -33,7 +35,7 @@ public class StudentController {
     }
 
     @SuppressWarnings("unused")
-    public void onSearchButtonClicked(String searchQuery) {
+    public void onSearchButtonClicked(String searchQuery) { //mysql fetchAllHostels
         contentText.setText("Searching for: " + searchQuery);
         //////////////////////////////////////////////////////////////////////// TBR
         HostelCard card = new HostelCard(searchQuery, "Delta Hostel", 15, 70);
@@ -44,7 +46,7 @@ public class StudentController {
         // addBox(new HostelCard(searchQuery, "Delta Hostel", 15, 70));
     }
 
-    public void onSearchTextChanged(String newText) {
+    public void onSearchTextChanged(String newText) { //mysql getHostelByName
         contentText.setText("Search text changed: " + newText);
     }
 
@@ -90,11 +92,11 @@ public class StudentController {
         }
     }
 
-    public void cardClicked(String hostelid) {
+    public void cardClicked(String hostelid) {//mysql getHostelById
         System.out.println("Clicked on: " + hostelid);
     }
 
-    public void onMaintenanceRequestSubmitted(String complaint, String details) {
+    public void onMaintenanceRequestSubmitted(String complaint, String details) { //student onMaintenanceRequestSubmitted
         System.out.println("Maintenance Request Submitted: " + complaint + " - " + details);
     }
 

@@ -1,28 +1,57 @@
 package model.Hostel;
 
-import model.User.StudentModel;
-import model.User.MaintenanceStaffModel;
 import java.util.ArrayList;
 import java.util.List;
+import model.User.MaintenanceStaffModel;
+import model.User.StudentModel;
 
 public class Hostel {
     private String hostelId;
     private String hostelName;
-    private List<StudentModel> students;
+    private String hostelLocation;
+    private List<StudentModel> students = new ArrayList<>();
     private List<MaintenanceStaffModel> maintenanceStaff;
-    private List<StudentModel> pendingApplications;
+    private List<RoomModel> rooms;
+    private List<StudentModel> pendingApplication = new ArrayList<>();
 
-    public Hostel(String hostelId, String hostelName) {
+    public Hostel(String hostelId, String hostelName,String hostelLocation) {
         this.hostelId = hostelId;
         this.hostelName = hostelName;
-        this.students = new ArrayList<>();
         this.maintenanceStaff = new ArrayList<>();
-        this.pendingApplications = new ArrayList<>();
+        this.rooms = new ArrayList<>();
+        this.hostelLocation=hostelLocation;
+
     }
 
-    // Method to add a student to the pending applications
-    public void applyForHostel(StudentModel student) {
-        pendingApplications.add(student);
+    public List<RoomModel> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<RoomModel> rooms) {
+        this.rooms = rooms;
+    }
+
+    public String getHostelLocation() {
+        return hostelLocation;
+    }
+
+    public List<StudentModel> getPendingApplication() {
+        return pendingApplication;
+    }
+
+    public void addPendingApplication(StudentModel student) {
+        pendingApplication.add(student);
+    }
+
+    public void removePendingApplication(StudentModel student) {
+        pendingApplication.remove(student);
+    }
+    public void setHostelLocation(String hostelLocation) {
+        this.hostelLocation = hostelLocation;
+    }
+    // Method to append a list of rooms to the existing list
+    public void appendRooms(List<RoomModel> newRooms) {
+        this.rooms.addAll(newRooms);
     }
 
     // Method to add a student to the hostel
@@ -66,13 +95,5 @@ public class Hostel {
 
     public void setMaintenanceStaff(List<MaintenanceStaffModel> maintenanceStaff) {
         this.maintenanceStaff = maintenanceStaff;
-    }
-
-    public List<StudentModel> getPendingApplications() {
-        return pendingApplications;
-    }
-
-    public void setPendingApplications(List<StudentModel> pendingApplications) {
-        this.pendingApplications = pendingApplications;
     }
 }

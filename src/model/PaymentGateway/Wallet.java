@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Wallet {
-    private String userId;
+    private final String userId;
     private double currentBalance;
     private Queue<String> paymentQueue;
 
