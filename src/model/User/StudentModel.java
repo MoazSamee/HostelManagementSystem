@@ -109,16 +109,17 @@ public class StudentModel extends UserModel {
         }
     }
 
-    public List<Hostel> getHostel()
+    public List<Hostel> getHostels()
     {
         return database.getHostels();
     }
 
-    public List<Hostel> getHostel(String hostel_name)
+    public List<Hostel> getHostels(String hostel_name)
     {
         return database.getHostels(hostel_name);
     }
 
+    @SuppressWarnings("static-access")
     public void editProfile(String name, String email, String phone, String password) {
         database db = new database();
         if (name != null && !name.isEmpty()) {
@@ -136,5 +137,35 @@ public class StudentModel extends UserModel {
         if (password != null && !password.isEmpty()) {
             db.updatePassword(userId, password);
         }
+    }
+
+    public void bookRoom(String hostelId, String roomId) {
+        // Validate hostelId and roomNo
+        if (hostelId == null || hostelId.isEmpty()) {
+            System.out.println("Error: Hostel ID is missing for the student.");
+            return;
+        }
+
+        if (roomId == null || roomId.isEmpty()) {
+            System.out.println("Error: No room assigned to the student.");
+            return;
+        }
+
+        System.out.println("Student ID: " + userId);
+        System.out.println("Hostel: " + hostelId);
+        System.out.println("Room: " + roomId);
+
+        boolean isSaved = database.bookRoomRequwst(userId, hostelId, roomId);
+
+        if (isSaved) {
+            System.out.println("Room Booked Successfully:");
+
+        } else {
+            System.out.println("Failed to Book Room.");
+        }
+    }
+
+    public Hostel getHostelById(String hostelid) {
+        return database.gHostelbyID(hostelid);
     }
 }

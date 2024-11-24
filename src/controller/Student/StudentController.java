@@ -5,14 +5,18 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import model.Hostel.Hostel;
+import model.Hostel.Room;
 import model.User.StudentModel;
+import view.Student.BookHostel;
 import view.comman.HostelCard;
 
 public class StudentController {
-    StudentModel student;
+    private StudentModel student;
 
     private final Text contentText;
     private GridPane gridPane;
@@ -30,7 +34,7 @@ public class StudentController {
         // int[] students = {50, 45, 60};
         //////////////////////////////////////////////////////////////////////// TBR
         if (student != null) {
-            List<Hostel> hostels = student.getHostel();
+            List<Hostel> hostels = student.getHostels();
 
             for (Hostel hostel : hostels) {
                 HostelCard card = new HostelCard(hostel.getHostelId(), hostel.getHostelName(), hostel.getRooms().size(), hostel.getStudents().size());
@@ -46,7 +50,7 @@ public class StudentController {
         // }
     }
 
-    @SuppressWarnings("unused")
+    // Done
     public void onSearchButtonClicked(String searchQuery) { //mysql fetchAllHostels
         contentText.setText("Searching for: " + searchQuery);
         //////////////////////////////////////////////////////////////////////// TBR
@@ -61,11 +65,12 @@ public class StudentController {
     }
 
     // Done
+    @SuppressWarnings("unused")
     public void onSearchTextChanged(String newText) { //mysql getHostelByName
         contentText.setText("Search text changed: " + newText);
         hostelCards.clear();
 
-        List<Hostel> hostels = student.getHostel(newText);
+        List<Hostel> hostels = student.getHostels(newText);
 
         for (Hostel hostel : hostels) {
             HostelCard card = new HostelCard(hostel.getHostelId(), hostel.getHostelName(), hostel.getRooms().size(), hostel.getStudents().size());
@@ -81,6 +86,7 @@ public class StudentController {
     }
 
     // Done    
+    @SuppressWarnings("unused")
     public void populateInitialGridContent() {
         if (gridPane == null) {
             System.err.println("GridPane is not set.");
@@ -88,9 +94,10 @@ public class StudentController {
         }
         hostelCards.clear();
 
-        List<Hostel> hostels = student.getHostel();
+        List<Hostel> hostels = student.getHostels();
         for (Hostel hostel : hostels) {
-            HostelCard card = new HostelCard(hostel.getHostelId(), hostel.getHostelName(), hostel.getRooms().size(), hostel.getStudents().size());
+            HostelCard card = new HostelCard(hostel.getHostelId(), hostel.getHostelName(), hostel.getAvailableRooms().size(), hostel.getStudents().size());
+            System.out.println("Hostel: " + hostel.getHostelName() + " - " + hostel.getAvailableRooms().size() + " - " + hostel.getStudents().size());
             card.setOnMouseClicked(e -> cardClicked(hostel.getHostelId()));
             hostelCards.add(card);
         }
@@ -108,13 +115,27 @@ public class StudentController {
         gridPane.getChildren().clear();
         for (HostelCard card : hostelCards) {
             addBox(card);
-            System.out.println("Added card: ");
+            // System.out.println("Added card: ");
         }
     }
 
-    // TODO : Implement
+    // TODO : Implement Book Room
     public void cardClicked(String hostelid) {//mysql getHostelById
         System.out.println("Clicked on: " + hostelid);
+
+        Hostel hostel = student.getHostelById(hostelid);
+        BookHostel bookHostel = new BookHostel(hostel);
+        bookHostel.start(new Stage());
+
+        Platform.runLater(() -> {
+            Room rooms = bookHostel.getSelectedRoom();
+            if (rooms != null) {
+                student.bookRoom(hostelid, rooms.getRoomId());
+            } else {
+                System.out.println("Dialog was canceled or closed.");
+            }
+        });
+        
     }
 
     // TODO : Implement

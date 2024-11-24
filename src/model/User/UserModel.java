@@ -49,7 +49,7 @@ public abstract class UserModel {
         this.phoneNumber = phoneNumber;
     }
 
-    public abstract List<Hostel> getHostel();
+    public abstract List<Hostel> getHostels();
 
     
 }

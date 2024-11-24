@@ -11,10 +11,6 @@ public class AdministratorModel extends UserModel {
         hostels.add(hostel);
     }
 
-    public List<Hostel> getHostels() {
-        return new ArrayList<>(hostels);
-    }
-
 
     public AdministratorModel(String userId, String name, String email, String phoneNumber, String hostelId) {
         super(userId, name, email, phoneNumber);
@@ -26,7 +22,7 @@ public class AdministratorModel extends UserModel {
     }
 
     @Override
-    public List<Hostel> getHostel() {
+    public List<Hostel> getHostels() {
         // TODO Auto-generated method stub
         return null;
     }

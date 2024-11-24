@@ -2,6 +2,8 @@ package model.Hostel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import model.Database.database;
 import model.User.MaintenanceStaffModel;
 import model.User.StudentModel;
 
@@ -11,7 +13,7 @@ public class Hostel {
     private String hostelLocation;
     private List<StudentModel> students = new ArrayList<>();
     private List<MaintenanceStaffModel> maintenanceStaff;
-    private List<RoomModel> rooms;
+    private List<Room> rooms;
     private List<StudentModel> pendingApplication = new ArrayList<>();
 
     public Hostel(String hostelId, String hostelName,String hostelLocation) {
@@ -20,14 +22,37 @@ public class Hostel {
         this.maintenanceStaff = new ArrayList<>();
         this.rooms = new ArrayList<>();
         this.hostelLocation=hostelLocation;
-
     }
 
-    public List<RoomModel> getRooms() {
+    // To be removed
+    public Hostel(String hostelId)
+    {
+        this.hostelId=hostelId;
+        // TODO: Implement database query to fetch hostel details
+        database.gHostelbyID(hostelId);
+        this.hostelName = "Hostel Name";
+        this.hostelLocation = "Hostel Location";
+        this.rooms = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            rooms.add(new Room("R" + i, 4, 1, 2));
+        }
+    }
+
+    public List<Room> getRooms() {
         return rooms;
     }
 
-    public void setRooms(List<RoomModel> rooms) {
+    public List<Room> getAvailableRooms() {
+        List<Room> availableRooms = new ArrayList<>();
+        for (Room room : rooms) {
+            if (room.hasAvailableSpace()) {
+                availableRooms.add(room);
+            }
+        }
+        return availableRooms;
+    }
+
+    public void setRooms(List<Room> rooms) {
         this.rooms = rooms;
     }
 
@@ -46,25 +71,23 @@ public class Hostel {
     public void removePendingApplication(StudentModel student) {
         pendingApplication.remove(student);
     }
+    
     public void setHostelLocation(String hostelLocation) {
         this.hostelLocation = hostelLocation;
     }
-    // Method to append a list of rooms to the existing list
-    public void appendRooms(List<RoomModel> newRooms) {
+    
+    public void appendRooms(List<Room> newRooms) {
         this.rooms.addAll(newRooms);
     }
 
-    // Method to add a student to the hostel
     public void addStudent(StudentModel student) {
         students.add(student);
     }
 
-    // Method to add maintenance staff to the hostel
     public void addMaintenanceStaff(MaintenanceStaffModel staff) {
         maintenanceStaff.add(staff);
     }
 
-    // Getters and Setters
     public String getHostelId() {
         return hostelId;
     }
@@ -96,4 +119,5 @@ public class Hostel {
     public void setMaintenanceStaff(List<MaintenanceStaffModel> maintenanceStaff) {
         this.maintenanceStaff = maintenanceStaff;
     }
+
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Hostel.Hostel;
+import model.Hostel.Room;
 import model.User.AdministratorModel;
 import model.User.MaintenanceStaffModel;
 import model.User.StudentModel;
@@ -156,6 +157,7 @@ public class database {
                 // System.out.println("Hostel Name: " + resultSet.getString("hostel_name"));
                 // System.out.println("Hostel Location: " + resultSet.getString("hostel_location"));
                 Hostel hostel = new Hostel(resultSet.getString("hostel_id"), resultSet.getString("hostel_name"), resultSet.getString("hostel_location"));
+                hostel.setRooms(getRooms(resultSet.getString("hostel_id")));
                 hostels.add(hostel);
             }
         } catch (SQLException e) {
@@ -165,6 +167,57 @@ public class database {
         }
         
         return hostels;
+    }
+
+    // SELECT * FROM hostels WHERE hostel_id = 'H001';
+    public static Hostel gHostelbyID(String hostelID) {
+        connect();
+        Hostel hostel = null;
+
+        String query = "SELECT * FROM hostels WHERE hostel_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, hostelID);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                // System.out.println("Hostel ID: " + resultSet.getString("hostel_id"));
+                // System.out.println("Hostel Name: " + resultSet.getString("hostel_name"));
+                // System.out.println("Hostel Location: " + resultSet.getString("hostel_location"));
+                hostel = new Hostel(resultSet.getString("hostel_id"), resultSet.getString("hostel_name"), resultSet.getString("hostel_location"));
+                hostel.setRooms(database.getRooms(hostelID));
+                return hostel;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting hostel by ID: " + e.getMessage());
+        } finally {
+            disconnect();
+        }        
+        
+        return null;
+    }
+
+    private static List<Room> getRooms(String hostelID) {
+        List<Room> rooms = new ArrayList<>();
+
+        String query = "SELECT * FROM rooms WHERE hostel_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, hostelID);
+
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                // Room(String roomId, int maxBeds, int freeSpace, int roomNo)
+                Room room = new Room(resultSet.getString("room_id"), resultSet.getInt("max_beds"), resultSet.getInt("free_space"), resultSet.getInt("room_no"));
+                rooms.add(room);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting rooms: " + e.getMessage());
+        }
+        
+        return rooms;
     }
 
     // SELECT * FROM hostels WHERE hostel_name LIKE '%Hostel 1%';
@@ -184,6 +237,7 @@ public class database {
                 // System.out.println("Hostel Name: " + resultSet.getString("hostel_name"));
                 // System.out.println("Hostel Location: " + resultSet.getString("hostel_location"));
                 Hostel hostel = new Hostel(resultSet.getString("hostel_id"), resultSet.getString("hostel_name"), resultSet.getString("hostel_location"));
+                hostel.setRooms(getRooms(resultSet.getString("hostel_id")));
                 hostels.add(hostel);
             }
         } catch (SQLException e) {
@@ -344,5 +398,30 @@ public class database {
         }
     }
 
+    // SELECT submit_room_book_request('umer', 'R001', 'H001');
+    public static boolean bookRoomRequwst(String userid, String hostelId, String roomId) {
+        connect();
+
+        String query = "SELECT submit_room_book_request(?, ?, ?)";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, userid);
+            stmt.setString(2, roomId);
+            stmt.setString(3, hostelId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                System.out.println("Room booked successfully!");
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during booking room: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+
+        return false;
+    }
 
 }

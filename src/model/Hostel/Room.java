@@ -1,20 +1,26 @@
 package model.Hostel;
 
-public class RoomModel {
-    private String roomId; // Unique identifier for the room
-    private int maxBeds; // Maximum number of beds in the room
-    private int freeSpace; // Available beds in the room
+public class Room {
+    private String roomId;
+    private int maxBeds;
+    private int freeSpace;
     private int roomNo;
-    private Package roomPackage; // Package associated with the room
+    private Package roomPackage;
 
-    public RoomModel(String roomId, int maxBeds,int roomNo) {
+    public Room(String roomId, int maxBeds,int roomNo) {
         this.roomId = roomId;
         this.maxBeds = maxBeds;
-        this.freeSpace = maxBeds; // Initially, free space is equal to max beds
+        this.freeSpace = maxBeds;
         this.roomNo = roomNo;
     }
 
-    // Getter and Setter for roomId
+    public Room(String roomId, int maxBeds, int freeSpace, int roomNo) {
+        this.roomId = roomId;
+        this.maxBeds = maxBeds;
+        this.freeSpace = freeSpace;
+        this.roomNo = roomNo;
+    }
+
     public String getRoomId() {
         return roomId;
     }
@@ -23,17 +29,15 @@ public class RoomModel {
         this.roomId = roomId;
     }
 
-    // Getter and Setter for maxBeds
     public int getMaxBeds() {
         return maxBeds;
     }
 
     public void setMaxBeds(int maxBeds) {
         this.maxBeds = maxBeds;
-        this.freeSpace = Math.min(freeSpace, maxBeds); // Adjust free space if max beds changes
+        this.freeSpace = Math.min(freeSpace, maxBeds);
     }
 
-    // Getter and Setter for freeSpace
     public int getFreeSpace() {
         return freeSpace;
     }
@@ -46,7 +50,6 @@ public class RoomModel {
         }
     }
 
-    // Method to check if there is available space
     public boolean hasAvailableSpace() {
         return freeSpace > 0;
     }

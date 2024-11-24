@@ -21,7 +21,7 @@ public class MaintenanceStaffModel extends UserModel {
     }
 
     @Override
-    public List<Hostel> getHostel() {
+    public List<Hostel> getHostels() {
         // TODO Auto-generated method stub
         return null;
     }

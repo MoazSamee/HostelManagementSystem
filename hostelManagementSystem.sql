@@ -127,5 +127,117 @@ INSERT INTO hostels (hostel_id, hostel_name, hostel_location) VALUES
 SELECT * FROM hostels;
 
 SELECT * FROM hostels WHERE hostel_name LIKE '%Hostel 1%';
+SELECT * FROM hostels WHERE hostel_id = 'H001';
 
 
+-- rooms table
+
+CREATE TABLE rooms (
+    room_id VARCHAR(255) PRIMARY KEY,
+    hostel_id VARCHAR(255) NOT NULL,
+    room_no INT NOT NULL,
+    max_beds INT NOT NULL,
+    free_space INT NOT NULL,
+    FOREIGN KEY (hostel_id) REFERENCES hostels(hostel_id) ON DELETE CASCADE
+);
+
+INSERT INTO rooms (room_id, hostel_id, room_no, max_beds, free_space) VALUES
+('R001', 'H001', 101, 2, 1);
+
+INSERT INTO rooms (room_id, hostel_id, room_no, max_beds, free_space) VALUES
+('R003', 'H002', 101, 5, 2);
+
+SELECT * FROM rooms;
+
+UPDATE rooms
+SET free_space = 0 WHERE room_id = 'R001' AND hostel_id = 'H001';
+
+
+
+--  submit room book request{ "Alice", "001", "Hostel A", "Room 101" }) autoassign request_id
+
+CREATE TABLE room_book_requests (
+    request_id VARCHAR(255) PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL,
+    room_id VARCHAR(255) NOT NULL,
+    hostel_id VARCHAR(255) NOT NULL,
+    status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (room_id) REFERENCES rooms(room_id) ON DELETE CASCADE,
+    FOREIGN KEY (hostel_id) REFERENCES hostels(hostel_id) ON DELETE CASCADE
+);
+
+-- create function for insertion and auto asign request_id
+
+DELIMITER $$
+
+CREATE FUNCTION submit_room_book_request (
+    user_id VARCHAR(255),
+    room_id VARCHAR(255),
+    hostel_id VARCHAR(255)
+) RETURNS VARCHAR(255)
+DETERMINISTIC
+MODIFIES SQL DATA
+BEGIN
+    DECLARE generated_request_id VARCHAR(255);
+    
+    -- Generate a unique request_id
+    SET generated_request_id = UUID();
+
+    -- Insert the booking request into the room_book_requests table
+    INSERT INTO room_book_requests (
+        request_id, user_id, room_id, hostel_id, status
+    ) VALUES (
+        generated_request_id, user_id, room_id, hostel_id, 'Pending'
+    );
+
+    -- Return the generated request_id
+    RETURN generated_request_id;
+END$$
+
+DELIMITER ;
+
+-- call function
+
+SELECT submit_room_book_request('umer', 'R001', 'H001');
+
+SELECT * FROM room_book_requests;
+
+DELETE FROM room_book_requests WHERE request_id = '9349c71e-aa4c-11ef-b440-482ae32943bf';
+
+
+
+-- maintenance_requests TODO
+
+CREATE TABLE maintenance_requests (
+    request_id VARCHAR(255) PRIMARY KEY,
+    room_id VARCHAR(255) NOT NULL,
+    hostel_id VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    status ENUM('Pending', 'In Progress', 'Completed') DEFAULT 'Pending',
+    FOREIGN KEY (room_id) REFERENCES rooms(room_id) ON DELETE CASCADE,
+    FOREIGN KEY (hostel_id) REFERENCES hostels(hostel_id) ON DELETE CASCADE
+);
+
+INSERT INTO maintenance_requests (request_id, room_id, hostel_id, description, status) VALUES
+('R001', 'R001', 'H001', 'Leaky faucet', 'Pending');
+
+SELECT * FROM maintenance_requests;
+
+-- complaints TODO
+
+CREATE TABLE complaints (
+    complaint_id VARCHAR(255) PRIMARY KEY, -- Unique identifier for the complaint
+    room_id VARCHAR(255),                 -- ID of the room where the complaint originated
+    hostel_id VARCHAR(255),               -- ID of the hostel
+    description TEXT NOT NULL,            -- Description of the complaint issue
+    status ENUM('Pending', 'Resolved') DEFAULT 'Pending', -- Status of the complaint
+    FOREIGN KEY (room_id) REFERENCES rooms(room_id) ON DELETE CASCADE,
+    FOREIGN KEY (hostel_id) REFERENCES hostels(hostel_id) ON DELETE CASCADE
+);
+
+
+INSERT INTO complaints (complaint_id, room_id, hostel_id, description, status) VALUES
+('C001', 'R001', 'H001', 'No hot water', 'Pending');
+
+SELECT * FROM complaints;

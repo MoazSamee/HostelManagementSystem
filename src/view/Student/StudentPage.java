@@ -12,7 +12,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.User.StudentModel;
-import model.User.UserModel;
 
 public class StudentPage extends Application {
 
