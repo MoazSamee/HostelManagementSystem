@@ -1,15 +1,17 @@
 package model.Hostel;
 
-public class MaintenanceRequestModel {
-    private String requestId; // Unique identifier for the maintenance request
-    private int  roomNo; // ID of the room where maintenance is needed
+import model.Database.database;
+
+public class MaintenanceRequest {
+    private String userId; // Unique identifier for the maintenance request
+    private int roomNo; // ID of the room where maintenance is needed
     private String hostelId; // ID of the hostel
     private String description; // Description of the maintenance issue
     private String status; // Status of the request (e.g., "Pending", "In Progress", "Completed")
 
     // Constructor
-    public MaintenanceRequestModel(String requestId, int roomNo, String hostelId, String description) {
-        this.requestId = requestId;
+    public MaintenanceRequest(String userId, int roomNo, String hostelId, String description) {
+        this.userId = userId;
         this.roomNo = roomNo;
         this.hostelId = hostelId;
         this.description = description;
@@ -17,12 +19,12 @@ public class MaintenanceRequestModel {
     }
 
     // Getters and Setters
-    public String getRequestId() {
-        return requestId;
+    public String getuserId() {
+        return userId;
     }
 
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
+    public void setuserId(String requestId) {
+        this.userId = requestId;
     }
 
     public int getRoomNo() {
@@ -69,5 +71,9 @@ public class MaintenanceRequestModel {
     // Method to mark the request as "Completed"
     public void markCompleted() {
         this.status = "Completed";
+    }
+
+    public boolean saveRequest() {
+        return database.saveMaintenanceRequest(this);
     }
 }

@@ -10,7 +10,7 @@ public class HostelCard extends VBox {
     private static final int CARD_WIDTH = 320;
     private static final int CARD_HEIGHT = 150;
 
-    public HostelCard(String hostelId, String hostelName, int numberAvailableRooms, int numberOfStudents) {
+    public HostelCard(String hostelName,String hostelLocation, int numberAvailableRooms, int numberOfStudents) {
         super(10);
         setPadding(new Insets(20));
         setPrefWidth(CARD_WIDTH);
@@ -24,7 +24,7 @@ public class HostelCard extends VBox {
         nameLabel.setFont(Font.font("Arial", 18));
         nameLabel.getStyleClass().add("hostel-card-name");
 
-        Label idLabel = new Label("ID: " + hostelId);
+        Label idLabel = new Label("🌍 " + hostelLocation);
         // idLabel.setFont(Font.font("Arial", 14));
         idLabel.getStyleClass().add("hostel-card-id");
 

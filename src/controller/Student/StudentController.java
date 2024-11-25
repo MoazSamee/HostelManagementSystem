@@ -37,7 +37,7 @@ public class StudentController {
             List<Hostel> hostels = student.getHostels();
 
             for (Hostel hostel : hostels) {
-                HostelCard card = new HostelCard(hostel.getHostelId(), hostel.getHostelName(), hostel.getRooms().size(), hostel.getStudents().size());
+                HostelCard card = new HostelCard(hostel.getHostelName(), hostel.getHostelLocation(), hostel.getRooms().size(), hostel.getStudents().size());
                 card.setOnMouseClicked(e -> cardClicked(hostel.getHostelId()));
                 hostelCards.add(card);
             }
@@ -61,6 +61,7 @@ public class StudentController {
         //////////////////////////////////////////////////////////////////////// TBR
         
         populateInitialGridContent();
+        refreshGridContent((int)gridPane.getWidth());
         // addBox(new HostelCard(searchQuery, "Delta Hostel", 15, 70));
     }
 
@@ -73,11 +74,11 @@ public class StudentController {
         List<Hostel> hostels = student.getHostels(newText);
 
         for (Hostel hostel : hostels) {
-            HostelCard card = new HostelCard(hostel.getHostelId(), hostel.getHostelName(), hostel.getRooms().size(), hostel.getStudents().size());
+            HostelCard card = new HostelCard(hostel.getHostelName(),hostel.getHostelLocation(), hostel.getRooms().size(), hostel.getStudents().size());
             card.setOnMouseClicked(e -> cardClicked(hostel.getHostelId()));
             hostelCards.add(card);
         }
-        refreshGridContent();
+        refreshGridContent((int)gridPane.getWidth());
     }
 
     // Done    
@@ -96,17 +97,17 @@ public class StudentController {
 
         List<Hostel> hostels = student.getHostels();
         for (Hostel hostel : hostels) {
-            HostelCard card = new HostelCard(hostel.getHostelId(), hostel.getHostelName(), hostel.getAvailableRooms().size(), hostel.getStudents().size());
+            HostelCard card = new HostelCard(hostel.getHostelName(),hostel.getHostelLocation(), hostel.getAvailableRooms().size(), hostel.getStudents().size());
             System.out.println("Hostel: " + hostel.getHostelName() + " - " + hostel.getAvailableRooms().size() + " - " + hostel.getStudents().size());
             card.setOnMouseClicked(e -> cardClicked(hostel.getHostelId()));
             hostelCards.add(card);
         }
 
-        refreshGridContent();
+        // refreshGridContent((int)gridPane.getWidth());
     }
 
     // Done
-    public void refreshGridContent() {
+    public void refreshGridContent(int Width) {
         if (gridPane == null) {
             System.err.println("GridPane is not set.");
             return;
@@ -114,9 +115,9 @@ public class StudentController {
 
         gridPane.getChildren().clear();
         for (HostelCard card : hostelCards) {
-            addBox(card);
+            addBox(card, Width);
             // System.out.println("Added card: ");
-        }
+        } 
     }
 
     // Done
@@ -130,25 +131,55 @@ public class StudentController {
         Platform.runLater(() -> {
             Room rooms = bookHostel.getSelectedRoom();
             if (rooms != null) {
-                student.bookRoom(hostelid, rooms.getRoomId());
+                if(student.bookRoom(hostelid, rooms.getRoomId()))
+                {
+                    JOptionPane.showMessageDialog(null, "Room Booked", "Success", JOptionPane.INFORMATION_MESSAGE);
+                }
             } else {
-                System.out.println("Dialog was canceled or closed.");
+                JOptionPane.showMessageDialog(null, "Room Not Booked", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
         
     }
 
     // TODO : Implement
-    public void onMaintenanceRequestSubmitted(String complaint, String details) { //student onMaintenanceRequestSubmitted
-        System.out.println("Maintenance Request Submitted: " + complaint + " - " + details);
+    public void onMaintenanceRequestSubmitted(String complaint, String maintenance) {
+        if (maintenance != null && !maintenance.isEmpty() && complaint != null && !complaint.isEmpty())
+        {
+            JOptionPane.showMessageDialog(null, "Fields are empty", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (maintenance != null && !maintenance.isEmpty())
+        {
+            if (student.submitMaintenanceRequest(maintenance))
+            {
+                JOptionPane.showMessageDialog(null, "Maintenance Request Submitted", "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Maintenance Request Not Submitted", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        if (complaint != null && !complaint.isEmpty())
+        {
+            if (student.submitComplaint(complaint))
+            {
+                JOptionPane.showMessageDialog(null, "Complaint Submitted", "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Complaint Not Submitted", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     // Done
-    public void editProfile(String name, String email, String phone, String password, String password2) {
+    public void editProfile(String name, String email, String phone, String univercity, String address, String orgAddress, String password, String password2) {
         System.out.println("Profile Edited: " + name + " - " + email + " - " + phone + " - " + password + " - " + password2);
         if (password.equals(password2))
         {
-            student.editProfile(name, email, phone, password);
+            student.editProfile(name, email, phone, univercity, address, orgAddress, password);
             JOptionPane.showMessageDialog(null, "Profile Updated", "Success", JOptionPane.INFORMATION_MESSAGE);
         }
         else
@@ -166,14 +197,14 @@ public class StudentController {
     }
     
     // Done
-    private void addBox(HostelCard card) {
+    private void addBox(HostelCard card, int gridPaneWidth) {
         if (gridPane == null) {
             System.err.println("GridPane is not set.");
             return;
         }
         
         int cardWidth = card.getCardWidth();
-        int columns = gridPane.getWidth() > 0 ? (int) (gridPane.getWidth() / cardWidth) : 1;
+        int columns = (gridPaneWidth + cardWidth) > 0 ? (int) ((gridPaneWidth + cardWidth) / cardWidth) : 1;
         columns = Math.max(1, columns);
 
         int index = gridPane.getChildren().size();

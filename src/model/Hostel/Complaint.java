@@ -1,16 +1,18 @@
 package model.Hostel;
 
-public class ComplaintModel {
-    private String complaintId; // Unique identifier for the complaint
-    private String roomId; // ID of the room where the complaint originated
+import model.Database.database;
+
+public class Complaint {
+    private String userId; // Unique identifier for the complaint
+    private int roomNo; // ID of the room where the complaint originated
     private String hostelId; // ID of the hostel
     private String description; // Description of the complaint issue
     private String status; // Status of the complaint (e.g., "Pending", "Under Review", "Resolved")
 
     // Constructor
-    public ComplaintModel(String complaintId, String roomId, String hostelId, String description) {
-        this.complaintId = complaintId;
-        this.roomId = roomId;
+    public Complaint(String userId, int roomNo, String hostelId, String description) {
+        this.userId = userId;
+        this.roomNo = roomNo;
         this.hostelId = hostelId;
         this.description = description;
         this.status = "Pending"; // Default status set to "Pending"
@@ -18,19 +20,19 @@ public class ComplaintModel {
 
     // Getters and Setters
     public String getComplaintId() {
-        return complaintId;
+        return userId;
     }
 
-    public void setComplaintId(String complaintId) {
-        this.complaintId = complaintId;
+    public void setComplaintId(String userId) {
+        this.userId = userId;
     }
 
-    public String getRoomId() {
-        return roomId;
+    public int getRoomNo() {
+        return roomNo;
     }
 
     public void setRoomId(String roomId) {
-        this.roomId = roomId;
+        this.roomNo = roomNo;
     }
 
     public String getHostelId() {
@@ -65,5 +67,10 @@ public class ComplaintModel {
     // Method to mark the complaint as "Resolved"
     public void markResolved() {
         this.status = "Resolved";
+    }
+
+    public boolean saveComplaint() {
+
+        return database.saveComplaint(this);
     }
 }

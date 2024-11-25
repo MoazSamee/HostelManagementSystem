@@ -12,7 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class StudentPage extends Application {
+public class StudentPage extends Application{
 
     private boolean isSidebarExpanded = true;
     StudentController controller;
@@ -129,41 +129,72 @@ public class StudentPage extends Application {
             }
         
             // Create fields for settings page
-            Label nameLabel = new Label("Change Name:");
+            // Label nameLabel = new Label("Change Name:");
             TextField nameField = new TextField();
             nameField.setPromptText("Enter your new name");
-            nameField.setMaxWidth(300);
+            nameField.setMaxWidth(400);
             nameField.setMinHeight(40);
         
-            Label emailLabel = new Label("Change Email:");
+            // Label emailLabel = new Label("Change Email:");
             TextField emailField = new TextField();
             emailField.setPromptText("Enter your new email");
             emailField.setMaxWidth(300);
+            emailField.setPrefWidth(195);
             emailField.setMinHeight(40);
         
-            Label phoneLabel = new Label("Change Phone Number:");
+            // Label phoneLabel = new Label("Change Phone Number:");
             TextField phoneField = new TextField();
             phoneField.setPromptText("Enter your new phone number");
             phoneField.setMaxWidth(300);
+            phoneField.setPrefWidth(195);
             phoneField.setMinHeight(40);
+
+            // Label universityLabel = new Label("Change University:");
+            TextField universityField = new TextField();
+            universityField.setPromptText("Enter your University");
+            universityField.setMaxWidth(400);
+            universityField.setMinHeight(40);
+
+            // Label addressLabel = new Label("Change Address:");
+            TextField addressField = new TextField();
+            addressField.setPromptText("Enter your new Address");
+            addressField.setMaxWidth(400);
+            addressField.setMinHeight(40);
+
+            // Label orgAdressLabel = new Label("Change Organization Adress:");
+            TextField orgAdressField = new TextField();
+            orgAdressField.setPromptText("Enter your new Organization Adress");
+            orgAdressField.setMaxWidth(400);
+            orgAdressField.setMinHeight(40);
         
-            Label passwordLabel = new Label("Reset Password:");
+            // Label passwordLabel = new Label("Reset Password:");
             PasswordField passwordField = new PasswordField();
             passwordField.setPromptText("Enter your new password");
             passwordField.setMaxWidth(300);
+            passwordField.setPrefWidth(195);
             passwordField.setMinHeight(40);
         
-            Label passwordLabel2 = new Label("Confirm Password:");
+            // Label passwordLabel2 = new Label("Confirm Password:");
             PasswordField passwordField2 = new PasswordField();
             passwordField2.setPromptText("Confirm your new password");
             passwordField2.setMaxWidth(300);
+            passwordField2.setPrefWidth(195);
             passwordField2.setMinHeight(40);
         
             Button saveButton = new Button("Save Details");
-            saveButton.setOnAction(ev -> controller.editProfile(nameField.getText(), emailField.getText(), phoneField.getText(), passwordField.getText(), passwordField2.getText()));
+            saveButton.setOnAction(ev -> controller.editProfile(nameField.getText(), emailField.getText(),
+                                        phoneField.getText(),universityField.getText(),addressField.getText(),
+                                        orgAdressField.getText(), passwordField.getText(), passwordField2.getText()));
         
+
+            HBox passwordGroup = new HBox(10, passwordField, passwordField2);
+            passwordGroup.setAlignment(Pos.CENTER);
+            HBox contactGroup = new HBox(10, emailField, phoneField);
+            contactGroup.setAlignment(Pos.CENTER);
+
             // Layout adjustments
-            VBox formLayout = new VBox(10, nameLabel, nameField, emailLabel, emailField, phoneLabel, phoneField, passwordLabel, passwordField, passwordLabel2, passwordField2);
+            VBox formLayout = new VBox(10, nameField, contactGroup, universityField, addressField,orgAdressField,passwordGroup);
+            // VBox formLayout = new VBox(10, nameLabel, nameField, emailLabel, emailField, phoneLabel, phoneField, passwordLabel, passwordField, passwordLabel2, passwordField2);
             formLayout.setSpacing(15);
             formLayout.setAlignment(Pos.CENTER);
         
@@ -223,8 +254,12 @@ public class StudentPage extends Application {
             // Add initial content
             controller.populateInitialGridContent();
 
-            primaryStage.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-                controller.populateInitialGridContent();
+            // primaryStage.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+            //     controller.setWidth(newWidth.intValue());
+            //     controller.refreshGridContent(newWidth.intValue());
+            // });
+            gridPane.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+                controller.refreshGridContent(newWidth.intValue());
             });
         });
 
@@ -251,8 +286,8 @@ public class StudentPage extends Application {
             Button submitButton = new Button("Submit Request");
             submitButton.setOnAction(ev -> {
                 String complain = complainField.getText();
-                String details = maintenanceField.getText();
-                controller.onMaintenanceRequestSubmitted(complain, details);
+                String maintenance = maintenanceField.getText();
+                controller.onMaintenanceRequestSubmitted(complain, maintenance);
             });
         
             ToggleButton toggleButton_complain = new ToggleButton("Switch to Maintenance");

@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Hostel.Complaint;
 import model.Hostel.Hostel;
+import model.Hostel.MaintenanceRequest;
 import model.Hostel.Room;
 import model.User.AdministratorModel;
 import model.User.MaintenanceStaffModel;
@@ -564,6 +566,93 @@ public class database {
         }        
         
         return null;
+    }
+
+    // SELECT submit_maintenance_request('R001', 'H001', 'umer', 'Leaky faucet');
+    public static boolean saveMaintenanceRequest(MaintenanceRequest request) {
+        connect();
+        String roomId = getRoomIdbyNumber(request.getHostelId(), request.getRoomNo());
+
+        if (roomId == null) {
+            System.out.println("Error: Room ID not found for the maintenance request.");
+            disconnect();
+            return false;
+        }
+
+        String query = "SELECT submit_maintenance_request(?, ?, ?, ?)";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, roomId);
+            stmt.setString(2, request.getHostelId());
+            stmt.setString(3, request.getuserId());
+            stmt.setString(4, request.getDescription());
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                System.out.println("Maintenance request submitted successfully!");
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during submitting maintenance request: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+
+        return false;
+    }
+
+    private static String getRoomIdbyNumber(String hostelId,int roomNo) {
+        String query = "SELECT room_id FROM rooms WHERE room_no = ? AND hostel_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setInt(1, roomNo);
+            stmt.setString(2, hostelId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("room_id");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting room ID by number: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    // SELECT submit_complaint('R001', 'H001', 'umer', 'No hot water');
+    public static boolean saveComplaint(Complaint complaint) {
+        connect();
+        String roomId = getRoomIdbyNumber(complaint.getHostelId(), complaint.getRoomNo());
+
+        if (roomId == null) {
+            System.out.println("Error: Room ID not found for the complaint.");
+            disconnect();
+            return false;
+        }
+
+        String query = "SELECT submit_complaint(?, ?, ?, ?)";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, roomId);
+            stmt.setString(2, complaint.getHostelId());
+            stmt.setString(3, complaint.getComplaintId());
+            stmt.setString(4, complaint.getDescription());
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                System.out.println("Complaint submitted successfully!");
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during submitting complaint: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+
+        return false;
     }
 
 }

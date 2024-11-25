@@ -237,16 +237,49 @@ CREATE TABLE maintenance_requests (
 INSERT INTO maintenance_requests (request_id, room_id, hostel_id, description, status) VALUES
 ('R001', 'R001', 'H001', 'Leaky faucet', 'Pending');
 
+DELIMITER $$
+
+CREATE FUNCTION submit_maintenance_request (
+    room_id VARCHAR(255),
+    hostel_id VARCHAR(255),
+    user_id VARCHAR(255),
+    description TEXT
+) RETURNS VARCHAR(255)
+DETERMINISTIC
+MODIFIES SQL DATA
+BEGIN
+    DECLARE generated_request_id VARCHAR(255);
+    
+    -- Generate a unique request_id
+    SET generated_request_id = UUID();
+
+    -- Insert the maintenance request into the maintenance_requests table
+    INSERT INTO maintenance_requests (
+        request_id, room_id, hostel_id, description, status
+    ) VALUES (
+        generated_request_id, room_id, hostel_id, description, 'Pending'
+    );
+
+    -- Return the generated request_id
+    RETURN generated_request_id;
+END$$
+
+
+DELIMITER ;
+
+SELECT submit_maintenance_request('R001', 'H001', 'umer', 'Leaky faucet');
+
+
 SELECT * FROM maintenance_requests;
 
 -- complaints TODO
 
 CREATE TABLE complaints (
-    complaint_id VARCHAR(255) PRIMARY KEY, -- Unique identifier for the complaint
-    room_id VARCHAR(255),                 -- ID of the room where the complaint originated
-    hostel_id VARCHAR(255),               -- ID of the hostel
-    description TEXT NOT NULL,            -- Description of the complaint issue
-    status ENUM('Pending', 'Resolved') DEFAULT 'Pending', -- Status of the complaint
+    complaint_id VARCHAR(255) PRIMARY KEY,
+    room_id VARCHAR(255),
+    hostel_id VARCHAR(255),
+    description TEXT NOT NULL,
+    status ENUM('Pending', 'Resolved') DEFAULT 'Pending',
     FOREIGN KEY (room_id) REFERENCES rooms(room_id) ON DELETE CASCADE,
     FOREIGN KEY (hostel_id) REFERENCES hostels(hostel_id) ON DELETE CASCADE
 );
@@ -254,5 +287,33 @@ CREATE TABLE complaints (
 
 INSERT INTO complaints (complaint_id, room_id, hostel_id, description, status) VALUES
 ('C001', 'R001', 'H001', 'No hot water', 'Pending');
+
+DELIMITER $$
+CREATE FUNCTION submit_complaint (
+    room_id VARCHAR(255),
+    hostel_id VARCHAR(255),
+    user_id VARCHAR(255),
+    description TEXT
+) RETURNS VARCHAR(255)
+DETERMINISTIC
+MODIFIES SQL DATA
+BEGIN
+    DECLARE generated_complaint_id VARCHAR(255);
+    
+    -- Generate a unique complaint_id
+    SET generated_complaint_id = UUID();
+
+    -- Insert the complaint into the complaints table
+    INSERT INTO complaints (
+        complaint_id, room_id, hostel_id, description, status
+    ) VALUES (
+        generated_complaint_id, room_id, hostel_id, description, 'Pending'
+    );
+
+    -- Return the generated complaint_id
+    RETURN generated_complaint_id;
+END$$
+
+SELECT submit_complaint('R001', 'H001', 'umer', 'No hot water');
 
 SELECT * FROM complaints;
