@@ -11,7 +11,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.User.StudentModel;
 
 public class StudentPage extends Application {
 
@@ -65,6 +64,61 @@ public class StudentPage extends Application {
                 button.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
             }
             
+            // Create labels for student details
+            Label nameLabel = new Label("Welcome " + controller.getStudentName()+ "! 😊");
+            nameLabel.setStyle("-fx-font: 36 arial; -fx-font-weight: bold; -fx-text-fill: white;");
+            Label emailLabel = new Label("📧 "+controller.getStudentEmail());
+            emailLabel.setStyle("-fx-font: 24 arial; -fx-text-fill: white;");
+            Label phoneLabel = new Label("📞 "+ controller.getStudentPhone());
+            phoneLabel.setStyle("-fx-font: 24 arial; -fx-text-fill: white;");
+            Label universityLabel = new Label("University/Job: " + controller.getStudentUniversity());
+            universityLabel.setStyle("-fx-font: 20 arial; -fx-text-fill: white;");
+            Label addressLabel = new Label("Address: " + controller.getStudentAddress());
+            addressLabel.setStyle("-fx-font: 20 arial; -fx-text-fill: white;");
+            Label orgAddressLabel = new Label("Organization Address: " + controller.getStudentOrgAddress());
+            orgAddressLabel.setStyle("-fx-font: 20 arial; -fx-text-fill: white;");
+            Label curruntHostel = new Label("Current Hostel: " + controller.getCurruntStudentHostelname());
+            curruntHostel.setStyle("-fx-font: 20 arial; -fx-text-fill: white;");
+            Label roomNo = new Label("Room No: " + controller.getCurruntStudentHostelRoom());
+            roomNo.setStyle("-fx-font: 20 arial; -fx-text-fill: white;");
+            Label hostelAddress = new Label("Hostel Address: " + controller.getCurruntStudentHostelAdress());
+            hostelAddress.setStyle("-fx-font: 20 arial; -fx-text-fill: white;");
+
+            // Create a VBox for the details and style it
+            VBox detailsLayout = new VBox(10, nameLabel, emailLabel, phoneLabel);
+            detailsLayout.setPadding(new Insets(20));
+            detailsLayout.setAlignment(Pos.CENTER);
+            detailsLayout.getStyleClass().add("home-layout-card");
+
+            VBox detailsLayout2 = new VBox(10, universityLabel, addressLabel, orgAddressLabel);
+            detailsLayout2.setPadding(new Insets(20));
+            detailsLayout2.setAlignment(Pos.CENTER_LEFT);
+            detailsLayout2.getStyleClass().add("home-layout-card2");
+            // make it to take 
+
+            VBox detailsLayout3 = new VBox(10, curruntHostel, roomNo, hostelAddress);
+            detailsLayout3.setPadding(new Insets(20));
+            detailsLayout3.setAlignment(Pos.CENTER_LEFT);
+            detailsLayout3.getStyleClass().add("home-layout-card3");
+
+            HBox detailsSecondryLayout = new HBox(detailsLayout2, detailsLayout3);
+            detailsSecondryLayout.setAlignment(Pos.CENTER);
+            detailsSecondryLayout.setSpacing(20);
+
+
+            VBox homeLayout = new VBox(detailsLayout, detailsSecondryLayout);
+            homeLayout.setAlignment(Pos.CENTER);
+            homeLayout.setSpacing(20);
+            homeLayout.setPadding(new Insets(20));
+            homeLayout.setStyle("-fx-background-color: #E3F2FD;");
+
+
+            // Add responsive behavior
+            ScrollPane scrollPane = new ScrollPane(homeLayout);
+            scrollPane.setFitToWidth(true);
+            scrollPane.setStyle("-fx-background-color: #E3F2FD;");
+
+            contentPane.setCenter(scrollPane);
         });
 
         settingsTab.setOnAction(e -> {
@@ -153,9 +207,10 @@ public class StudentPage extends Application {
             GridPane gridPane = new GridPane();
             gridPane.setHgap(10);
             gridPane.setVgap(10);
+            gridPane.setPadding(new Insets(10));
+
             scrollPane.setContent(gridPane);
             scrollPane.setFitToWidth(true);
-            // make it colorless
             scrollPane.setStyle("-fx-background-color: #E3F2FD;");
             gridPane.setStyle("-fx-background-color: #E3F2FD;");
 
@@ -260,7 +315,7 @@ public class StudentPage extends Application {
         mainLayout.setCenter(contentPane);
 
         // Scene
-        Scene scene = new Scene(mainLayout, 800, 600);
+        Scene scene = new Scene(mainLayout, 1000, 600);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         primaryStage.setTitle("Student Dashboard");
@@ -304,7 +359,11 @@ public class StudentPage extends Application {
         launch(args);
     }
 
-    public void setStudent(StudentModel user) {
-        controller.setStudent(user);
+    // public void setStudent(StudentModel user) {
+    //     controller.setStudent(user);
+    // }
+
+    public StudentController getStudentController() {
+        return controller;
     }
 }

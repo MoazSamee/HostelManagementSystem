@@ -51,3 +51,9 @@ HostelManagementSystem/
 ## Dependency Management
 
 The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+
+- add new hostel page
+- add user hostel
+- add user to leave hostel
+- implement submit maintainace request
+- implement admin page

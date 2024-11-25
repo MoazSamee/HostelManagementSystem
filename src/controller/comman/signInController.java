@@ -68,7 +68,8 @@ public class signInController {
                     studentPage.start(primaryStage);
                     userNameField.setText("");
                     passwordField.setText("");
-                    studentPage.setStudent((StudentModel) user);
+                    // studentPage.setStudent((StudentModel) user);
+                    studentPage.getStudentController().setStudent((StudentModel) user);
                     this.signinButton.getScene().getWindow().hide();
                 } catch (Exception e) {
                     // TODO Auto-generated catch block

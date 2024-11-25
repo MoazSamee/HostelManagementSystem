@@ -6,6 +6,7 @@ import model.Database.database;
 import model.Database.mysql;
 import model.Hostel.Hostel;
 import model.Hostel.MaintenanceRequestModel;
+import model.Hostel.Room;
 
 public class StudentModel extends UserModel {
     private String address;
@@ -168,4 +169,21 @@ public class StudentModel extends UserModel {
     public Hostel getHostelById(String hostelid) {
         return database.gHostelbyID(hostelid);
     }
+
+    public void refreshDetails() {
+        this.organizationAddress = database.getOrganizationAddress(userId);
+        this.universityOrJob = database.getUniversityOrJob(userId);
+        this.address = database.getAddress(userId);
+    }
+
+    public Hostel getCurrunthostel() {
+
+        return database.gHostelbyStudentID(userId);
+
+    }
+
+    public Room getCurrunthostelRoom() {
+        return database.getRoomByStudentID(userId);
+    }
+
 }

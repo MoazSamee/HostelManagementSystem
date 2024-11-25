@@ -119,7 +119,7 @@ public class StudentController {
         }
     }
 
-    // TODO : Implement Book Room
+    // Done
     public void cardClicked(String hostelid) {//mysql getHostelById
         System.out.println("Clicked on: " + hostelid);
 
@@ -160,7 +160,9 @@ public class StudentController {
 
     // Done
     public void setStudent(StudentModel student) {
+        student.refreshDetails();
         this.student = student;
+        
     }
     
     // Done
@@ -179,6 +181,81 @@ public class StudentController {
         int col = index % columns;
 
         gridPane.add(card, col, row);
+    }
+
+    public String getStudentName() {
+        if (student == null) {
+            return "Student";
+        }
+        return student.getName();
+    }
+
+    public String getStudentEmail() {
+        if (student == null) {
+            return "";
+        }
+        return student.getEmail();
+    }
+
+    public String getStudentPhone() {
+        if (student == null) {
+            return "";
+        }
+        return student.getPhoneNumber();
+    }
+
+    public String getStudentUniversity() {
+        if (student == null) {
+            return "";
+        }
+        return student.getUniversityOrJob();
+    }
+
+    public String getStudentAddress() {
+        if (student == null) {
+            return "";
+        }
+        return student.getAddress();
+    }
+
+    public String getStudentOrgAddress() {
+        if (student == null) {
+            return "";
+        }
+        return student.getOrganizationAddress();
+    }
+
+    public String getCurruntStudentHostelname() {
+        if (student == null) {
+            return "No Hostel";
+        }
+        Hostel hostel = student.getCurrunthostel();
+        if (hostel == null) {
+            return "No Hostel";
+        }
+        return hostel.getHostelName();
+    }
+
+    public String getCurruntStudentHostelRoom() {
+        if (student == null) {
+            return "No Room";
+        }
+        Room room = student.getCurrunthostelRoom();
+        if (room == null) {
+            return "No Room";
+        }
+        return String.valueOf(room.getRoomNo());
+    }
+
+    public String getCurruntStudentHostelAdress() {
+        if (student == null) {
+            return "No Hostel";
+        }
+        Hostel hostel = student.getCurrunthostel();
+        if (hostel == null) {
+            return "No Hostel";
+        }
+        return hostel.getHostelLocation();
     }
 
 }

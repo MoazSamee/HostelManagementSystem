@@ -167,7 +167,6 @@ CREATE TABLE room_book_requests (
     FOREIGN KEY (hostel_id) REFERENCES hostels(hostel_id) ON DELETE CASCADE
 );
 
--- create function for insertion and auto asign request_id
 
 DELIMITER $$
 
@@ -197,7 +196,6 @@ END$$
 
 DELIMITER ;
 
--- call function
 
 SELECT submit_room_book_request('umer', 'R001', 'H001');
 
@@ -205,6 +203,23 @@ SELECT * FROM room_book_requests;
 
 DELETE FROM room_book_requests WHERE request_id = '9349c71e-aa4c-11ef-b440-482ae32943bf';
 
+
+-- student Room booking
+CREATE TABLE user_has_room (
+    user_id VARCHAR(255) NOT NULL,
+    room_id VARCHAR(255) NOT NULL,
+    hostel_id VARCHAR(255) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (room_id) REFERENCES rooms(room_id) ON DELETE CASCADE,
+    FOREIGN KEY (hostel_id) REFERENCES hostels(hostel_id) ON DELETE CASCADE
+);
+
+INSERT INTO user_has_room (user_id, room_id, hostel_id) VALUES
+('umer', 'R001', 'H001');
+
+SELECT * FROM user_has_room;
+
+DELETE FROM user_has_room WHERE user_id = 'umer';
 
 
 -- maintenance_requests TODO

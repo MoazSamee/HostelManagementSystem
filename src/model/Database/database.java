@@ -198,6 +198,31 @@ public class database {
         return null;
     }
 
+    public static Room getRoomByRoomID(String roomId) {
+        connect();
+        Room room = null;
+
+        String query = "SELECT * FROM rooms WHERE room_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, roomId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                // Room(String roomId, int maxBeds, int freeSpace, int roomNo)
+                room = new Room(resultSet.getString("room_id"), resultSet.getInt("max_beds"), resultSet.getInt("free_space"), resultSet.getInt("room_no"));
+                return room;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting room by room ID: " + e.getMessage());
+        } finally {
+            disconnect();
+        }        
+        
+        return null;
+    }
+    
     private static List<Room> getRooms(String hostelID) {
         List<Room> rooms = new ArrayList<>();
 
@@ -422,6 +447,123 @@ public class database {
         }
 
         return false;
+    }
+
+    // SELECT * FROM USERS WHERE user_id = 'U001';
+    public static String getOrganizationAddress(String userId) {
+        connect();
+
+        String query = "SELECT organization_address FROM USERS WHERE user_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, userId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("organization_address");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting organization address: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+
+        return null;
+    }
+
+    public static String getUniversityOrJob(String userId) {
+        connect();
+
+        String query = "SELECT university_or_job FROM USERS WHERE user_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, userId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("university_or_job");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting university or job: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+
+        return null;
+    }
+
+    public static String getAddress(String userId) {
+        connect();
+
+        String query = "SELECT address FROM USERS WHERE user_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, userId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("address");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting address: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+
+        return null;
+    }
+
+    // INSERT INTO user_has_room (user_id, room_id, hostel_id) VALUES
+    // ('umer', 'R001', 'H001');
+    public static Hostel gHostelbyStudentID(String userId) {
+        connect();
+        Hostel hostel = null;
+
+        String query = "SELECT * FROM user_has_room WHERE user_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, userId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                hostel = gHostelbyID(resultSet.getString("hostel_id"));
+                return hostel;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting hostel by student ID: " + e.getMessage());
+        } finally {
+            disconnect();
+        }        
+        
+        return null;
+    }
+
+    public static Room getRoomByStudentID(String userId) {
+        connect();
+        Room room = null;
+
+        String query = "SELECT * FROM user_has_room WHERE user_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, userId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                room = getRoomByRoomID(resultSet.getString("room_id"));
+                return room;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting room by student ID: " + e.getMessage());
+        } finally {
+            disconnect();
+        }        
+        
+        return null;
     }
 
 }
