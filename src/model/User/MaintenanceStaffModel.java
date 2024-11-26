@@ -7,7 +7,7 @@ import model.Hostel.Hostel;
 public class MaintenanceStaffModel extends UserModel {
     private String address;
 
-    public MaintenanceStaffModel(String userId, String name, String email, String phoneNumber, String hostelId, String address) {
+    public MaintenanceStaffModel(String userId, String name, String email, String phoneNumber, String address) {
         super(userId, name, email, phoneNumber);
         this.address = address;
     }

@@ -18,7 +18,12 @@ import view.comman.HostelCardWide;
 public class AdminPage extends Application {
 
     private boolean isSidebarExpanded = true;
-    AdminController controller = new AdminController();
+    AdminController controller;
+    private Button homeTab;
+    private Button roomRequestsTab;
+    private Button studentsTab;
+    private Button hostelsTab;
+    private Button settingsTab;
 
     @SuppressWarnings("unused")
     @Override
@@ -32,11 +37,11 @@ public class AdminPage extends Application {
         sidebar.getStyleClass().add("sidebar");
 
         Button toggleButton = new Button("☰");
-        Button homeTab = createButtonWithIcon("/resources/home.png", " Home");
-        Button roomRequestsTab = createButtonWithIcon("/resources/bell.png", " Room Requests");
-        Button studentsTab = createButtonWithIcon("/resources/user.png", " Students");
-        Button hostelsTab = createButtonWithIcon("/resources/pin.png", " Hostels");
-        Button settingsTab = createButtonWithIcon("/resources/setting.png", " Settings");
+        homeTab = createButtonWithIcon("/resources/home.png", " Home");
+        roomRequestsTab = createButtonWithIcon("/resources/bell.png", " Room Requests");
+        studentsTab = createButtonWithIcon("/resources/user.png", " Students");
+        hostelsTab = createButtonWithIcon("/resources/pin.png", " Hostels");
+        settingsTab = createButtonWithIcon("/resources/setting.png", " Settings");
 
         homeTab.setPrefWidth(200);
         roomRequestsTab.setPrefWidth(200);
@@ -58,8 +63,7 @@ public class AdminPage extends Application {
         // Sidebar Navigation Events
         homeTab.setOnAction(e -> {
             setActiveTab(homeTab, roomRequestsTab, studentsTab, hostelsTab, settingsTab);
-            VBox homePage = new VBox(new Text("Welcome to the Home Page"));
-            homePage.setAlignment(Pos.CENTER);
+            VBox homePage = createHomePage();
             contentPane.setCenter(homePage);
         });
 
@@ -114,7 +118,7 @@ public class AdminPage extends Application {
         mainLayout.setCenter(contentPane);
 
         // Scene
-        Scene scene = new Scene(mainLayout, 800, 600);
+        Scene scene = new Scene(mainLayout, 1000, 600);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         primaryStage.setTitle("Admin Dashboard");
@@ -122,7 +126,9 @@ public class AdminPage extends Application {
         primaryStage.show();
 
         // Initialize with the home page
-        homeTab.fire();
+        if (controller != null) {
+            homeTab.fire();
+        }
     }
 
     private Button createButtonWithIcon(String iconPath, String text) {
@@ -257,13 +263,13 @@ public class AdminPage extends Application {
         disapproveButton.getStyleClass().add("disapprove-button");
 
         approveButton.setOnAction(ev -> {
-            controller.approveRequest(request[0]);
+            controller.approveRequest(request[4]);
             refreshRoomRequestsPage(roomRequestsPage);
             removeRequestRow(roomRequestsPage, requestRow);
         });
 
         disapproveButton.setOnAction(ev -> {
-            controller.disapproveRequest(request[0]);
+            controller.disapproveRequest(request[4]);
             refreshRoomRequestsPage(roomRequestsPage);
             removeRequestRow(roomRequestsPage, requestRow);
         });
@@ -428,6 +434,7 @@ public class AdminPage extends Application {
         return container;
     }
 
+    @SuppressWarnings("unused")
     private void refreshHostelsPage(VBox hostelPage) {
         List<String[]> hostels = controller.fetchHostels();
 
@@ -439,32 +446,40 @@ public class AdminPage extends Application {
         for (String[] hostel : hostels) {
             addHostelCard(hostelPage, hostel);
         }
+
+        Button addHostelButton = new Button("+");
+        addHostelButton.setOnAction(e -> {
+            controller.addHostel();
+        });
+        addHostelButton.setAlignment(Pos.CENTER);
+        hostelPage.getChildren().add(addHostelButton);
+        hostelPage.setAlignment(Pos.TOP_CENTER);
     }
 
     @SuppressWarnings("unused")
     private void addHostelCard(VBox hostelPage, String[] hostel) {
-        String hostelId = hostel[0];
+        String location = hostel[0];
         String hostelName = hostel[1];
         int numberPendingApplications = Integer.parseInt(hostel[2]);
         String[] students = hostel[3].split(",");
         String[] maintenanceStaff = hostel[4].split(",");
 
-        HostelCardWide hostelCard = new HostelCardWide(hostelId, hostelName, numberPendingApplications, students,
+        HostelCardWide hostelCard = new HostelCardWide(location, hostelName, numberPendingApplications, students,
                 maintenanceStaff);
         // hostelCard deleteButton event handler
         hostelCard.getDeleteButton().setOnAction(e -> {
-            controller.removeHostel(hostelId);
+            controller.removeHostel(hostel[5]);
             refreshHostelsPage(hostelPage);
         });
 
         hostelCard.getAddStaffButton().setOnAction(e -> {
-            controller.addStaffToHostel(hostelId);
+            controller.addStaffToHostel(hostel[5]);
             refreshHostelsPage(hostelPage);
 
         });
 
         hostelCard.getRemoveStaffButton().setOnAction(e -> {
-            controller.removeStaffFromHostel(hostelId);
+            controller.removeStaffFromHostel(hostel[5]);
             refreshHostelsPage(hostelPage);
         });
 
@@ -475,56 +490,118 @@ public class AdminPage extends Application {
     /// Settings Page /////
     ///////////////////////////////////////////////////////////////////////////////
 
+    @SuppressWarnings("unused")
     public VBox createSettingsPage() {
 
-        // Create fields for settings page
-        Label nameLabel = new Label("Change Name:");
         TextField nameField = new TextField();
         nameField.setPromptText("Enter your new name");
-        nameField.setMaxWidth(300);
+        nameField.setMaxWidth(400);
         nameField.setMinHeight(40);
-
-        Label emailLabel = new Label("Change Email:");
+    
+        // Label emailLabel = new Label("Change Email:");
         TextField emailField = new TextField();
         emailField.setPromptText("Enter your new email");
         emailField.setMaxWidth(300);
+        emailField.setPrefWidth(195);
         emailField.setMinHeight(40);
-
-        Label phoneLabel = new Label("Change Phone Number:");
+    
+        // Label phoneLabel = new Label("Change Phone Number:");
         TextField phoneField = new TextField();
         phoneField.setPromptText("Enter your new phone number");
         phoneField.setMaxWidth(300);
+        phoneField.setPrefWidth(195);
         phoneField.setMinHeight(40);
-
-        Label passwordLabel = new Label("Reset Password:");
+    
+        // Label passwordLabel = new Label("Reset Password:");
         PasswordField passwordField = new PasswordField();
         passwordField.setPromptText("Enter your new password");
         passwordField.setMaxWidth(300);
+        passwordField.setPrefWidth(195);
         passwordField.setMinHeight(40);
-
-        Label passwordLabel2 = new Label("Confirm Password:");
+    
+        // Label passwordLabel2 = new Label("Confirm Password:");
         PasswordField passwordField2 = new PasswordField();
         passwordField2.setPromptText("Confirm your new password");
         passwordField2.setMaxWidth(300);
+        passwordField2.setPrefWidth(195);
         passwordField2.setMinHeight(40);
-
+    
         Button saveButton = new Button("Save Details");
         saveButton.setOnAction(ev -> controller.editProfile(nameField.getText(), emailField.getText(),
-                phoneField.getText(), passwordField.getText(), passwordField2.getText()));
+                                    phoneField.getText(), passwordField.getText(), passwordField2.getText()));
+    
 
-        VBox formLayout = new VBox(10, nameLabel, nameField, emailLabel, emailField, phoneLabel, phoneField,
-                passwordLabel, passwordField, passwordLabel2, passwordField2);
+        HBox passwordGroup = new HBox(10, passwordField, passwordField2);
+        passwordGroup.setAlignment(Pos.CENTER);
+        HBox contactGroup = new HBox(10, emailField, phoneField);
+        contactGroup.setAlignment(Pos.CENTER);
+
+        // Layout adjustments
+        VBox formLayout = new VBox(10, nameField, contactGroup,passwordGroup);
+        // VBox formLayout = new VBox(10, nameLabel, nameField, emailLabel, emailField, phoneLabel, phoneField, passwordLabel, passwordField, passwordLabel2, passwordField2);
         formLayout.setSpacing(15);
         formLayout.setAlignment(Pos.CENTER);
-
+    
+        // Make the save button more visually prominent and align it
         HBox buttonLayout = new HBox(saveButton);
         buttonLayout.setAlignment(Pos.CENTER);
         buttonLayout.setSpacing(10);
-
+    
         VBox content = new VBox(20, formLayout, buttonLayout);
         content.setAlignment(Pos.CENTER);
+    
 
         return content;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////
+    /// Home Page /////
+    /// /////////////////////////////////////////////////////////////////////////
+    
+    public VBox createHomePage()
+    {
+        // Create labels for student details
+        Label nameLabel = new Label("Welcome " + controller.getUserName()+ "! 😊");
+        nameLabel.setStyle("-fx-font: 36 arial; -fx-font-weight: bold; -fx-text-fill: white;");
+        Label emailLabel = new Label("📧 "+controller.getUserEmail());
+        emailLabel.setStyle("-fx-font: 24 arial; -fx-text-fill: white;");
+        Label phoneLabel = new Label("📞 "+ controller.getUserPhone());
+        phoneLabel.setStyle("-fx-font: 24 arial; -fx-text-fill: white;");
+
+        // Create a VBox for the details and style it
+        VBox detailsLayout = new VBox(10, nameLabel, emailLabel, phoneLabel);
+        detailsLayout.setPadding(new Insets(20));
+        detailsLayout.setAlignment(Pos.CENTER);
+        detailsLayout.getStyleClass().add("home-layout-card");
+
+
+        VBox homeLayout = new VBox(detailsLayout);
+        homeLayout.setAlignment(Pos.CENTER);
+        homeLayout.setSpacing(20);
+        homeLayout.setPadding(new Insets(20));
+        homeLayout.setStyle("-fx-background-color: #E3F2FD;");
+
+
+        // Add responsive behavior
+        ScrollPane scrollPane = new ScrollPane(homeLayout);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background-color: #E3F2FD;");
+
+        VBox container = new VBox(scrollPane);
+        container.setPadding(new Insets(10));
+        container.setAlignment(Pos.TOP_LEFT);
+        container.getStyleClass().add("container");
+
+        return container;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////
+    /// Other Methods /////
+    /// /////////////////////////////////////////////////////////////////////////
+    
+    public void setAdminController(AdminController adminController) {
+        this.controller = adminController;
+        this.homeTab.fire();
     }
 
 }

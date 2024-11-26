@@ -2,6 +2,7 @@ package controller.comman;
 
 import javax.swing.JOptionPane;
 
+import controller.Administrator.AdminController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,6 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Database.database;
+import model.User.AdministratorModel;
 import model.User.StudentModel;
 import model.User.UserModel;
 import view.Administrator.AdminPage;
@@ -49,6 +51,7 @@ public class signInController {
                     adminPage.start(primaryStage);
                     userNameField.setText("");
                     passwordField.setText("");
+                    adminPage.setAdminController(new AdminController((AdministratorModel) user));
                     this.signinButton.getScene().getWindow().hide();
                 } catch (Exception e) {
                     // TODO Auto-generated catch block

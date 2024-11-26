@@ -317,3 +317,248 @@ END$$
 SELECT submit_complaint('R001', 'H001', 'umer', 'No hot water');
 
 SELECT * FROM complaints;
+
+
+-- Admin owns hostel table
+
+CREATE TABLE admin_owns_hostel (
+    admin_id VARCHAR(255) NOT NULL,
+    hostel_id VARCHAR(255) NOT NULL,
+    FOREIGN KEY (admin_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (hostel_id) REFERENCES hostels(hostel_id) ON DELETE CASCADE
+);
+
+INSERT INTO admin_owns_hostel (admin_id, hostel_id) VALUES
+('mine', 'H001');
+
+-- drop data
+DELETE FROM admin_owns_hostel WHERE admin_id = 'umer';
+
+SELECT * FROM admin_owns_hostel;
+
+
+DELIMITER $$
+
+CREATE FUNCTION aprove_room_book_request (
+    request_id VARCHAR(255)
+) RETURNS BOOLEAN
+DETERMINISTIC
+MODIFIES SQL DATA
+BEGIN
+    DECLARE is_approved BOOLEAN;
+
+    UPDATE room_book_requests
+    SET status = 'Approved'
+    WHERE request_id = request_id;
+
+    INSERT INTO user_has_room (user_id, room_id, hostel_id)
+    SELECT user_id, room_id, hostel_id FROM room_book_requests WHERE request_id = request_id;
+
+    SET is_approved = ROW_COUNT() > 0;
+
+    RETURN is_approved;
+END$$
+
+DELIMITER ;
+
+SELECT aprove_room_book_request('9349c71e-aa4c-11ef-b440-482ae32943bf');
+
+SELECT * FROM room_book_requests;
+
+-- Admin can reject room booking request
+
+DELIMITER $$
+
+CREATE FUNCTION reject_room_book_request (
+    request_id VARCHAR(255)
+) RETURNS BOOLEAN
+DETERMINISTIC
+MODIFIES SQL DATA
+BEGIN
+    DECLARE is_rejected BOOLEAN;
+
+    UPDATE room_book_requests
+    SET status = 'Rejected'
+    WHERE request_id = request_id;
+
+    SET is_rejected = ROW_COUNT() > 0;
+    
+    RETURN is_rejected;
+END$$
+
+DELIMITER ;
+
+SELECT reject_room_book_request('9349c71e-aa4c-11ef-b440-482ae32943bf');
+
+SELECT * FROM room_book_requests;
+
+-- Admin remove Student from Hostel Room
+
+DELIMITER $$
+CREATE FUNCTION remove_student_from_room (
+    user_id VARCHAR(255)
+) RETURNS BOOLEAN
+DETERMINISTIC
+MODIFIES SQL DATA
+BEGIN
+    DECLARE is_removed BOOLEAN;
+
+    DELETE FROM user_has_room
+    WHERE user_id = user_id;
+
+    SET is_removed = ROW_COUNT() > 0;
+
+    RETURN is_removed;
+END$$
+
+DELIMITER ;
+
+SELECT remove_student_from_room('umer');
+
+SELECT * FROM user_has_room;
+
+DELETE FROM user_has_room
+WHERE user_id = 'umer';
+
+INSERT INTO user_has_room (user_id, room_id, hostel_id) VALUES
+('umer', 'R001', 'H001'),
+('umer2', 'R002', 'H001');
+
+
+-- table hostel has Staff
+
+CREATE TABLE hostel_has_staff (
+    hostel_id VARCHAR(255) NOT NULL,
+    staff_id VARCHAR(255) NOT NULL,
+    FOREIGN KEY (hostel_id) REFERENCES hostels(hostel_id) ON DELETE CASCADE,
+    FOREIGN KEY (staff_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+INSERT INTO hostel_has_staff (hostel_id, staff_id) VALUES
+('H001', 'staff');
+
+SELECT * FROM hostel_has_staff;
+SELECT * FROM hostel_has_staff WHERE hostel_id = 'H001';
+
+DELETE FROM hostel_has_staff WHERE staff_id = 'staff1';
+
+-- Admin can assign staff to hostel
+
+DELIMITER $$
+CREATE FUNCTION assign_staff_to_hostel (
+    staff_id VARCHAR(255),
+    hostel_id VARCHAR(255),
+    email VARCHAR(255)
+) RETURNS BOOLEAN
+DETERMINISTIC
+MODIFIES SQL DATA
+BEGIN
+    DECLARE is_assigned BOOLEAN;
+
+    -- if staff_id and email matches
+    IF EXISTS (SELECT * FROM users WHERE user_id = staff_id AND email = email) THEN
+        INSERT INTO hostel_has_staff (hostel_id, staff_id)
+        VALUES (hostel_id, staff_id);
+
+        SET is_assigned = ROW_COUNT() > 0;
+    ELSE
+        SET is_assigned = FALSE;
+    END IF;
+
+    SET is_assigned = ROW_COUNT() > 0;
+
+    RETURN is_assigned;
+END$$
+
+DELIMITER ;
+
+
+
+SELECT assign_staff_to_hostel('staff', 'H001', 'email');
+
+SELECT * FROM hostel_has_staff;
+
+DELETE FROM hostel_has_staff WHERE staff_id = 'staff';
+
+
+
+-- add new hostel INSERT INTO hostels (hostel_id, hostel_name, hostel_location) VALUES (?, ?, ?)
+
+DELIMITER $$
+CREATE FUNCTION add_new_hostel (
+    owner_id VARCHAR(255),
+    hostel_id VARCHAR(255),
+    hostel_name VARCHAR(255),
+    hostel_location VARCHAR(255)
+) RETURNS BOOLEAN
+DETERMINISTIC
+MODIFIES SQL DATA
+BEGIN
+    DECLARE is_added BOOLEAN;
+
+    -- if owner_id is admin
+    IF EXISTS (SELECT * FROM admin_owns_hostel WHERE admin_id = owner_id) THEN
+        INSERT INTO hostels (hostel_id, hostel_name, hostel_location)
+        VALUES (hostel_id, hostel_name, hostel_location);
+
+        INSERT INTO admin_owns_hostel (admin_id, hostel_id)
+        VALUES (owner_id, hostel_id);
+
+        SET is_added = ROW_COUNT() > 0;
+    ELSE
+        SET is_added = FALSE;
+    END IF;
+
+    RETURN is_added;
+END$$
+
+DELIMITER ;
+
+SELECT add_new_hostel('mine', 'H002', 'Hostel 2', 'Location 2');
+
+-- Admin Removes Hostel
+DELIMITER $$
+
+CREATE FUNCTION remove_hostel (
+    owner_id VARCHAR(255),
+    hostel_id_param VARCHAR(255) -- Renamed parameter for clarity
+) RETURNS BOOLEAN
+DETERMINISTIC
+MODIFIES SQL DATA
+BEGIN
+    DECLARE is_removed BOOLEAN;
+
+    -- Check if the owner is an admin of the hostel
+    IF EXISTS (
+        SELECT 1
+        FROM admin_owns_hostel
+        WHERE admin_id = owner_id AND hostel_id = hostel_id_param
+    ) THEN
+        -- Remove dependent rows
+        DELETE FROM user_has_room WHERE hostel_id = hostel_id_param;
+        DELETE FROM room_book_requests WHERE hostel_id = hostel_id_param;
+        DELETE FROM maintenance_requests WHERE hostel_id = hostel_id_param;
+        DELETE FROM complaints WHERE hostel_id = hostel_id_param;
+        DELETE FROM hostel_has_staff WHERE hostel_id = hostel_id_param;
+
+        -- Remove the hostel and admin ownership record
+        DELETE FROM hostels WHERE hostel_id = hostel_id_param;
+        DELETE FROM admin_owns_hostel WHERE hostel_id = hostel_id_param;
+
+        -- Determine if the hostel was removed
+        SET is_removed = (ROW_COUNT() > 0);
+    ELSE
+        -- Owner is not authorized
+        SET is_removed = FALSE;
+    END IF;
+
+    RETURN is_removed;
+END$$
+
+DELIMITER ;
+
+DROP FUNCTION remove_hostel;
+
+SELECT remove_hostel('mine', 'H002');
+
+SELECT * FROM hostels;

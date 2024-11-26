@@ -50,7 +50,7 @@ public class database {
         }
     }
     
-    public static UserModel SignUp(String userid,String name,String email,String phone, String password, String type) {
+    public static void SignUp(String userid,String name,String email,String phone, String password, String type) {
         connect();
 
         String query = "INSERT INTO USERS (user_id, name, email, phone_number, university_or_job, address, organization_address, userpassword, user_type) " +
@@ -68,24 +68,8 @@ public class database {
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("User signed up successfully!");
-                
-                // UserModel newUser = new UserModel(userid,name,email,phone);
-                UserModel newUser = null;
-                if (type.equals("student")) 
-                {
-                    newUser = new StudentModel(userid, name, email, phone, password, type, query);
-                }
-                else if (type.equals("maintenance_staff")) 
-                {
-                    newUser = new MaintenanceStaffModel(userid, name, email, phone, type, query);
-                }
-                else if (type.equals("administrator")) 
-                {
-                    newUser = new AdministratorModel(userid, name, email, phone, query);
-                }
-
                 disconnect();
-                return newUser;
+                return;
             }
         } catch (SQLException e) {
             System.out.println("Error during sign-up: " + e.getMessage());
@@ -93,7 +77,7 @@ public class database {
             disconnect();
         }
 
-        return null;
+        return;
     }
 
     public static UserModel SignIn(String userid, String password) {
@@ -120,7 +104,7 @@ public class database {
                 }
                 else if(resultSet.getString("user_type").equals("maintenance_staff"))
                 {
-                    newUser = new MaintenanceStaffModel(userid, resultSet.getString("name"), resultSet.getString("email"), resultSet.getString("phone_number"), resultSet.getString("user_type"), query);
+                    newUser = new MaintenanceStaffModel(userid, resultSet.getString("name"), resultSet.getString("email"), resultSet.getString("phone_number"), resultSet.getString("address"));
                     disconnect();
                     return newUser;
                 }
@@ -648,6 +632,407 @@ public class database {
             }
         } catch (SQLException e) {
             System.out.println("Error during submitting complaint: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+
+        return false;
+    }
+
+
+    // SELECT * FROM admin_owns_hostel;
+    public static List<Hostel> getHostelsbyAdminId(String userId) {
+        List<Hostel> hostels = new ArrayList<>();
+        connect();
+
+        String query = "SELECT * FROM admin_owns_hostel WHERE admin_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, userId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            List<String> hostelIds = new ArrayList<>();
+            while (resultSet.next()) {
+                hostelIds.add(resultSet.getString("hostel_id"));
+            }
+            for (String hostelId : hostelIds) {
+                Hostel hostel = gHostelbyID(hostelId);
+                hostels.add(hostel);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting hostels by admin ID: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+        
+        return hostels;
+    }
+
+    // { "User name", "user phone", "Hostel Name", "Room number" })
+    // SELECT * FROM room_book_requests;
+    // SELECT * FROM USERS;
+    // SELECT * FROM rooms;
+    // SELECT * FROM hostels;
+    public static List<String[]> getRoomRequests(String hostelId) {
+        connect();
+        List<String[]> roomRequests = new ArrayList<>();
+
+        String query = "SELECT * FROM room_book_requests WHERE hostel_id = ? AND status = 'pending'";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, hostelId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                String userId = resultSet.getString("user_id");
+                String roomId = resultSet.getString("room_id");
+                String roomNo = getRoomNobyId(roomId);
+                String userName = getUserNamebyId(userId);
+                String userPhone = getUserPhonebyId(userId);
+                String requestId = resultSet.getString("request_id");
+                roomRequests.add(new String[] { userName, userPhone, roomNo, requestId});
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting room requests: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+        return roomRequests;
+    }
+
+    private static String getRoomNobyId(String roomId) {
+        String query = "SELECT room_no FROM rooms WHERE room_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, roomId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("room_no");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting room number by ID: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    private static String getUserNamebyId(String userId) {
+        String query = "SELECT name FROM USERS WHERE user_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, userId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("name");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting user name by ID: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    private static String getUserPhonebyId(String userId) {
+        String query = "SELECT phone_number FROM USERS WHERE user_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, userId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("phone_number");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting user phone by ID: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    private static String getHostelNamebyId(String hostelId) {
+        String query = "SELECT hostel_name FROM hostels WHERE hostel_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, hostelId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("hostel_name");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting hostel name by ID: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    // SELECT aprove_room_book_request('9349c71e-aa4c-11ef-b440-482ae32943bf');
+    public static boolean approveRoomRequest(String requestID) {
+        connect();
+
+        String query = "SELECT aprove_room_book_request(?)";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, requestID);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                System.out.println("Room request approved successfully!");
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during approving room request: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+
+        return false;
+    }
+
+    // SELECT reject_room_book_request('9349c71e-aa4c-11ef-b440-482ae32943bf');
+    public static boolean disapproveRoomRequest(String requestID) {
+        connect();
+
+        String query = "SELECT reject_room_book_request(?)";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, requestID);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                System.out.println("Room request disapproved successfully!");
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during disapproving room request: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+
+        return false;
+    }
+
+    // SELECT * FROM USERS WHERE user_type = 'student';
+    // SELECT * FROM user_has_room;
+    public static List<StudentModel> getStudentsByHostel(String hostelId) {
+        List<StudentModel> students = new ArrayList<>();
+        connect();
+
+        String query = "SELECT * FROM user_has_room WHERE hostel_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, hostelId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                String userId = resultSet.getString("user_id");
+                StudentModel student = getStudentbyId(userId);
+                students.add(student);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting students by hostel: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+        
+        return students;
+
+    }
+
+    private static StudentModel getStudentbyId(String userId) {
+        String query = "SELECT * FROM USERS WHERE user_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, userId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                // String userId, String name, String email, String phoneNumber, String address, String universityOrJob, String organizationAddress)
+                return new StudentModel(userId, resultSet.getString("name"), resultSet.getString("email"), resultSet.getString("phone_number"), resultSet.getString("address"), resultSet.getString("university_or_job"), resultSet.getString("organization_address"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting student by ID: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    // DELETE FROM user_has_room WHERE user_id = 'umer';
+    public static boolean removeStudent(String studentId) {
+        connect();
+
+        String query = "DELETE FROM user_has_room WHERE user_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, studentId);
+
+            int rowsDeleted = stmt.executeUpdate();
+            if (rowsDeleted > 0) {
+                System.out.println("Student removed successfully!");
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during removing student: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+
+        return false;
+    }
+
+    public static List<MaintenanceStaffModel> getMaintenanceStaffByHostel(String hostelId) {
+        List<MaintenanceStaffModel> staffs = new ArrayList<>();
+        connect();
+
+        String query = "SELECT * FROM hostel_has_staff WHERE hostel_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, hostelId);
+            
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                MaintenanceStaffModel staff = getMaintenanceStaffbyId(resultSet.getString("staff_id"));
+                staffs.add(staff);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting maintenance staff by hostel: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+        
+        return staffs;
+    }
+
+    private static MaintenanceStaffModel getMaintenanceStaffbyId(String userId) {
+        String query = "SELECT * FROM USERS WHERE user_id = ? AND user_type = 'maintenance_staff'";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, userId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                // String staffId, String name, String email, String phoneNumber, String address, String organizationAddress)
+                return new MaintenanceStaffModel(userId, resultSet.getString("name"), resultSet.getString("email"), resultSet.getString("phone_number"), resultSet.getString("address"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting maintenance staff by ID: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    // SELECT remove_hostel('mine', 'H001');
+    public static boolean removeHostel(String hostelId,String userId) {
+        connect();
+
+        System.out.println("Removing hostel with ID: " + hostelId);
+        String query = "SELECT remove_hostel(?, ?)";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, userId);
+            stmt.setString(2, hostelId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                // System.out.println("Hostel removed successfully!" + resultSet.getString(0));
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during removing hostel: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+
+        return false;
+    }
+
+    // SELECT assign_staff_to_hostel('staff', 'H001', 'email');
+    public static boolean addStaffToHostel(String hostelId, String username2, String email) {
+        connect();
+
+        String query = "SELECT assign_staff_to_hostel(?, ?, ?)";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, username2);
+            stmt.setString(2, hostelId);
+            stmt.setString(3, email);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                System.out.println("Staff added to hostel successfully!");
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during adding staff to hostel: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+
+        return false;
+    }
+
+    // DELETE FROM hostel_has_staff WHERE staff_id = 'staff';
+    public static boolean removeStaffFromHostel(String hostelId, String id) {
+        connect();
+
+        String query = "DELETE FROM hostel_has_staff WHERE staff_id = ? AND hostel_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, id);
+            stmt.setString(2, hostelId);
+
+            int rowsDeleted = stmt.executeUpdate();
+            if (rowsDeleted > 0) {
+                System.out.println("Staff removed from hostel successfully!");
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during removing staff from hostel: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+
+        return false;
+    }
+
+
+    // SELECT add_new_hostel('mine', 'H002', 'Hostel 2', 'Location 2');
+    public static boolean addHostel(String hostelId, String hostelName, String hostelLocation, String userId) {
+        connect();
+
+        String query = "SELECT add_new_hostel(?, ?, ?, ?)";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, userId);
+            stmt.setString(2, hostelId);
+            stmt.setString(3, hostelName);
+            stmt.setString(4, hostelLocation);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                System.out.println("Hostel added successfully!");
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during adding hostel: " + e.getMessage());
         } finally {
             disconnect();
         }

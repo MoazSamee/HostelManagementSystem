@@ -14,7 +14,7 @@ public class Hostel {
     private List<StudentModel> students = new ArrayList<>();
     private List<MaintenanceStaffModel> maintenanceStaff;
     private List<Room> rooms;
-    private List<StudentModel> pendingApplication = new ArrayList<>();
+    // private List<StudentModel> pendingApplication = new ArrayList<>();
 
     public Hostel(String hostelId, String hostelName,String hostelLocation) {
         this.hostelId = hostelId;
@@ -22,20 +22,6 @@ public class Hostel {
         this.maintenanceStaff = new ArrayList<>();
         this.rooms = new ArrayList<>();
         this.hostelLocation=hostelLocation;
-    }
-
-    // To be removed
-    public Hostel(String hostelId)
-    {
-        this.hostelId=hostelId;
-        // TODO: Implement database query to fetch hostel details
-        database.gHostelbyID(hostelId);
-        this.hostelName = "Hostel Name";
-        this.hostelLocation = "Hostel Location";
-        this.rooms = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            rooms.add(new Room("R" + i, 4, 1, 2));
-        }
     }
 
     public List<Room> getRooms() {
@@ -60,17 +46,17 @@ public class Hostel {
         return hostelLocation;
     }
 
-    public List<StudentModel> getPendingApplication() {
-        return pendingApplication;
-    }
+    // public List<StudentModel> getPendingApplication() {
+    //     return pendingApplication;
+    // }
 
-    public void addPendingApplication(StudentModel student) {
-        pendingApplication.add(student);
-    }
+    // public void addPendingApplication(StudentModel student) {
+    //     pendingApplication.add(student);
+    // }
 
-    public void removePendingApplication(StudentModel student) {
-        pendingApplication.remove(student);
-    }
+    // public void removePendingApplication(StudentModel student) {
+    //     pendingApplication.remove(student);
+    // }
     
     public void setHostelLocation(String hostelLocation) {
         this.hostelLocation = hostelLocation;
@@ -105,7 +91,7 @@ public class Hostel {
     }
 
     public List<StudentModel> getStudents() {
-        return students;
+        return database.getStudentsByHostel(hostelId);
     }
 
     public void setStudents(List<StudentModel> students) {
@@ -113,11 +99,15 @@ public class Hostel {
     }
 
     public List<MaintenanceStaffModel> getMaintenanceStaff() {
-        return maintenanceStaff;
+        return database.getMaintenanceStaffByHostel(hostelId);
     }
 
     public void setMaintenanceStaff(List<MaintenanceStaffModel> maintenanceStaff) {
         this.maintenanceStaff = maintenanceStaff;
+    }
+
+    public List<String[]> getPendingApplication() {
+        return database.getRoomRequests(hostelId);
     }
 
 }

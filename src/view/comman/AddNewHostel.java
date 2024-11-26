@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddStaffDialog {
+public class AddNewHostel {
 
     private List<String> data = null;
 
@@ -16,33 +16,37 @@ public class AddStaffDialog {
     public void start(Stage parentStage) {
         Stage dialogStage = new Stage();
         dialogStage.initOwner(parentStage);
-        dialogStage.setTitle("Add Staff");
-        // set size
+        dialogStage.setTitle("Add New Hostel");
+
+        // Set size
         dialogStage.setWidth(300);
         dialogStage.setHeight(400);
 
         // Create UI components
-        TextField nameField = new TextField();
-        nameField.setPromptText("User Name");
+        TextField idField = new TextField();
+        idField.setPromptText("Hostel ID");
 
-        TextField emailField = new TextField();
-        emailField.setPromptText("Email");
+        TextField nameField = new TextField();
+        nameField.setPromptText("Hostel Name");
+
+        TextField locationField = new TextField();
+        locationField.setPromptText("Hostel Location");
 
         Button submitButton = new Button("Submit");
         Button cancelButton = new Button("Cancel");
 
         // Set up layout
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(nameField, emailField, submitButton, cancelButton);
+        layout.getChildren().addAll(idField, nameField, locationField, submitButton, cancelButton);
         layout.setPadding(new javafx.geometry.Insets(10));
-        // set allignment
         layout.setAlignment(javafx.geometry.Pos.CENTER);
 
         // Handle button actions
         submitButton.setOnAction(event -> {
             data = new ArrayList<>();
+            data.add(idField.getText());
             data.add(nameField.getText());
-            data.add(emailField.getText());
+            data.add(locationField.getText());
             dialogStage.close();
         });
 
@@ -52,7 +56,7 @@ public class AddStaffDialog {
         });
 
         // Load the CSS file
-        Scene scene = new Scene(layout, 300, 200);
+        Scene scene = new Scene(layout, 300, 400);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         // Set up the scene and show the dialog

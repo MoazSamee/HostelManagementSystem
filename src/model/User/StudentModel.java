@@ -136,6 +136,9 @@ public class StudentModel extends UserModel {
     public Hostel getCurrunthostel() {
 
         Hostel hostel = database.gHostelbyStudentID(userId);
+        if (hostel == null) {
+            return null;
+        }
         this.hostelId = hostel.getHostelId();
         return hostel;
 
@@ -143,6 +146,9 @@ public class StudentModel extends UserModel {
 
     public Room getCurrunthostelRoom() {
         Room room = database.getRoomByStudentID(userId);
+        if (room == null) {
+            return null;
+        }
         this.roomNo = room.getRoomNo();
         return room;
     }
