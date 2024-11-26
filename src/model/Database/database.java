@@ -1091,7 +1091,6 @@ public class database {
         return null;
     }
 
-
     // UPDATE maintenance_requests
     // SET status = 'Completed'
     // WHERE request_id = 'R001';
@@ -1117,6 +1116,78 @@ public class database {
         }
 
         return false;
+    }
+
+    // SELECT * FROM maintenance_requests;
+    public static List<Complaint> getComplaints() {
+        List<Complaint> requests = new ArrayList<>();
+        connect();
+
+        String query = "SELECT * FROM complaints";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                // MaintenanceRequest(String requestId, String roomNo, String hostelId, String description)
+                Complaint request = new Complaint(resultSet.getString("complaint_id"),getRoomNobyId(resultSet.getString("room_id")), resultSet.getString("hostel_id"), resultSet.getString("description"),resultSet.getString("status"));
+                requests.add(request);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting complaints: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+        return requests;
+    }
+
+    // SELECT * FROM complaints;
+    public static Complaint getComplaint(String complaintsId) {
+        connect();
+        Complaint request = null;
+
+        String query = "SELECT * FROM complaints WHERE complaint_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, complaintsId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                // MaintenanceRequest(String requestId, String roomNo, String hostelId, String description)
+                request = new Complaint(resultSet.getString("complaint_id"),getRoomNobyId(resultSet.getString("room_id")), resultSet.getString("hostel_id"), resultSet.getString("description"),resultSet.getString("status"));
+                return request;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting complaint by ID: " + e.getMessage());
+        } finally {
+            disconnect();
+        }        
+        
+        return null;
+    }
+
+
+    public static void setComplaintStatus(String complaintId, String status) {
+        connect();
+
+        String query = "UPDATE complaints SET status = ? WHERE complaint_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, status);
+            stmt.setString(2, complaintId);
+
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Complaint status updated successfully!");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during updating complaint status: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
     }
 
 }

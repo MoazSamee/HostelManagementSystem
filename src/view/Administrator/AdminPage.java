@@ -23,6 +23,7 @@ public class AdminPage extends Application {
     private Button roomRequestsTab;
     private Button studentsTab;
     private Button hostelsTab;
+    private Button compliantTab;
     private Button settingsTab;
 
     @SuppressWarnings("unused")
@@ -37,22 +38,25 @@ public class AdminPage extends Application {
         sidebar.getStyleClass().add("sidebar");
 
         Button toggleButton = new Button("☰");
+        toggleButton.setAlignment(Pos.CENTER);
         homeTab = createButtonWithIcon("/resources/home.png", " Home");
         roomRequestsTab = createButtonWithIcon("/resources/bell.png", " Room Requests");
         studentsTab = createButtonWithIcon("/resources/user.png", " Students");
         hostelsTab = createButtonWithIcon("/resources/pin.png", " Hostels");
+        compliantTab = createButtonWithIcon("/resources/forbidden.png", " Complaints");
         settingsTab = createButtonWithIcon("/resources/setting.png", " Settings");
 
-        homeTab.setPrefWidth(200);
-        roomRequestsTab.setPrefWidth(200);
-        studentsTab.setPrefWidth(200);
-        hostelsTab.setPrefWidth(200);
-        settingsTab.setPrefWidth(200);
+        homeTab.setPrefWidth(250);
+        roomRequestsTab.setPrefWidth(250);
+        studentsTab.setPrefWidth(250);
+        hostelsTab.setPrefWidth(250);
+        compliantTab.setPrefWidth(250);
+        settingsTab.setPrefWidth(250);
 
-        updateButtonIconsWithText(homeTab, roomRequestsTab, studentsTab, hostelsTab, settingsTab);
+        updateButtonIconsWithText(homeTab, roomRequestsTab, studentsTab, hostelsTab, compliantTab, settingsTab);
 
-        sidebar.getChildren().addAll(toggleButton, homeTab, roomRequestsTab, studentsTab, hostelsTab, settingsTab);
-        sidebar.setMaxWidth(200);
+        sidebar.getChildren().addAll(toggleButton, homeTab, roomRequestsTab, studentsTab, hostelsTab,compliantTab, settingsTab);
+        // sidebar.setMaxWidth(250);
 
         // Content Area
         BorderPane contentPane = new BorderPane();
@@ -62,31 +66,37 @@ public class AdminPage extends Application {
 
         // Sidebar Navigation Events
         homeTab.setOnAction(e -> {
-            setActiveTab(homeTab, roomRequestsTab, studentsTab, hostelsTab, settingsTab);
+            setActiveTab(homeTab, roomRequestsTab, studentsTab, hostelsTab,compliantTab, settingsTab);
             VBox homePage = createHomePage();
             contentPane.setCenter(homePage);
         });
 
         roomRequestsTab.setOnAction(e -> {
-            setActiveTab(roomRequestsTab, homeTab, studentsTab, hostelsTab, settingsTab);
+            setActiveTab(roomRequestsTab, homeTab, studentsTab, hostelsTab,compliantTab, settingsTab);
             VBox roomRequestsPage = createRoomRequestsPage();
             contentPane.setCenter(roomRequestsPage);
         });
 
         studentsTab.setOnAction(e -> {
-            setActiveTab(studentsTab, homeTab, roomRequestsTab, hostelsTab, settingsTab);
+            setActiveTab(studentsTab, homeTab, roomRequestsTab, hostelsTab,compliantTab, settingsTab);
             VBox studentsPage = createViewStudentPage();
             contentPane.setCenter(studentsPage);
         });
 
         hostelsTab.setOnAction(e -> {
-            setActiveTab(hostelsTab, homeTab, roomRequestsTab, studentsTab, settingsTab);
+            setActiveTab(hostelsTab, homeTab, roomRequestsTab, studentsTab,compliantTab, settingsTab);
             VBox hostelsPage = createHostelsPage();
             contentPane.setCenter(hostelsPage);
         });
 
+        compliantTab.setOnAction(e -> {
+            setActiveTab(compliantTab, homeTab, roomRequestsTab, studentsTab, hostelsTab, settingsTab);
+            VBox compliantPage = createCompliantPage();
+            contentPane.setCenter(compliantPage);
+        });
+
         settingsTab.setOnAction(e -> {
-            setActiveTab(settingsTab, homeTab, roomRequestsTab, studentsTab, hostelsTab);
+            setActiveTab(settingsTab, homeTab, roomRequestsTab, studentsTab, hostelsTab, compliantTab);
             VBox settingsPage = createSettingsPage();
             contentPane.setCenter(settingsPage);
         });
@@ -95,19 +105,19 @@ public class AdminPage extends Application {
         toggleButton.setOnAction(e -> {
             if (isSidebarExpanded) {
                 sidebar.setPrefWidth(50);
-                for (Button button : new Button[] { homeTab, roomRequestsTab, studentsTab, hostelsTab, settingsTab }) {
-                    button.setMinWidth(50);
-                    button.setMaxWidth(50);
+                for (Button button : new Button[] { homeTab, roomRequestsTab, studentsTab, hostelsTab, compliantTab, settingsTab }) {
+                    button.setMinWidth(58);
+                    button.setMaxWidth(58);
                 }
-                updateButtonIconsOnly(homeTab, roomRequestsTab, studentsTab, hostelsTab, settingsTab);
+                updateButtonIconsOnly(homeTab, roomRequestsTab, studentsTab, hostelsTab, compliantTab, settingsTab);
                 toggleButton.setText("☰");
             } else {
                 sidebar.setPrefWidth(200);
-                for (Button button : new Button[] { homeTab, roomRequestsTab, studentsTab, hostelsTab, settingsTab }) {
+                for (Button button : new Button[] { homeTab, roomRequestsTab, studentsTab, hostelsTab, compliantTab, settingsTab }) {
                     button.setMinWidth(200);
                     button.setMaxWidth(Double.MAX_VALUE);
                 }
-                updateButtonIconsWithText(homeTab, roomRequestsTab, studentsTab, hostelsTab, settingsTab);
+                updateButtonIconsWithText(homeTab, roomRequestsTab, studentsTab, hostelsTab, compliantTab, settingsTab);
                 toggleButton.setText("✖");
             }
             isSidebarExpanded = !isSidebarExpanded;
@@ -133,8 +143,8 @@ public class AdminPage extends Application {
 
     private Button createButtonWithIcon(String iconPath, String text) {
         ImageView icon = new ImageView(new Image(getClass().getResourceAsStream(iconPath)));
-        icon.setFitWidth(20);
-        icon.setFitHeight(20);
+        icon.setFitWidth(30);
+        icon.setFitHeight(30);
         Button button = new Button(text, icon);
         button.getStyleClass().add("sidebar-button");
         return button;
@@ -152,6 +162,7 @@ public class AdminPage extends Application {
                 { "requests.png", " Room Requests" },
                 { "students.png", " Students" },
                 { "hostels.png", " Hostels" },
+                { "complaints.png", " Complaints" },
                 { "settings.png", " Settings" }
         };
 
@@ -602,6 +613,101 @@ public class AdminPage extends Application {
     public void setAdminController(AdminController adminController) {
         this.controller = adminController;
         this.homeTab.fire();
+    }
+
+    /////////////////////////////////////////////////////////////////////////////
+    /// Compliant Page /////
+    /// /////////////////////////////////////////////////////////////////////////
+    
+    public VBox createCompliantPage()
+    {
+        List<String[]> requests = controller.fetchRequests();
+    
+        VBox requestPage = new VBox(10);
+        requestPage.setPadding(new Insets(15));
+        requestPage.setAlignment(Pos.TOP_CENTER);
+        requestPage.getStyleClass().add("flat-box");
+    
+        // Header
+        Label title = new Label("Requests");
+        title.getStyleClass().add("page-title");
+        requestPage.getChildren().add(title);
+    
+        // Add rows for each request
+        for (String[] request : requests) {
+            addComplaintRow(requestPage, request);
+        }
+    
+        // Wrap the VBox in a ScrollPane
+        ScrollPane scrollPane = new ScrollPane(requestPage);
+        scrollPane.setFitToWidth(true);
+        scrollPane.getStyleClass().add("scroll-pane");
+        scrollPane.setPadding(new Insets(10));
+    
+        VBox container = new VBox(scrollPane);
+        container.setPadding(new Insets(10));
+        container.setAlignment(Pos.TOP_LEFT);
+        container.getStyleClass().add("scroll-pane");
+        return container;
+    }
+
+    @SuppressWarnings("unused")
+    private void addComplaintRow(VBox requestPage, String[] request) {
+        HBox requestHeader = new HBox(10);
+        requestHeader.setAlignment(Pos.CENTER_LEFT);
+        requestHeader.setPadding(new Insets(10));
+        requestHeader.getStyleClass().add("header-cell");
+    
+        // Request details: User name, room number, hostel name, hostel address
+        Label userName = new Label("Room (" + request[0] + ")");
+        Label roomNumber = new Label("Hostel: " + request[1]);
+        Label hostelName = new Label("Address: " + request[2]);
+        Label status = new Label("Status: " + request[3]);
+    
+        requestHeader.getChildren().addAll(userName, roomNumber, hostelName);
+    
+        // Request text (multi-line label)
+        Label requestText = new Label(request[4]);
+        requestText.setWrapText(true);
+        requestText.getStyleClass().add("request-text");
+        requestText.setPadding(new Insets(5));
+    
+        Button resolveButton = null;
+        // Resolve button
+        if (request[3].equals("Pending")) {
+            resolveButton = new Button("🔔 Start Resolving");
+            // resolveButton.getStyleClass().add("aproove-button");
+            resolveButton.setOnAction(e -> {
+                controller.handleResolve(request);
+                compliantTab.fire();
+            });
+        }
+        else if (request[3].equals("In Progress")) {
+            resolveButton = new Button("⌛ Resolve");
+            // resolveButton.getStyleClass().add("aproove-button");
+            resolveButton.setOnAction(e -> {
+                controller.handleResolve(request);
+                compliantTab.fire();
+            });
+        }
+        else {
+            resolveButton = new Button("✅ Resolved");
+            System.err.println("reuest sysys"+request[3]);
+            // resolveButton.getStyleClass().add("aproove-button");
+            resolveButton.setDisable(true);
+        }
+
+
+        HBox resolveButtonGroup = new HBox(resolveButton);
+        resolveButtonGroup.setAlignment(Pos.TOP_RIGHT);
+
+    
+        VBox requestRow = new VBox(5);
+        requestRow.setPadding(new Insets(10));
+        requestRow.getStyleClass().add("request-row");
+        requestRow.getChildren().addAll(requestHeader, requestText, resolveButtonGroup);
+    
+        requestPage.getChildren().add(requestRow);
     }
 
 }

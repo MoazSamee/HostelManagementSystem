@@ -7,7 +7,9 @@ import javax.swing.JOptionPane;
 
 import javafx.application.Platform;
 import javafx.stage.Stage;
+import model.Hostel.Complaint;
 import model.Hostel.Hostel;
+import model.Hostel.MaintenanceRequest;
 import model.User.AdministratorModel;
 import model.User.MaintenanceStaffModel;
 import model.User.StudentModel;
@@ -243,5 +245,35 @@ public class AdminController {
             return user.getPhoneNumber();
         }
         return null;
+    }
+
+    public List<String[]> fetchRequests() {
+        List<String[]> requests = new ArrayList<String[]>();
+        List<Complaint> requests2 = user.getRequests();
+        for (Complaint request : requests2) {
+            Hostel hostel = new Hostel(request.getHostelId());
+            requests.add(new String[] { request.getRoomNoString(), hostel.getHostelName(), hostel.getHostelLocation(),request.getStatus(), request.getDescription(), request.getComplaintId()});
+        }
+        // sort requests by status In Progress, Pending, Completed
+        requests.sort((a, b) -> {
+            if (a[3].equals("Completed") && !b[3].equals("Completed")) {
+            return 1;
+            } else if (!a[3].equals("Completed") && b[3].equals("Completed")) {
+            return -1;
+            } else {
+            return a[3].compareTo(b[3]);
+            }
+        });
+        return requests;
+    }
+
+    public void handleResolve(String[] request) {
+        Complaint request2 = new Complaint(request[5]);
+        System.out.println("Reqest : " + request[5]);
+        if (!request2.resolve())
+        {
+            JOptionPane.showMessageDialog(null, "Request could not be resolved", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return;
     }
 }

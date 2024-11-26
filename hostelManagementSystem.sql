@@ -275,6 +275,7 @@ SELECT submit_maintenance_request('R001', 'H001', 'umer', 'Leaky faucet');
 
 
 SELECT * FROM maintenance_requests;
+SELECT * FROM complaints;
 
 -- complaints TODO
 

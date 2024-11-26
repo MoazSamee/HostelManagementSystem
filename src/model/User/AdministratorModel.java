@@ -2,7 +2,9 @@ package model.User;
 
 import model.PaymentGateway.Wallet;
 import model.Database.database;
+import model.Hostel.Complaint;
 import model.Hostel.Hostel;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,6 +140,15 @@ public class AdministratorModel extends UserModel {
         {
             db.updatePassword(userId, password);
         }
+    }
+
+    public List<Complaint> getRequests() {
+        List<Complaint> requests = database.getComplaints();
+        // print for debugging
+        for (Complaint request : requests) {
+            System.out.println(request.getComplaintId() + " - " + request.getRoomNo() + " - " + request.getHostelId() + " - " + request.getDescription() + " - " + request.getStatus());
+        }
+        return requests;
     }
 
 }
