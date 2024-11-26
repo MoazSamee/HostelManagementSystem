@@ -308,6 +308,13 @@
     -fx-padding: 8;
 }
 
+.flat-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ffffff;
+    -fx-padding: 10;
+    -fx-border-width: 0;
+}
+
 /* ScrollPane containing GridPane */
 .scroll-pane {
     -fx-background-color: #ffffff;
@@ -441,4 +448,15 @@
     -fx-background-radius: 20;
     -fx-font-weight: normal;
     -fx-padding: 16;
+}
+
+.request-row
+{
+    -fx-background-color: #e3f0fb;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0;
+    -fx-padding: 12;
+    -fx-background-radius: 20;
+    -fx-font-size: 14px;
+    -fx-text-fill: #0d47a1; /* Dark blue */
 }

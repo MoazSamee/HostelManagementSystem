@@ -687,7 +687,7 @@ public class database {
             while (resultSet.next()) {
                 String userId = resultSet.getString("user_id");
                 String roomId = resultSet.getString("room_id");
-                String roomNo = getRoomNobyId(roomId);
+                String roomNo = String.valueOf(getRoomNobyId(roomId));
                 String userName = getUserNamebyId(userId);
                 String userPhone = getUserPhonebyId(userId);
                 String requestId = resultSet.getString("request_id");
@@ -701,7 +701,7 @@ public class database {
         return roomRequests;
     }
 
-    private static String getRoomNobyId(String roomId) {
+    private static int getRoomNobyId(String roomId) {
         String query = "SELECT room_no FROM rooms WHERE room_id = ?";
 
         try {
@@ -710,13 +710,14 @@ public class database {
 
             ResultSet resultSet = stmt.executeQuery();
             if (resultSet.next()) {
-                return resultSet.getString("room_no");
+                // return (String)resultSet.getString("room_no");
+                return resultSet.getInt("room_no");
             }
         } catch (SQLException e) {
             System.out.println("Error during getting room number by ID: " + e.getMessage());
         }
 
-        return null;
+        return -1;
     }
 
     private static String getUserNamebyId(String userId) {
@@ -1033,6 +1034,84 @@ public class database {
             }
         } catch (SQLException e) {
             System.out.println("Error during adding hostel: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+
+        return false;
+    }
+
+    // SELECT * FROM maintenance_requests;
+    public static List<MaintenanceRequest> getMaintainaceRequest() {
+        List<MaintenanceRequest> requests = new ArrayList<>();
+        connect();
+
+        String query = "SELECT * FROM maintenance_requests";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                // MaintenanceRequest(String requestId, String roomNo, String hostelId, String description)
+                MaintenanceRequest request = new MaintenanceRequest(resultSet.getString("request_id"),getRoomNobyId(resultSet.getString("room_id")), resultSet.getString("hostel_id"), resultSet.getString("description"),resultSet.getString("status"));
+                requests.add(request);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting maintenance requests: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+        return requests;
+    }
+
+    
+    public static MaintenanceRequest getMaintainaceRequest(String string) {
+        connect();
+        MaintenanceRequest request = null;
+
+        String query = "SELECT * FROM maintenance_requests WHERE request_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, string);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                // MaintenanceRequest(String requestId, String roomNo, String hostelId, String description)
+                request = new MaintenanceRequest(resultSet.getString("request_id"),getRoomNobyId(resultSet.getString("room_id")), resultSet.getString("hostel_id"), resultSet.getString("description"),resultSet.getString("status"));
+                return request;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting maintenance request by ID: " + e.getMessage());
+        } finally {
+            disconnect();
+        }        
+        
+        return null;
+    }
+
+
+    // UPDATE maintenance_requests
+    // SET status = 'Completed'
+    // WHERE request_id = 'R001';
+    public static boolean setMaintainaceRequestStatus(String requestID, String status) {
+        connect();
+
+        String query = "UPDATE maintenance_requests SET status = ? WHERE request_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, status);
+            stmt.setString(2, requestID);
+
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Maintenance request status updated successfully!");
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during updating maintenance request status: " + e.getMessage());
         } finally {
             disconnect();
         }

@@ -89,6 +89,10 @@ SELECT * FROM USERS;
 INSERT INTO USERS (user_id, name, email, phone_number, university_or_job, address, organization_address, userpassword, user_type) VALUES
 ('U001', 'John Doe', 'example@email.com', '1234567890', 'University of XYZ', '123 Main St, City, Country', NULL, 'password123', 'student');
 
+INSERT INTO USERS (user_id, name, email, phone_number, university_or_job, address, organization_address, userpassword, user_type) VALUES
+('sta', 'John Doe', 'sta@email.com', '1234567890', 'University of XYZ', '123 Main St, City, Country', NULL, 'sta', 'maintenance_staff');
+
+
 SELECT * FROM USERS WHERE user_id = 'U001';
 
 -- update user name email password phone_number university_or_job address organization_address
@@ -559,6 +563,15 @@ DELIMITER ;
 
 DROP FUNCTION remove_hostel;
 
-SELECT remove_hostel('mine', 'H002');
+SELECT remove_hostel('mine', 'goldenera');
 
 SELECT * FROM hostels;
+
+
+-- Set maintenance rewuest to Completed or In Progress
+
+UPDATE maintenance_requests
+SET status = 'Completed'
+WHERE request_id = 'R001';
+
+SELECT * FROM maintenance_requests;

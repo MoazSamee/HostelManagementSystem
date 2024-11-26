@@ -3,28 +3,47 @@ package model.Hostel;
 import model.Database.database;
 
 public class MaintenanceRequest {
-    private String userId; // Unique identifier for the maintenance request
+    private String requestId; // Unique identifier for the maintenance request
     private int roomNo; // ID of the room where maintenance is needed
     private String hostelId; // ID of the hostel
     private String description; // Description of the maintenance issue
     private String status; // Status of the request (e.g., "Pending", "In Progress", "Completed")
 
     // Constructor
-    public MaintenanceRequest(String userId, int roomNo, String hostelId, String description) {
-        this.userId = userId;
+    public MaintenanceRequest(String requestId, int roomNo, String hostelId, String description) {
+        this.requestId = requestId;
         this.roomNo = roomNo;
         this.hostelId = hostelId;
         this.description = description;
         this.status = "Pending"; // Default status set to "Pending"
     }
 
+    public MaintenanceRequest(String requestId, int roomNo, String hostelId, String description, String status) {
+        this.requestId = requestId;
+        this.roomNo = roomNo;
+        this.hostelId = hostelId;
+        this.description = description;
+        this.status = status;
+    }
+
+
+
+    public MaintenanceRequest(String requestID) {
+        MaintenanceRequest request = database.getMaintainaceRequest(requestID);
+        this.requestId = request.getuserId();
+        this.roomNo = request.getRoomNo();
+        this.hostelId = request.getHostelId();
+        this.description = request.getDescription();
+        this.status = request.getStatus();
+    }
+
     // Getters and Setters
     public String getuserId() {
-        return userId;
+        return requestId;
     }
 
     public void setuserId(String requestId) {
-        this.userId = requestId;
+        this.requestId = requestId;
     }
 
     public int getRoomNo() {
@@ -75,5 +94,19 @@ public class MaintenanceRequest {
 
     public boolean saveRequest() {
         return database.saveMaintenanceRequest(this);
+    }
+
+    public boolean resolve() {
+        if (this.getStatus().equals("Pending")) {
+            database.setMaintainaceRequestStatus(requestId, "In Progress");
+            this.setStatus("In Progress");
+            return true;
+        }
+        else if (this.getStatus().equals("In Progress")) {
+            database.setMaintainaceRequestStatus(requestId, "Completed");
+            this.setStatus("Completed");
+            return true;
+        }
+        return false;
     }
 }

@@ -9,6 +9,7 @@ public abstract class UserModel {
     protected String name;
     protected String email;
     protected String phoneNumber;
+
     
     public UserModel(String userId, String name, String email, String phoneNumber) {
         this.userId = userId;

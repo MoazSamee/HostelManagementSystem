@@ -24,6 +24,16 @@ public class Hostel {
         this.hostelLocation=hostelLocation;
     }
 
+    public Hostel(String hostelId2) {
+        Hostel hostel = database.gHostelbyID(hostelId2);
+        this.hostelId = hostel.getHostelId();
+        this.hostelName = hostel.getHostelName();
+        this.hostelLocation = hostel.getHostelLocation();
+        this.students = hostel.getStudents();
+        this.maintenanceStaff = hostel.getMaintenanceStaff();
+        this.rooms = hostel.getRooms();
+    }
+
     public List<Room> getRooms() {
         return rooms;
     }
