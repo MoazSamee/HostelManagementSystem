@@ -411,7 +411,7 @@
     -fx-padding: 12;
     -fx-background-radius: 20px;
     -fx-font-size: 14px;
-    -fx-text-fill: #0d47a1; /* Dark blue */
+    -fx-text-fill: #0d47a1;
 }
 
 .home-layout-card {

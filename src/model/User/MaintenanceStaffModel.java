@@ -1,5 +1,6 @@
 package model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import model.Database.database;
@@ -24,8 +25,7 @@ public class MaintenanceStaffModel extends UserModel {
 
     @Override
     public List<Hostel> getHostels() {
-        // TODO Auto-generated method stub
-        return null;
+        return database.getHostelsbyMaintenanceStaffId(userId);
     }
 
     @SuppressWarnings("static-access")
@@ -54,11 +54,15 @@ public class MaintenanceStaffModel extends UserModel {
     }
 
     public List<MaintenanceRequest> getRequests() {
-        List<MaintenanceRequest> requests = database.getMaintainaceRequest();
-        // print for debugging
-        for (MaintenanceRequest request : requests) {
-            System.out.println(request.getuserId() + " - " + request.getRoomNo() + " - " + request.getHostelId() + " - " + request.getDescription() + " - " + request.getStatus());
+        List<Hostel> hostels = getHostels();
+        List<MaintenanceRequest> requests = new ArrayList<>();
+        for (Hostel hostel : hostels) {
+            List<MaintenanceRequest> requests2 = database.getMaintainaceRequests(hostel.getHostelId());
+            for (MaintenanceRequest request : requests2) {
+                requests.add(request);
+            }
         }
+
         return requests;
     }
 }

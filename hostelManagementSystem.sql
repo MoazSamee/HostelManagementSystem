@@ -538,25 +538,32 @@ MODIFIES SQL DATA
 BEGIN
     DECLARE is_added BOOLEAN;
 
-    -- if owner_id is admin
-    IF EXISTS (SELECT * FROM admin_owns_hostel WHERE admin_id = owner_id) THEN
+    -- Check if the hostel_id already exists
+    IF EXISTS (SELECT 1 FROM hostels h WHERE h.hostel_id = hostel_id) THEN
+        SET is_added = FALSE;
+    ELSE
+        -- Add new hostel
         INSERT INTO hostels (hostel_id, hostel_name, hostel_location)
         VALUES (hostel_id, hostel_name, hostel_location);
 
+        -- Link admin with the hostel
         INSERT INTO admin_owns_hostel (admin_id, hostel_id)
         VALUES (owner_id, hostel_id);
 
-        SET is_added = ROW_COUNT() > 0;
-    ELSE
-        SET is_added = FALSE;
+        -- Confirm success
+        SET is_added = TRUE;
     END IF;
 
     RETURN is_added;
 END$$
-
 DELIMITER ;
 
-SELECT add_new_hostel('mine', 'H002', 'Hostel 2', 'Location 2');
+-- DROP OLDER
+DROP FUNCTION add_new_hostel;
+
+SELECT add_new_hostel('igabdullah', 'bob', 'Bob Hostel', 'F11, Islamabad');
+
+SELECT * FROM hostels;
 
 -- Admin Removes Hostel
 DELIMITER $$

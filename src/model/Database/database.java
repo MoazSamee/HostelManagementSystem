@@ -1042,14 +1042,15 @@ public class database {
     }
 
     // SELECT * FROM maintenance_requests;
-    public static List<MaintenanceRequest> getMaintainaceRequest() {
+    public static List<MaintenanceRequest> getMaintainaceRequests(String hostelId) {
         List<MaintenanceRequest> requests = new ArrayList<>();
         connect();
 
-        String query = "SELECT * FROM maintenance_requests";
+        String query = "SELECT * FROM maintenance_requests WHERE hostel_id = ?";
 
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, hostelId);
 
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()) {
@@ -1066,7 +1067,7 @@ public class database {
     }
 
     
-    public static MaintenanceRequest getMaintainaceRequest(String string) {
+    public static MaintenanceRequest getMaintainaceRequest(String request_id) {
         connect();
         MaintenanceRequest request = null;
 
@@ -1074,7 +1075,7 @@ public class database {
 
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setString(1, string);
+            stmt.setString(1, request_id);
 
             ResultSet resultSet = stmt.executeQuery();
             if (resultSet.next()) {
@@ -1119,14 +1120,15 @@ public class database {
     }
 
     // SELECT * FROM maintenance_requests;
-    public static List<Complaint> getComplaints() {
+    public static List<Complaint> getComplaints(String hostelId) {
         List<Complaint> requests = new ArrayList<>();
         connect();
 
-        String query = "SELECT * FROM complaints";
+        String query = "SELECT * FROM complaints WHERE hostel_id = ?";
 
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, hostelId);
 
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()) {
@@ -1199,8 +1201,8 @@ public class database {
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, hostelId);
-            stmt.setInt(2, Integer.parseInt(maxBeds));
-            stmt.setInt(3, Integer.parseInt(roomNumber));
+            stmt.setInt(2, Integer.parseInt(roomNumber));
+            stmt.setInt(3, Integer.parseInt(maxBeds));
 
             ResultSet resultSet = stmt.executeQuery();
             if (resultSet.next()) {
@@ -1214,6 +1216,35 @@ public class database {
         }
 
         return false;
+    }
+
+    // SELECT * FROM hostel_has_staff;
+    public static List<Hostel> getHostelsbyMaintenanceStaffId(String userId) {
+        List<Hostel> hostels = new ArrayList<>();
+        connect();
+
+        String query = "SELECT * FROM hostel_has_staff WHERE staff_id = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, userId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            List<String> hostelIds = new ArrayList<>();
+            while (resultSet.next()) {
+                hostelIds.add(resultSet.getString("hostel_id"));
+            }
+            for (String hostelId : hostelIds) {
+                Hostel hostel = gHostelbyID(hostelId);
+                hostels.add(hostel);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during getting hostels by maintenance staff ID: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+        
+        return hostels;
     }
 
 }

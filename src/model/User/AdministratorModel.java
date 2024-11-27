@@ -111,7 +111,7 @@ public class AdministratorModel extends UserModel {
     public boolean addHostel(String hostelId, String hostelName, String hostelLocation) {
         if (hostelId != null && hostelName != null && hostelLocation != null)
         {
-            System.out.println("Adding hostel with ID " + hostelId);
+            System.out.println("Adding hostel with ID " + hostelId + userId) ;
 
             return database.addHostel(hostelId, hostelName, hostelLocation, userId);
         }
@@ -143,10 +143,13 @@ public class AdministratorModel extends UserModel {
     }
 
     public List<Complaint> getRequests() {
-        List<Complaint> requests = database.getComplaints();
-        // print for debugging
-        for (Complaint request : requests) {
-            System.out.println(request.getComplaintId() + " - " + request.getRoomNo() + " - " + request.getHostelId() + " - " + request.getDescription() + " - " + request.getStatus());
+        List<Hostel> hostels = database.getHostels();
+        List<Complaint> requests = new ArrayList<>();
+        for (Hostel hostel : hostels) {
+            List<Complaint> complaints = database.getComplaints(hostel.getHostelId());
+            for (Complaint complaint : complaints) {
+                requests.add(complaint);
+            }
         }
         return requests;
     }

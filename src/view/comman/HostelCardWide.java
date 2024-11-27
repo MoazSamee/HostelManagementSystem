@@ -1,6 +1,7 @@
 package view.comman;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -42,23 +43,30 @@ public class HostelCardWide extends VBox {
 
         VBox studentsList = new VBox(5);
         studentsList.getStyleClass().add("flat-box");
-        Label studentsLabel = new Label("Students:");
+        Label studentsLabel = new Label("Students");
+        studentsLabel.setAlignment(Pos.CENTER);
+        studentsLabel.setStyle("-fx-font-weight: bold;");
         studentsList.getChildren().add(studentsLabel);
         for (String student : students) {
             studentsList.getChildren().add(new Label(student));
         }
+        VBox.setVgrow(studentsList, Priority.ALWAYS);
 
         VBox staffList = new VBox(5);
         staffList.getStyleClass().add("flat-box");
-        Label staffLabel = new Label("Maintenance Staff:");
+        Label staffLabel = new Label("Maintenance Staff");
+        staffLabel.setAlignment(Pos.CENTER);
+        staffLabel.setStyle("-fx-font-weight: bold;");
+
         staffList.getChildren().add(staffLabel);
         for (String staff : maintenanceStaff) {
             staffList.getChildren().add(new Label(staff));
         }
-
         VBox roomsList = new VBox(5);
         roomsList.getStyleClass().add("flat-box");
-        Label roomsLabel = new Label("Rooms:");
+        Label roomsLabel = new Label("Rooms");
+        roomsLabel.setAlignment(Pos.CENTER);
+        roomsLabel.setStyle("-fx-font-weight: bold;");
         roomsList.getChildren().add(roomsLabel);
         for (String room : rooms) {
             roomsList.getChildren().add(new Label(room));
@@ -78,8 +86,9 @@ public class HostelCardWide extends VBox {
 
         ScrollPane roomsScroll = new ScrollPane(roomsList);
         roomsScroll.getStyleClass().add("flat-box");
-        roomsScroll.setFitToWidth(true);
+        // roomsScroll.setFitToWidth(true);
         // HBox.setHgrow(roomsScroll, Priority.ALWAYS);
+        roomsScroll.setPrefWidth(180);
         VBox.setVgrow(roomsScroll, Priority.ALWAYS);
 
         listsContainer.getChildren().addAll(studentsScroll, staffScroll, roomsScroll);

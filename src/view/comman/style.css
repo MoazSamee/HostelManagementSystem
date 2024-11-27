@@ -5,6 +5,10 @@
     -fx-text-fill: #0d47a1; /* Dark blue text */
 }
 
+.scene {
+    -fx-background-color: #c00704; /* Light Red */
+}
+
 /* Sidebar Styling */
 .sidebar {
     -fx-background-color: #1976d2; /* Material Blue 600 */
