@@ -41,10 +41,6 @@ public class BookHostel {
         ObservableList<Room> rooms = FXCollections.observableArrayList(hostel.getAvailableRooms());
         roomsTable.setItems(rooms);
 
-        // Define columns
-        TableColumn<Room, String> roomIdCol = new TableColumn<>("Room ID");
-        roomIdCol.setCellValueFactory(new PropertyValueFactory<>("roomId"));
-
         TableColumn<Room, Integer> maxBedsCol = new TableColumn<>("Max Beds");
         maxBedsCol.setCellValueFactory(new PropertyValueFactory<>("maxBeds"));
 
@@ -54,7 +50,15 @@ public class BookHostel {
         TableColumn<Room, String> roomNoCol = new TableColumn<>("Room No");
         roomNoCol.setCellValueFactory(new PropertyValueFactory<>("roomNo"));
 
-        roomsTable.getColumns().addAll(roomIdCol, maxBedsCol, freeSpaceCol, roomNoCol);
+        roomsTable.getColumns().addAll(roomNoCol, maxBedsCol, freeSpaceCol);
+
+        // Strech columns to fill the space
+        roomNoCol.prefWidthProperty().bind(roomsTable.widthProperty().divide(3));
+        maxBedsCol.prefWidthProperty().bind(roomsTable.widthProperty().divide(3));
+        freeSpaceCol.prefWidthProperty().bind(roomsTable.widthProperty().divide(3));
+
+        // hide scroll bar
+        roomsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         // Book Button
         Button bookButton = new Button("Book");

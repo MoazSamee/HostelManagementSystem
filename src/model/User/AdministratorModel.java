@@ -151,4 +151,14 @@ public class AdministratorModel extends UserModel {
         return requests;
     }
 
+    public boolean addRoomToHostel(String hostelId, String roomNumber, String maxBeds) {
+        if (hostelId != null && roomNumber != null && maxBeds != null)
+        {
+            System.out.println("Adding room to hostel with ID " + hostelId);
+
+            return database.addRoomToHostel(hostelId, roomNumber, maxBeds);
+        }
+        return false;
+    }
+
 }

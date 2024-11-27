@@ -7,7 +7,6 @@ import javax.swing.JOptionPane;
 
 import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Hostel.Hostel;
 import model.Hostel.Room;
@@ -18,21 +17,15 @@ import view.comman.HostelCard;
 public class StudentController {
     private StudentModel student;
 
-    private final Text contentText;
     private GridPane gridPane;
     private List<HostelCard> hostelCards;
 
-    // Done
+
     @SuppressWarnings("unused")
-    public StudentController(Text contentText) {
-        this.contentText = contentText;
+    public StudentController(StudentModel user) {
+        this.student = user;
+        user.refreshDetails();
         this.hostelCards = new ArrayList<>();
-        //////////////////////////////////////////////////////////////////////// TBR
-        // String[] hostelIds = {"H101", "H102", "H103"};
-        // String[] hostelNames = {"Alpha Hostel", "Beta Hostel", "Gamma Hostel"};
-        // int[] availableRooms = {10, 5, 12};
-        // int[] students = {50, 45, 60};
-        //////////////////////////////////////////////////////////////////////// TBR
         if (student != null) {
             List<Hostel> hostels = student.getHostels();
 
@@ -42,33 +35,17 @@ public class StudentController {
                 hostelCards.add(card);
             }
         }
-        // for (int i = 0; i < hostelIds.length; i++) {
-        //     HostelCard card = new HostelCard(hostelIds[i], hostelNames[i], availableRooms[i], students[i]);
-        //     final int index = i;
-        //     card.setOnMouseClicked(e -> cardClicked(hostelIds[index]));
-        //     hostelCards.add(card);
-        // }
     }
 
     // Done
-    public void onSearchButtonClicked(String searchQuery) { //mysql fetchAllHostels
-        contentText.setText("Searching for: " + searchQuery);
-        //////////////////////////////////////////////////////////////////////// TBR
-        // HostelCard card = new HostelCard(searchQuery, "Delta Hostel", 15, 70);
-        // card.setOnMouseClicked(e -> cardClicked(searchQuery));
-        // hostelCards.add(card);
-        // database.getHostels();
-        //////////////////////////////////////////////////////////////////////// TBR
-        
+    public void onSearchButtonClicked(String searchQuery) {
         populateInitialGridContent();
         refreshGridContent((int)gridPane.getWidth());
-        // addBox(new HostelCard(searchQuery, "Delta Hostel", 15, 70));
     }
 
     // Done
     @SuppressWarnings("unused")
-    public void onSearchTextChanged(String newText) { //mysql getHostelByName
-        contentText.setText("Search text changed: " + newText);
+    public void onSearchTextChanged(String newText) {
         hostelCards.clear();
 
         List<Hostel> hostels = student.getHostels(newText);
@@ -103,7 +80,6 @@ public class StudentController {
             hostelCards.add(card);
         }
 
-        // refreshGridContent((int)gridPane.getWidth());
     }
 
     // Done
@@ -116,7 +92,6 @@ public class StudentController {
         gridPane.getChildren().clear();
         for (HostelCard card : hostelCards) {
             addBox(card, Width);
-            // System.out.println("Added card: ");
         } 
     }
 
@@ -142,7 +117,7 @@ public class StudentController {
         
     }
 
-    // TODO : Implement
+    // Done
     public void onMaintenanceRequestSubmitted(String complaint, String maintenance) {
         if (maintenance != null && !maintenance.isEmpty() && complaint != null && !complaint.isEmpty())
         {

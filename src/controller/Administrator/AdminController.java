@@ -9,10 +9,11 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 import model.Hostel.Complaint;
 import model.Hostel.Hostel;
-import model.Hostel.MaintenanceRequest;
+import model.Hostel.Room;
 import model.User.AdministratorModel;
 import model.User.MaintenanceStaffModel;
 import model.User.StudentModel;
+import view.Administrator.AddNewRoomPage;
 import view.comman.AddNewHostel;
 import view.comman.AddStaffDialog;
 import view.comman.GetIdDialog;
@@ -101,22 +102,35 @@ public class AdminController {
 
         List<Hostel> hostelsbyUser = user.getHostels();
         for (Hostel hostel : hostelsbyUser) {
-            System.out.println("Hostels by User "+hostel.getHostelId());
             String staffNames = "";
             List<MaintenanceStaffModel> staffs = hostel.getMaintenanceStaff();
             for (MaintenanceStaffModel staff : staffs) {
                 staffNames += "(" + staff.getUserId() + ")" +staff.getName()+ ",";
-                System.err.println(staff.getUserId());
             }
             String studentsName = "";
             List<StudentModel> students = hostel.getStudents();
             for (StudentModel student : students) {
                 studentsName += student.getName() + ",";
             }
+            String rooms = "";
+            List<Room> roomsList = hostel.getRooms();
+            for (Room room : roomsList) {
+                if (room.getFreeSpace() == 0) {
+                    rooms += "Room " + room.getRoomNo() + " (✔️),";
+                }
+                else if (room.getFreeSpace() == room.getMaxBeds()) {
+                    // waiting icon
+                    rooms += "Room " + room.getRoomNo() + " (⏳),";
+                }
+                else{
+                    rooms += "Room " + room.getRoomNo() + " (" + room.getFreeSpace() + "/" + room.getMaxBeds() + "),";
+                }
+            }
+
             List<String[]> h =  hostel.getPendingApplication();
             System.out.println(h.size());
             hostels.add(new String[] { hostel.getHostelLocation(), hostel.getHostelName(), hostel.getPendingApplication().size() + "",
-                studentsName, staffNames, hostel.getHostelId() });
+                studentsName, staffNames, rooms, hostel.getHostelId() });
         }
 
         return hostels;
@@ -275,5 +289,29 @@ public class AdminController {
             JOptionPane.showMessageDialog(null, "Request could not be resolved", "Error", JOptionPane.ERROR_MESSAGE);
         }
         return;
+    }
+
+    public void addRoomToHostel(String hostelId) {
+        AddNewRoomPage dialog = new AddNewRoomPage();
+        dialog.start(new Stage());
+
+        Platform.runLater(() -> {
+            List<String> data = dialog.getData();
+
+            if (data != null && data.size() == 2) {
+                String roomNumber = data.get(0);
+                String maxBeds = data.get(1);
+
+                System.out.println("Room Number: " + roomNumber);
+                System.out.println("Max Beds: " + maxBeds);
+                if (user.addRoomToHostel(hostelId, roomNumber, maxBeds)) {
+                    JOptionPane.showMessageDialog(null, "Room added successfully.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Room could not be added.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Dialog was canceled or closed.");
+            }
+        });
     }
 }

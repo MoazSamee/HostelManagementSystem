@@ -1190,4 +1190,30 @@ public class database {
         }
     }
 
+    // SELECT add_new_room('H001', 102, 3);
+    public static boolean addRoomToHostel(String hostelId, String roomNumber, String maxBeds) {
+        connect();
+
+        String query = "SELECT add_new_room(?, ?, ?)";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, hostelId);
+            stmt.setInt(2, Integer.parseInt(maxBeds));
+            stmt.setInt(3, Integer.parseInt(roomNumber));
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                System.out.println("Room added successfully!");
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error during adding room: " + e.getMessage());
+        } finally {
+            disconnect();
+        }
+
+        return false;
+    }
+
 }

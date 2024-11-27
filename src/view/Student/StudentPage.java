@@ -17,6 +17,11 @@ public class StudentPage extends Application{
     private boolean isSidebarExpanded = true;
     StudentController controller;
 
+    private Button homeTab;
+    private Button browseTab;
+    private Button maintenanceTab;
+    private Button settingsTab;
+
     @SuppressWarnings("unused")
     @Override
     public void start(Stage primaryStage) {
@@ -31,10 +36,10 @@ public class StudentPage extends Application{
         Button toggleButton = new Button("☰");
         // ImageView icon = new ImageView(new Image(getClass().getResourceAsStream("/resources/home.png")));
 
-        Button homeTab = createButtonWithIcon("/resources/home.png", " Home");
-        Button browseTab = createButtonWithIcon("/resources/battery.png", " Browse");
-        Button maintenanceTab = createButtonWithIcon("/resources/bell.png", " Maintenance");
-        Button settingsTab = createButtonWithIcon("/resources/user.png", " Settings");
+        homeTab = createButtonWithIcon("/resources/home.png", " Home");
+        browseTab = createButtonWithIcon("/resources/battery.png", " Browse");
+        maintenanceTab = createButtonWithIcon("/resources/bell.png", " Maintenance");
+        settingsTab = createButtonWithIcon("/resources/user.png", " Settings");
 
         homeTab.setPrefWidth(200);
         browseTab.setPrefWidth(200);
@@ -52,10 +57,6 @@ public class StudentPage extends Application{
         BorderPane contentPane = new BorderPane();
         contentPane.setPadding(new Insets(15));
 
-        Text contentText = new Text();
-
-        // Controller
-        controller = new StudentController(contentText);
 
         // Sidebar Navigation Events
         homeTab.setOnAction(e -> {
@@ -64,61 +65,9 @@ public class StudentPage extends Application{
                 button.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
             }
             
-            // Create labels for student details
-            Label nameLabel = new Label("Welcome " + controller.getStudentName()+ "! 😊");
-            nameLabel.setStyle("-fx-font: 36 arial; -fx-font-weight: bold; -fx-text-fill: white;");
-            Label emailLabel = new Label("📧 "+controller.getStudentEmail());
-            emailLabel.setStyle("-fx-font: 24 arial; -fx-text-fill: white;");
-            Label phoneLabel = new Label("📞 "+ controller.getStudentPhone());
-            phoneLabel.setStyle("-fx-font: 24 arial; -fx-text-fill: white;");
-            Label universityLabel = new Label("University/Job: " + controller.getStudentUniversity());
-            universityLabel.setStyle("-fx-font: 20 arial; -fx-text-fill: white;");
-            Label addressLabel = new Label("Address: " + controller.getStudentAddress());
-            addressLabel.setStyle("-fx-font: 20 arial; -fx-text-fill: white;");
-            Label orgAddressLabel = new Label("Organization Address: " + controller.getStudentOrgAddress());
-            orgAddressLabel.setStyle("-fx-font: 20 arial; -fx-text-fill: white;");
-            Label curruntHostel = new Label("Current Hostel: " + controller.getCurruntStudentHostelname());
-            curruntHostel.setStyle("-fx-font: 20 arial; -fx-text-fill: white;");
-            Label roomNo = new Label("Room No: " + controller.getCurruntStudentHostelRoom());
-            roomNo.setStyle("-fx-font: 20 arial; -fx-text-fill: white;");
-            Label hostelAddress = new Label("Hostel Address: " + controller.getCurruntStudentHostelAdress());
-            hostelAddress.setStyle("-fx-font: 20 arial; -fx-text-fill: white;");
+            VBox container = ceateStudentHomePage();
 
-            // Create a VBox for the details and style it
-            VBox detailsLayout = new VBox(10, nameLabel, emailLabel, phoneLabel);
-            detailsLayout.setPadding(new Insets(20));
-            detailsLayout.setAlignment(Pos.CENTER);
-            detailsLayout.getStyleClass().add("home-layout-card");
-
-            VBox detailsLayout2 = new VBox(10, universityLabel, addressLabel, orgAddressLabel);
-            detailsLayout2.setPadding(new Insets(20));
-            detailsLayout2.setAlignment(Pos.CENTER_LEFT);
-            detailsLayout2.getStyleClass().add("home-layout-card2");
-            // make it to take 
-
-            VBox detailsLayout3 = new VBox(10, curruntHostel, roomNo, hostelAddress);
-            detailsLayout3.setPadding(new Insets(20));
-            detailsLayout3.setAlignment(Pos.CENTER_LEFT);
-            detailsLayout3.getStyleClass().add("home-layout-card3");
-
-            HBox detailsSecondryLayout = new HBox(detailsLayout2, detailsLayout3);
-            detailsSecondryLayout.setAlignment(Pos.CENTER);
-            detailsSecondryLayout.setSpacing(20);
-
-
-            VBox homeLayout = new VBox(detailsLayout, detailsSecondryLayout);
-            homeLayout.setAlignment(Pos.CENTER);
-            homeLayout.setSpacing(20);
-            homeLayout.setPadding(new Insets(20));
-            homeLayout.setStyle("-fx-background-color: #E3F2FD;");
-
-
-            // Add responsive behavior
-            ScrollPane scrollPane = new ScrollPane(homeLayout);
-            scrollPane.setFitToWidth(true);
-            scrollPane.setStyle("-fx-background-color: #E3F2FD;");
-
-            contentPane.setCenter(scrollPane);
+            contentPane.setCenter(container);
         });
 
         settingsTab.setOnAction(e -> {
@@ -128,85 +77,9 @@ public class StudentPage extends Application{
                 button.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
             }
         
-            // Create fields for settings page
-            // Label nameLabel = new Label("Change Name:");
-            TextField nameField = new TextField();
-            nameField.setPromptText("Enter your new name");
-            nameField.setMaxWidth(400);
-            nameField.setMinHeight(40);
-        
-            // Label emailLabel = new Label("Change Email:");
-            TextField emailField = new TextField();
-            emailField.setPromptText("Enter your new email");
-            emailField.setMaxWidth(300);
-            emailField.setPrefWidth(195);
-            emailField.setMinHeight(40);
-        
-            // Label phoneLabel = new Label("Change Phone Number:");
-            TextField phoneField = new TextField();
-            phoneField.setPromptText("Enter your new phone number");
-            phoneField.setMaxWidth(300);
-            phoneField.setPrefWidth(195);
-            phoneField.setMinHeight(40);
+            VBox container = createSettingsPage();
 
-            // Label universityLabel = new Label("Change University:");
-            TextField universityField = new TextField();
-            universityField.setPromptText("Enter your University");
-            universityField.setMaxWidth(400);
-            universityField.setMinHeight(40);
-
-            // Label addressLabel = new Label("Change Address:");
-            TextField addressField = new TextField();
-            addressField.setPromptText("Enter your new Address");
-            addressField.setMaxWidth(400);
-            addressField.setMinHeight(40);
-
-            // Label orgAdressLabel = new Label("Change Organization Adress:");
-            TextField orgAdressField = new TextField();
-            orgAdressField.setPromptText("Enter your new Organization Adress");
-            orgAdressField.setMaxWidth(400);
-            orgAdressField.setMinHeight(40);
-        
-            // Label passwordLabel = new Label("Reset Password:");
-            PasswordField passwordField = new PasswordField();
-            passwordField.setPromptText("Enter your new password");
-            passwordField.setMaxWidth(300);
-            passwordField.setPrefWidth(195);
-            passwordField.setMinHeight(40);
-        
-            // Label passwordLabel2 = new Label("Confirm Password:");
-            PasswordField passwordField2 = new PasswordField();
-            passwordField2.setPromptText("Confirm your new password");
-            passwordField2.setMaxWidth(300);
-            passwordField2.setPrefWidth(195);
-            passwordField2.setMinHeight(40);
-        
-            Button saveButton = new Button("Save Details");
-            saveButton.setOnAction(ev -> controller.editProfile(nameField.getText(), emailField.getText(),
-                                        phoneField.getText(),universityField.getText(),addressField.getText(),
-                                        orgAdressField.getText(), passwordField.getText(), passwordField2.getText()));
-        
-
-            HBox passwordGroup = new HBox(10, passwordField, passwordField2);
-            passwordGroup.setAlignment(Pos.CENTER);
-            HBox contactGroup = new HBox(10, emailField, phoneField);
-            contactGroup.setAlignment(Pos.CENTER);
-
-            // Layout adjustments
-            VBox formLayout = new VBox(10, nameField, contactGroup, universityField, addressField,orgAdressField,passwordGroup);
-            // VBox formLayout = new VBox(10, nameLabel, nameField, emailLabel, emailField, phoneLabel, phoneField, passwordLabel, passwordField, passwordLabel2, passwordField2);
-            formLayout.setSpacing(15);
-            formLayout.setAlignment(Pos.CENTER);
-        
-            // Make the save button more visually prominent and align it
-            HBox buttonLayout = new HBox(saveButton);
-            buttonLayout.setAlignment(Pos.CENTER);
-            buttonLayout.setSpacing(10);
-        
-            VBox content = new VBox(20, formLayout, buttonLayout);
-            content.setAlignment(Pos.CENTER);
-        
-            contentPane.setCenter(content);
+            contentPane.setCenter(container);
         });
 
         browseTab.setOnAction(e -> {
@@ -216,51 +89,9 @@ public class StudentPage extends Application{
                 button.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
             }
 
-            VBox homeLayout = new VBox(10);
-            homeLayout.setPadding(new Insets(10));
-
-            // Search Bar
-            HBox searchBox = new HBox(10);
-            TextField searchField = new TextField();
-            searchField.setPromptText("Search...");
-            searchField.setPrefWidth(300);
-            searchField.setPrefHeight(50);
-            Button searchButton = new Button("🔎");
-
-            searchButton.setOnAction(ev -> controller.onSearchButtonClicked(searchField.getText()));
-            searchField.textProperty().addListener((obs, oldText, newText) -> controller.onSearchTextChanged(newText));
-
-            searchBox.getChildren().addAll(searchField, searchButton);
-            searchBox.setAlignment(Pos.CENTER);
-
-            // Scrollable Grid
-            ScrollPane scrollPane = new ScrollPane();
-            GridPane gridPane = new GridPane();
-            gridPane.setHgap(10);
-            gridPane.setVgap(10);
-            gridPane.setPadding(new Insets(10));
-
-            scrollPane.setContent(gridPane);
-            scrollPane.setFitToWidth(true);
-            scrollPane.setStyle("-fx-background-color: #E3F2FD;");
-            gridPane.setStyle("-fx-background-color: #E3F2FD;");
-
-            // Link gridPane to controller for dynamic updates
-            controller.setGridPane(gridPane);
-
-            homeLayout.getChildren().addAll(searchBox, scrollPane);
-            contentPane.setCenter(homeLayout);
-
-            // Add initial content
-            controller.populateInitialGridContent();
-
-            // primaryStage.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-            //     controller.setWidth(newWidth.intValue());
-            //     controller.refreshGridContent(newWidth.intValue());
-            // });
-            gridPane.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-                controller.refreshGridContent(newWidth.intValue());
-            });
+            VBox container = createbrowseTab();
+            
+            contentPane.setCenter(container);
         });
 
         maintenanceTab.setOnAction(e -> {
@@ -357,14 +188,212 @@ public class StudentPage extends Application{
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        // Initialize with the home page
-        homeTab.fire();
+        // controller.populateInitialGridContent();
+
+    }
+
+    @SuppressWarnings("unused")
+    private VBox createbrowseTab() {
+        VBox homeLayout = new VBox(10);
+        homeLayout.setPadding(new Insets(10));
+
+        // Search Bar
+        HBox searchBox = new HBox(10);
+        TextField searchField = new TextField();
+        searchField.setPromptText("Search...");
+        searchField.setPrefWidth(300);
+        searchField.setPrefHeight(50);
+        Button searchButton = new Button("🔎");
+
+        searchButton.setOnAction(ev -> controller.onSearchButtonClicked(searchField.getText()));
+        searchField.textProperty().addListener((obs, oldText, newText) -> controller.onSearchTextChanged(newText));
+
+        searchBox.getChildren().addAll(searchField, searchButton);
+        searchBox.setAlignment(Pos.CENTER);
+
+        // Scrollable Grid
+        ScrollPane scrollPane = new ScrollPane();
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(10));
+
+        scrollPane.setContent(gridPane);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background-color: #E3F2FD;");
+        gridPane.setStyle("-fx-background-color: #E3F2FD;");
+
+        // Link gridPane to controller for dynamic updates
+        controller.setGridPane(gridPane);
+
+        homeLayout.getChildren().addAll(searchBox, scrollPane);
+        
+
+        gridPane.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+            controller.refreshGridContent(newWidth.intValue());
+        });
+        
+        VBox container = new VBox(homeLayout);
+        container.setPadding(new Insets(10));
+        container.setAlignment(Pos.TOP_LEFT);
+        container.getStyleClass().add("container");
+
+        return container;
+    }
+
+    @SuppressWarnings("unused")
+    private VBox createSettingsPage() {
+        // Create fields for settings page
+        // Label nameLabel = new Label("Change Name:");
+        TextField nameField = new TextField();
+        nameField.setPromptText("Enter your new name");
+        nameField.setMaxWidth(400);
+        nameField.setMinHeight(40);
+      
+        // Label emailLabel = new Label("Change Email:");
+        TextField emailField = new TextField();
+        emailField.setPromptText("Enter your new email");
+        emailField.setMaxWidth(300);
+        emailField.setPrefWidth(195);
+        emailField.setMinHeight(40);
+      
+        // Label phoneLabel = new Label("Change Phone Number:");
+        TextField phoneField = new TextField();
+        phoneField.setPromptText("Enter your new phone number");
+        phoneField.setMaxWidth(300);
+        phoneField.setPrefWidth(195);
+        phoneField.setMinHeight(40);
+
+        // Label universityLabel = new Label("Change University:");
+        TextField universityField = new TextField();
+        universityField.setPromptText("Enter your University");
+        universityField.setMaxWidth(400);
+        universityField.setMinHeight(40);
+
+        // Label addressLabel = new Label("Change Address:");
+        TextField addressField = new TextField();
+        addressField.setPromptText("Enter your new Address");
+        addressField.setMaxWidth(400);
+        addressField.setMinHeight(40);
+
+        // Label orgAdressLabel = new Label("Change Organization Adress:");
+        TextField orgAdressField = new TextField();
+        orgAdressField.setPromptText("Enter your new Organization Adress");
+        orgAdressField.setMaxWidth(400);
+        orgAdressField.setMinHeight(40);
+      
+        // Label passwordLabel = new Label("Reset Password:");
+        PasswordField passwordField = new PasswordField();
+        passwordField.setPromptText("Enter your new password");
+        passwordField.setMaxWidth(300);
+        passwordField.setPrefWidth(195);
+        passwordField.setMinHeight(40);
+      
+        // Label passwordLabel2 = new Label("Confirm Password:");
+        PasswordField passwordField2 = new PasswordField();
+        passwordField2.setPromptText("Confirm your new password");
+        passwordField2.setMaxWidth(300);
+        passwordField2.setPrefWidth(195);
+        passwordField2.setMinHeight(40);
+      
+        Button saveButton = new Button("Save Details");
+        saveButton.setOnAction(ev -> controller.editProfile(nameField.getText(), emailField.getText(),
+                                    phoneField.getText(),universityField.getText(),addressField.getText(),
+                                    orgAdressField.getText(), passwordField.getText(), passwordField2.getText()));
+      
+
+        HBox passwordGroup = new HBox(10, passwordField, passwordField2);
+        passwordGroup.setAlignment(Pos.CENTER);
+        HBox contactGroup = new HBox(10, emailField, phoneField);
+        contactGroup.setAlignment(Pos.CENTER);
+
+        // Layout adjustments
+        VBox formLayout = new VBox(10, nameField, contactGroup, universityField, addressField,orgAdressField,passwordGroup);
+        // VBox formLayout = new VBox(10, nameLabel, nameField, emailLabel, emailField, phoneLabel, phoneField, passwordLabel, passwordField, passwordLabel2, passwordField2);
+        formLayout.setSpacing(15);
+        formLayout.setAlignment(Pos.CENTER);
+      
+        // Make the save button more visually prominent and align it
+        HBox buttonLayout = new HBox(saveButton);
+        buttonLayout.setAlignment(Pos.CENTER);
+        buttonLayout.setSpacing(10);
+      
+        VBox content = new VBox(20, formLayout, buttonLayout);
+        content.setAlignment(Pos.CENTER);
+
+        VBox container = new VBox(content);
+        container.setPadding(new Insets(10));
+        container.setAlignment(Pos.TOP_LEFT);
+        container.getStyleClass().add("container");
+        return container;
+    }
+
+    private VBox ceateStudentHomePage() {
+        // Create labels for student details
+        Label nameLabel = new Label("Welcome " + controller.getStudentName()+ "! 😊");
+        nameLabel.setStyle("-fx-font: 36 arial; -fx-font-weight: bold; -fx-text-fill: white;");
+        Label emailLabel = new Label("📧 "+controller.getStudentEmail());
+        emailLabel.setStyle("-fx-font: 24 arial; -fx-text-fill: white;");
+        Label phoneLabel = new Label("📞 "+ controller.getStudentPhone());
+        phoneLabel.setStyle("-fx-font: 24 arial; -fx-text-fill: white;");
+        Label universityLabel = new Label("University/Job: " + controller.getStudentUniversity());
+        universityLabel.setStyle("-fx-font: 20 arial; -fx-text-fill: white;");
+        Label addressLabel = new Label("Address: " + controller.getStudentAddress());
+        addressLabel.setStyle("-fx-font: 20 arial; -fx-text-fill: white;");
+        Label orgAddressLabel = new Label("Organization Address: " + controller.getStudentOrgAddress());
+        orgAddressLabel.setStyle("-fx-font: 20 arial; -fx-text-fill: white;");
+        Label curruntHostel = new Label("Current Hostel: " + controller.getCurruntStudentHostelname());
+        curruntHostel.setStyle("-fx-font: 20 arial; -fx-text-fill: white;");
+        Label roomNo = new Label("Room No: " + controller.getCurruntStudentHostelRoom());
+        roomNo.setStyle("-fx-font: 20 arial; -fx-text-fill: white;");
+        Label hostelAddress = new Label("Hostel Address: " + controller.getCurruntStudentHostelAdress());
+        hostelAddress.setStyle("-fx-font: 20 arial; -fx-text-fill: white;");
+
+        // Create a VBox for the details and style it
+        VBox detailsLayout = new VBox(10, nameLabel, emailLabel, phoneLabel);
+        detailsLayout.setPadding(new Insets(20));
+        detailsLayout.setAlignment(Pos.CENTER);
+        detailsLayout.getStyleClass().add("home-layout-card");
+
+        VBox detailsLayout2 = new VBox(10, universityLabel, addressLabel, orgAddressLabel);
+        detailsLayout2.setPadding(new Insets(20));
+        detailsLayout2.setAlignment(Pos.CENTER_LEFT);
+        detailsLayout2.getStyleClass().add("home-layout-card2");
+        // make it to take 
+
+        VBox detailsLayout3 = new VBox(10, curruntHostel, roomNo, hostelAddress);
+        detailsLayout3.setPadding(new Insets(20));
+        detailsLayout3.setAlignment(Pos.CENTER_LEFT);
+        detailsLayout3.getStyleClass().add("home-layout-card3");
+
+        HBox detailsSecondryLayout = new HBox(detailsLayout2, detailsLayout3);
+        detailsSecondryLayout.setAlignment(Pos.CENTER);
+        detailsSecondryLayout.setSpacing(20);
+
+
+        VBox homeLayout = new VBox(detailsLayout, detailsSecondryLayout);
+        homeLayout.setAlignment(Pos.CENTER);
+        homeLayout.setSpacing(20);
+        homeLayout.setPadding(new Insets(20));
+        homeLayout.setStyle("-fx-background-color: #E3F2FD;");
+
+
+        // Add responsive behavior
+        ScrollPane scrollPane = new ScrollPane(homeLayout);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background-color: #E3F2FD;");
+
+        VBox container = new VBox(scrollPane);
+        container.setPadding(new Insets(10));
+        container.setAlignment(Pos.TOP_LEFT);
+        container.getStyleClass().add("container");
+        return container;
     }
 
     private Button createButtonWithIcon(String iconPath, String text) {
         ImageView icon = new ImageView(new Image(getClass().getResourceAsStream(iconPath)));
-        icon.setFitWidth(20);
-        icon.setFitHeight(20);
+        icon.setFitWidth(30);
+        icon.setFitHeight(30);
         Button button = new Button(text, icon);
         button.getStyleClass().add("sidebar-button");
         return button;
@@ -394,11 +423,9 @@ public class StudentPage extends Application{
         launch(args);
     }
 
-    // public void setStudent(StudentModel user) {
-    //     controller.setStudent(user);
-    // }
-
-    public StudentController getStudentController() {
-        return controller;
+    public void setStudentController(StudentController controller) {
+        this.controller = controller;
+        System.out.println("Student Controller Set");
+        homeTab.fire();
     }
 }

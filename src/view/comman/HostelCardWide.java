@@ -12,10 +12,11 @@ public class HostelCardWide extends VBox {
     private Button deleteButton;
     private Button addStaffButton;
     private Button removeStaffButton;
+    private Button addRoomButton;
 
     @SuppressWarnings("unused")
     public HostelCardWide(String hostelId, String hostelName, int numberPendingApplications, 
-                          String[] students, String[] maintenanceStaff) {
+                          String[] students, String[] maintenanceStaff, String[] rooms) {
         super(10);
         setPadding(new Insets(20));
         setMinHeight(CARD_MIN_HEIGHT);
@@ -28,7 +29,7 @@ public class HostelCardWide extends VBox {
         nameLabel.setFont(Font.font("Arial", 18));
         nameLabel.getStyleClass().add("hostel-card-name");
 
-        Label idLabel = new Label("ID: " + hostelId);
+        Label idLabel = new Label("🌍: " + hostelId);
         idLabel.getStyleClass().add("hostel-card-id");
 
         Label pendingApplicationsLabel = new Label("Pending Applications: " + numberPendingApplications);
@@ -37,10 +38,10 @@ public class HostelCardWide extends VBox {
         HBox listsContainer = new HBox(20);
         listsContainer.setPadding(new Insets(10, 0, 10, 0));
         listsContainer.setFillHeight(true);
-        listsContainer.getStyleClass().add("hostel-card-lists");
+        listsContainer.getStyleClass().add("hostel-card-list");
 
         VBox studentsList = new VBox(5);
-        studentsList.getStyleClass().add("hostel-card-list");
+        studentsList.getStyleClass().add("flat-box");
         Label studentsLabel = new Label("Students:");
         studentsList.getChildren().add(studentsLabel);
         for (String student : students) {
@@ -48,26 +49,40 @@ public class HostelCardWide extends VBox {
         }
 
         VBox staffList = new VBox(5);
-        staffList.getStyleClass().add("hostel-card-list");
+        staffList.getStyleClass().add("flat-box");
         Label staffLabel = new Label("Maintenance Staff:");
         staffList.getChildren().add(staffLabel);
         for (String staff : maintenanceStaff) {
             staffList.getChildren().add(new Label(staff));
         }
 
+        VBox roomsList = new VBox(5);
+        roomsList.getStyleClass().add("flat-box");
+        Label roomsLabel = new Label("Rooms:");
+        roomsList.getChildren().add(roomsLabel);
+        for (String room : rooms) {
+            roomsList.getChildren().add(new Label(room));
+        }
+
         ScrollPane studentsScroll = new ScrollPane(studentsList);
-        studentsScroll.getStyleClass().add("hostel-card-list");
+        studentsScroll.getStyleClass().add("flat-box");
         studentsScroll.setFitToWidth(true);
         HBox.setHgrow(studentsScroll, Priority.ALWAYS);
         VBox.setVgrow(studentsScroll, Priority.ALWAYS);
 
         ScrollPane staffScroll = new ScrollPane(staffList);
-        staffScroll.getStyleClass().add("hostel-card-list");
+        staffScroll.getStyleClass().add("flat-box");
         staffScroll.setFitToWidth(true);
         HBox.setHgrow(staffScroll, Priority.ALWAYS);
         VBox.setVgrow(staffScroll, Priority.ALWAYS);
 
-        listsContainer.getChildren().addAll(studentsScroll, staffScroll);
+        ScrollPane roomsScroll = new ScrollPane(roomsList);
+        roomsScroll.getStyleClass().add("flat-box");
+        roomsScroll.setFitToWidth(true);
+        // HBox.setHgrow(roomsScroll, Priority.ALWAYS);
+        VBox.setVgrow(roomsScroll, Priority.ALWAYS);
+
+        listsContainer.getChildren().addAll(studentsScroll, staffScroll, roomsScroll);
 
         deleteButton = new Button("❌ Delete hostel");
         deleteButton.getStyleClass().add("disapprove-button");
@@ -87,8 +102,18 @@ public class HostelCardWide extends VBox {
             // Action for remove staff button
         });
 
+        addRoomButton = new Button("➕ Room");
+        addRoomButton.getStyleClass().add("approve-button");
+        addRoomButton.setOnAction(e -> {
+            // Action for add room button
+        });
+
+
         HBox buttonsContainer = new HBox(10);
-        buttonsContainer.getChildren().addAll(addStaffButton, removeStaffButton, deleteButton);
+        // add empty spce to push buttons to right
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        buttonsContainer.getChildren().addAll(deleteButton, spacer, addStaffButton, removeStaffButton, addRoomButton);
 
 
         getChildren().addAll(nameLabel, idLabel, pendingApplicationsLabel, listsContainer, buttonsContainer);
@@ -113,5 +138,9 @@ public class HostelCardWide extends VBox {
 
     public ButtonBase getRemoveStaffButton() {
         return removeStaffButton;
+    }
+
+    public ButtonBase getAddRoomButton() {
+        return addRoomButton;
     }
 }

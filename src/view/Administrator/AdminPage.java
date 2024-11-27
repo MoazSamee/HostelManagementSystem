@@ -474,23 +474,29 @@ public class AdminPage extends Application {
         int numberPendingApplications = Integer.parseInt(hostel[2]);
         String[] students = hostel[3].split(",");
         String[] maintenanceStaff = hostel[4].split(",");
+        String[] rooms = hostel[5].split(",");
 
         HostelCardWide hostelCard = new HostelCardWide(location, hostelName, numberPendingApplications, students,
-                maintenanceStaff);
+                maintenanceStaff, rooms);
         // hostelCard deleteButton event handler
         hostelCard.getDeleteButton().setOnAction(e -> {
-            controller.removeHostel(hostel[5]);
+            controller.removeHostel(hostel[6]);
             refreshHostelsPage(hostelPage);
         });
 
         hostelCard.getAddStaffButton().setOnAction(e -> {
-            controller.addStaffToHostel(hostel[5]);
+            controller.addStaffToHostel(hostel[6]);
             refreshHostelsPage(hostelPage);
 
         });
 
         hostelCard.getRemoveStaffButton().setOnAction(e -> {
-            controller.removeStaffFromHostel(hostel[5]);
+            controller.removeStaffFromHostel(hostel[6]);
+            refreshHostelsPage(hostelPage);
+        });
+
+        hostelCard.getAddRoomButton().setOnAction(e -> {
+            controller.addRoomToHostel(hostel[6]);
             refreshHostelsPage(hostelPage);
         });
 
@@ -709,5 +715,10 @@ public class AdminPage extends Application {
     
         requestPage.getChildren().add(requestRow);
     }
+
+    public void setOnCloseRequest(Object object) {
+        
+    }
+
 
 }

@@ -156,7 +156,44 @@ SELECT * FROM rooms;
 UPDATE rooms
 SET free_space = 0 WHERE room_id = 'R001' AND hostel_id = 'H001';
 
+--  Add new room with uinque Room ID
+DELIMITER $$
+CREATE FUNCTION add_new_room (
+    hostel_id_param VARCHAR(255),
+    room_no_param INT,
+    max_beds_param INT
+) RETURNS BOOLEAN
+DETERMINISTIC
+MODIFIES SQL DATA
+BEGIN
+    DECLARE is_added BOOLEAN;
+    DECLARE new_room_id VARCHAR(255);
 
+    -- Generate a unique room_id
+    SET new_room_id = CONCAT('R', UUID());
+
+    -- Check if room already EXISTS
+    IF EXISTS (SELECT 1 FROM rooms WHERE room_no = room_no_param AND hostel_id = hostel_id_param) THEN
+        SET is_added = FALSE;
+    ELSE
+        -- Insert the new room into the rooms table
+        INSERT INTO rooms (room_id, hostel_id, room_no, max_beds, free_space)
+        VALUES (new_room_id, hostel_id_param, room_no_param, max_beds_param, max_beds_param);
+
+        -- Determine if the room was added
+        SET is_added = ROW_COUNT() > 0;
+    END IF;
+
+    -- Determine if the room was added
+    SET is_added = ROW_COUNT() > 0;
+
+    RETURN is_added;
+END$$
+
+
+DELIMITER ;
+
+SELECT add_new_room('H001', 102, 3);
 
 --  submit room book request{ "Alice", "001", "Hostel A", "Room 101" }) autoassign request_id
 
