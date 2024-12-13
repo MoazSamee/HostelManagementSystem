@@ -1,4 +1,4 @@
-package view.comman;
+package view.Administrator;
 
 import javafx.scene.Scene;
 import javafx.scene.control.*;

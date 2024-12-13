@@ -1,6 +1,5 @@
 package model.User;
 
-import model.PaymentGateway.Wallet;
 import model.Database.database;
 import model.Hostel.Complaint;
 import model.Hostel.Hostel;
@@ -19,10 +18,6 @@ public class AdministratorModel extends UserModel {
         super(userId, name, email, phoneNumber);
     }
     
-    // Administrator-specific functionalities
-    public void addFundsToStudentWallet(Wallet wallet, double amount) {
-        wallet.addFunds(amount, "administrator");
-    }
 
     @Override
     public List<Hostel> getHostels() {

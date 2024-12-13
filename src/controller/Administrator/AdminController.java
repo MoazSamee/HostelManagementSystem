@@ -13,9 +13,9 @@ import model.Hostel.Room;
 import model.User.AdministratorModel;
 import model.User.MaintenanceStaffModel;
 import model.User.StudentModel;
+import view.Administrator.AddNewHostel;
 import view.Administrator.AddNewRoomPage;
-import view.comman.AddNewHostel;
-import view.comman.AddStaffDialog;
+import view.Administrator.AddStaffDialog;
 import view.comman.GetIdDialog;
 
 public class AdminController {
