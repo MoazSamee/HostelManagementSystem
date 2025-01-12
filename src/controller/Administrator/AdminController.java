@@ -32,14 +32,14 @@ public class AdminController {
     }
 
     // Done
-    public void approveRequest(String rewuestID) {
-        System.out.println("Approved request for " + rewuestID);
-        if (user.approveRoomRequest(rewuestID)) {
-            System.out.println("Request approved successfully.");
-        } else {
-            System.out.println("Request could not be approved.");
-        }
+   public void approveRequest(String requestID) {
+    System.out.println("Approved request for " + requestID);
+    if (user.approveRoomRequest(requestID)) {
+        System.out.println("Request approved successfully.");
+    } else {
+        System.out.println("Request could not be approved.");
     }
+}
 
     // Done
     public void disapproveRequest(String requestID) {
